@@ -37,6 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             case 'pe':
                 redirect(site_url('public/dm/dashboard.php'));
                 break;
+            case 'director':
+                redirect(site_url('public/director/dashboard.php'));
+                break;
             case 'staff':
                 redirect(site_url('public/staff/dashboard.php'));
                 break;

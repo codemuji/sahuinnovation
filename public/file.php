@@ -6,9 +6,9 @@
 
 require_once __DIR__ . '/../app/core/Auth.php';
 
-Auth::requireRole(['staff', 'admin', 'dm', 'pe', 'surveyer']);
+Auth::requireRole(['staff', 'admin', 'dm', 'pe', 'surveyer', 'director']);
 
-$type = $_GET['type'] ?? ''; // 'survey', 'technical', or 'profile'
+$type = $_GET['type'] ?? ''; // 'survey', 'technical', 'profile', or 'expense'
 $file = $_GET['file'] ?? '';
 
 if (!$type || !$file) {
@@ -19,6 +19,7 @@ $baseDir = __DIR__ . '/../uploads/';
 $subDir = 'survey_docs/';
 if ($type === 'technical') $subDir = 'technical_docs/';
 if ($type === 'profile') $subDir = 'profile_pics/';
+if ($type === 'expense') $subDir = 'expense_docs/';
 
 $filePath = realpath($baseDir . $subDir . $file);
 

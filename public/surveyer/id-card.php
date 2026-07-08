@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../app/core/Auth.php';
-Auth::requireRole(['surveyer', 'staff', 'admin', 'dm', 'pe']);
+Auth::requireRole(['surveyer', 'staff', 'admin', 'dm', 'pe', 'director']);
 
 $db = Database::getInstance()->getConnection();
 
@@ -25,6 +25,7 @@ $roleLabels = [
     'pe'       => 'Project Executive',
     'staff'    => 'Staff',
     'admin'    => 'Administrator',
+    'director' => 'Director',
 ];
 $designation = $roleLabels[$profile['role']] ?? ucfirst($profile['role']);
 $verifyUrl   = site_url('public/verify.php?id=' . $profile['employee_id']);

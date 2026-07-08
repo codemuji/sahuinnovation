@@ -22,6 +22,7 @@ $roleLabels = [
     'pe' => 'Project Executive',
     'staff' => 'Staff',
     'admin' => 'Administrator',
+    'director' => 'Director',
 ];
 ?>
 <!DOCTYPE html>

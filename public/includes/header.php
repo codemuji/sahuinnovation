@@ -80,6 +80,24 @@ $flash = getFlash();
                     </li>
                 <?php endif; ?>
 
+                <?php if (Auth::userRole() === 'director'): ?>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/director/add-usage.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'add-usage.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-plus-circle" style="width: 24px;"></i> Add Expense
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/director/usages.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'usages.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-receipt" style="width: 24px;"></i> Expense Logs
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/director/report.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'report.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-chart-line" style="width: 24px;"></i> CA Budget Report
+                        </a>
+                    </li>
+                <?php endif; ?>
+
                 <?php if (Auth::userRole() === 'admin'): ?>
                     <li style="margin-bottom: 8px;">
                         <a href="<?= site_url('public/admin/users.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'users.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
@@ -89,6 +107,21 @@ $flash = getFlash();
                     <li style="margin-bottom: 8px;">
                         <a href="<?= site_url('public/admin/withdrawals.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'withdrawals.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
                             <i class="fa fa-money-bill-transfer" style="width: 24px;"></i> Withdrawals
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/admin/allocate-funds.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'allocate-funds.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-hand-holding-dollar" style="width: 24px;"></i> Allocate Funds
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/admin/expense-reviews.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'expense-reviews.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-clipboard-check" style="width: 24px;"></i> Expense Reviews
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/admin/budget-report.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'budget-report.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-briefcase" style="width: 24px;"></i> Annual Budget Report
                         </a>
                     </li>
                 <?php endif; ?>
