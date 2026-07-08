@@ -4,29 +4,55 @@ Auth::requireRole('admin');
 
 $db = Database::getInstance()->getConnection();
 
+// Determine Filter inputs
+$filterType = $_GET['filter_type'] ?? 'year';
 $selectedYear = $_GET['year'] ?? date('Y');
+$selectedMonth = $_GET['month'] ?? date('Y-m');
+$fromDate = $_GET['from_date'] ?? date('Y-m-01');
+$toDate = $_GET['to_date'] ?? date('Y-m-d');
+
+$periodLabel = "";
+$whereAlloc = "YEAR(a.created_at) = ?";
+$paramsAlloc = [$selectedYear];
+$whereUsage = "YEAR(u.resolved_at) = ?";
+$paramsUsage = [$selectedYear];
+
+if ($filterType === 'month') {
+    $whereAlloc = "DATE_FORMAT(a.created_at, '%Y-%m') = ?";
+    $paramsAlloc = [$selectedMonth];
+    $whereUsage = "DATE_FORMAT(u.resolved_at, '%Y-%m') = ?";
+    $paramsUsage = [$selectedMonth];
+    $periodLabel = date('F Y', strtotime($selectedMonth . '-01'));
+} elseif ($filterType === 'range') {
+    $whereAlloc = "DATE(a.created_at) BETWEEN ? AND ?";
+    $paramsAlloc = [$fromDate, $toDate];
+    $whereUsage = "DATE(u.resolved_at) BETWEEN ? AND ?";
+    $paramsUsage = [$fromDate, $toDate];
+    $periodLabel = date('d M Y', strtotime($fromDate)) . ' to ' . date('d M Y', strtotime($toDate));
+} else { // 'year'
+    $periodLabel = "Year " . $selectedYear;
+}
 
 // CSV Export Logic
 if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Disposition: attachment; filename=Master-Budget-Report-' . $selectedYear . '.csv');
+    header('Content-Disposition: attachment; filename=Master-Budget-Report-' . str_replace(' ', '_', $periodLabel) . '.csv');
     
     $output = fopen('php://output', 'w');
     
     fputcsv($output, ["SAHU INNOVATION PVT. LTD."]);
-    fputcsv($output, ["MASTER ANNUAL BUDGET REPORT - " . $selectedYear]);
+    fputcsv($output, ["MASTER ANNUAL BUDGET REPORT - " . $periodLabel]);
     fputcsv($output, ["Generated At:", date('Y-m-d H:i')]);
     fputcsv($output, []);
     
     // Summary by Directors
     fputcsv($output, ["--- DIRECTORS BUDGET OVERVIEW ---"]);
-    fputcsv($output, ["Director Name", "Employee ID", "Total Allocated (INR)", "Total Approved Expenses (INR)", "Remaining Wallet Balance (INR)"]);
+    fputcsv($output, ["Director Name", "Employee ID", "Allocated (INR)", "Approved Expenses (INR)", "Remaining Wallet Balance (INR)"]);
     
-    $stmt = $db->prepare("SELECT u.id, u.name, u.employee_id, w.balance FROM users u 
+    $stmt = $db->query("SELECT u.id, u.name, u.employee_id, w.balance FROM users u 
         LEFT JOIN wallets w ON u.id = w.user_id 
         WHERE u.role = 'director' AND u.is_active = 1 
         ORDER BY u.name ASC");
-    $stmt->execute();
     $directorsList = $stmt->fetchAll();
     
     $totalCompanyAllocated = 0.00;
@@ -34,14 +60,30 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     $totalCompanyWallet = 0.00;
     
     foreach ($directorsList as $dir) {
-        // Calculate total allocated in selected year
-        $st = $db->prepare("SELECT SUM(amount) FROM fund_allocations WHERE director_id = ? AND YEAR(created_at) = ?");
-        $st->execute([$dir['id'], $selectedYear]);
+        // Calculate allocated in selected period
+        if ($filterType === 'month') {
+            $st = $db->prepare("SELECT SUM(amount) FROM fund_allocations WHERE director_id = ? AND DATE_FORMAT(created_at, '%Y-%m') = ?");
+            $st->execute([$dir['id'], $selectedMonth]);
+        } elseif ($filterType === 'range') {
+            $st = $db->prepare("SELECT SUM(amount) FROM fund_allocations WHERE director_id = ? AND DATE(created_at) BETWEEN ? AND ?");
+            $st->execute([$dir['id'], $fromDate, $toDate]);
+        } else {
+            $st = $db->prepare("SELECT SUM(amount) FROM fund_allocations WHERE director_id = ? AND YEAR(created_at) = ?");
+            $st->execute([$dir['id'], $selectedYear]);
+        }
         $dirAlloc = $st->fetchColumn() ?? 0.00;
         
-        // Calculate total expensed in selected year
-        $st = $db->prepare("SELECT SUM(amount) FROM fund_usages WHERE director_id = ? AND status = 'approved' AND YEAR(resolved_at) = ?");
-        $st->execute([$dir['id'], $selectedYear]);
+        // Calculate expensed in selected period
+        if ($filterType === 'month') {
+            $st = $db->prepare("SELECT SUM(amount) FROM fund_usages WHERE director_id = ? AND status = 'approved' AND DATE_FORMAT(resolved_at, '%Y-%m') = ?");
+            $st->execute([$dir['id'], $selectedMonth]);
+        } elseif ($filterType === 'range') {
+            $st = $db->prepare("SELECT SUM(amount) FROM fund_usages WHERE director_id = ? AND status = 'approved' AND DATE(resolved_at) BETWEEN ? AND ?");
+            $st->execute([$dir['id'], $fromDate, $toDate]);
+        } else {
+            $st = $db->prepare("SELECT SUM(amount) FROM fund_usages WHERE director_id = ? AND status = 'approved' AND YEAR(resolved_at) = ?");
+            $st->execute([$dir['id'], $selectedYear]);
+        }
         $dirExp = $st->fetchColumn() ?? 0.00;
         
         fputcsv($output, [
@@ -67,14 +109,14 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     fputcsv($output, []);
     
     // Master Allocation Logs
-    fputcsv($output, ["--- ALL BUDGET ALLOCATIONS LOGS ---"]);
+    fputcsv($output, ["--- BUDGET ALLOCATIONS LOGS ---"]);
     fputcsv($output, ["Date", "Director Name", "Allocated By", "Amount (INR)", "Notes"]);
     
     $stmt = $db->prepare("SELECT a.*, d.name as director_name, ad.name as admin_name FROM fund_allocations a 
         JOIN users d ON a.director_id = d.id 
         JOIN users ad ON a.admin_id = ad.id 
-        WHERE YEAR(a.created_at) = ? ORDER BY a.created_at ASC");
-    $stmt->execute([$selectedYear]);
+        WHERE $whereAlloc ORDER BY a.created_at ASC");
+    $stmt->execute($paramsAlloc);
     $allocLogs = $stmt->fetchAll();
     
     foreach ($allocLogs as $al) {
@@ -89,13 +131,13 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     fputcsv($output, []);
     
     // Master Approved Expenses Logs
-    fputcsv($output, ["--- ALL APPROVED EXPENSES LOGS ---"]);
+    fputcsv($output, ["--- APPROVED EXPENSES LOGS ---"]);
     fputcsv($output, ["Approval Date", "Director Name", "Purpose Category", "Description", "Amount (INR)"]);
     
     $stmt = $db->prepare("SELECT u.*, d.name as director_name FROM fund_usages u 
         JOIN users d ON u.director_id = d.id 
-        WHERE u.status = 'approved' AND YEAR(u.resolved_at) = ? ORDER BY u.resolved_at ASC");
-    $stmt->execute([$selectedYear]);
+        WHERE u.status = 'approved' AND $whereUsage ORDER BY u.resolved_at ASC");
+    $stmt->execute($paramsUsage);
     $expLogs = $stmt->fetchAll();
     
     foreach ($expLogs as $el) {
@@ -112,7 +154,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     exit();
 }
 
-// Fetch all active directors and calculate stats
+// Fetch all active directors and calculate period stats
 $stmt = $db->query("SELECT u.id, u.name, u.employee_id, w.balance FROM users u 
     LEFT JOIN wallets w ON u.id = w.user_id 
     WHERE u.role = 'director' AND u.is_active = 1 
@@ -124,14 +166,30 @@ $totalAlloc = 0.00;
 $totalExp = 0.00;
 
 foreach ($directorsData as $d) {
-    // Get allocations
-    $st = $db->prepare("SELECT SUM(amount) FROM fund_allocations WHERE director_id = ? AND YEAR(created_at) = ?");
-    $st->execute([$d['id'], $selectedYear]);
+    // Get allocations based on filter
+    if ($filterType === 'month') {
+        $st = $db->prepare("SELECT SUM(amount) FROM fund_allocations WHERE director_id = ? AND DATE_FORMAT(created_at, '%Y-%m') = ?");
+        $st->execute([$d['id'], $selectedMonth]);
+    } elseif ($filterType === 'range') {
+        $st = $db->prepare("SELECT SUM(amount) FROM fund_allocations WHERE director_id = ? AND DATE(created_at) BETWEEN ? AND ?");
+        $st->execute([$d['id'], $fromDate, $toDate]);
+    } else {
+        $st = $db->prepare("SELECT SUM(amount) FROM fund_allocations WHERE director_id = ? AND YEAR(created_at) = ?");
+        $st->execute([$d['id'], $selectedYear]);
+    }
     $allocAmt = $st->fetchColumn() ?? 0.00;
 
-    // Get expenses
-    $st = $db->prepare("SELECT SUM(amount) FROM fund_usages WHERE director_id = ? AND status = 'approved' AND YEAR(resolved_at) = ?");
-    $st->execute([$d['id'], $selectedYear]);
+    // Get expenses based on filter
+    if ($filterType === 'month') {
+        $st = $db->prepare("SELECT SUM(amount) FROM fund_usages WHERE director_id = ? AND status = 'approved' AND DATE_FORMAT(resolved_at, '%Y-%m') = ?");
+        $st->execute([$d['id'], $selectedMonth]);
+    } elseif ($filterType === 'range') {
+        $st = $db->prepare("SELECT SUM(amount) FROM fund_usages WHERE director_id = ? AND status = 'approved' AND DATE(resolved_at) BETWEEN ? AND ?");
+        $st->execute([$d['id'], $fromDate, $toDate]);
+    } else {
+        $st = $db->prepare("SELECT SUM(amount) FROM fund_usages WHERE director_id = ? AND status = 'approved' AND YEAR(resolved_at) = ?");
+        $st->execute([$d['id'], $selectedYear]);
+    }
     $expAmt = $st->fetchColumn() ?? 0.00;
 
     $directorSummaries[] = [
@@ -162,23 +220,69 @@ $pageTitle = "Annual Budget Report";
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+<div class="panel-header">
     <div class="panel-title">
-        <h1>Master Annual Budget Report (<?= h($selectedYear) ?>)</h1>
+        <h1>Master Budget Report</h1>
         <p>Unified overview of fund allocations, expenditures, and wallet balances across all Directors.</p>
     </div>
-    <div style="display: flex; gap: 10px; align-items: center;">
-        <form method="GET" style="display: flex; gap: 5px;">
-            <select name="year" class="form-control" style="width: auto; height: 36px; padding: 0 10px; font-size: 13px;" onchange="this.form.submit()">
+</div>
+
+<!-- Filters Box -->
+<div class="desktop-card" style="margin-bottom: 30px; padding: 20px;">
+    <form method="GET" style="display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end;">
+        
+        <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+            <label class="form-label" for="filter_type" style="margin-bottom: 4px; font-size: 12px;">Filter By</label>
+            <select name="filter_type" id="filter_type" class="form-control" style="height: 38px; padding: 0 10px; font-size: 13px;" onchange="handleFilterTypeChange()">
+                <option value="year" <?= $filterType === 'year' ? 'selected' : '' ?>>Yearly</option>
+                <option value="month" <?= $filterType === 'month' ? 'selected' : '' ?>>Monthly</option>
+                <option value="range" <?= $filterType === 'range' ? 'selected' : '' ?>>Custom Date Range</option>
+            </select>
+        </div>
+
+        <!-- Year Dropdown -->
+        <div class="form-group" id="year-filter-group" style="margin-bottom: 0; min-width: 120px; display: none;">
+            <label class="form-label" for="year" style="margin-bottom: 4px; font-size: 12px;">Select Year</label>
+            <select name="year" id="year" class="form-control" style="height: 38px; padding: 0 10px; font-size: 13px;">
                 <?php foreach ($years as $yr): ?>
                     <option value="<?= $yr ?>" <?= $yr == $selectedYear ? 'selected' : '' ?>><?= $yr ?></option>
                 <?php endforeach; ?>
             </select>
-        </form>
-        <a href="budget-report.php?year=<?= $selectedYear ?>&export=csv" class="btn btn-primary" style="width: auto; height: 36px; line-height: 36px; padding: 0 15px; font-size: 13px;">
-            <i class="fa fa-file-csv" style="margin-right: 8px;"></i> Export Master CSV for CA
-        </a>
-    </div>
+        </div>
+
+        <!-- Month Input -->
+        <div class="form-group" id="month-filter-group" style="margin-bottom: 0; min-width: 150px; display: none;">
+            <label class="form-label" for="month" style="margin-bottom: 4px; font-size: 12px;">Select Month</label>
+            <input type="month" name="month" id="month" class="form-control" style="height: 38px; padding: 0 10px; font-size: 13px;" value="<?= h($selectedMonth) ?>">
+        </div>
+
+        <!-- Date Range Inputs -->
+        <div id="range-filter-group" style="display: none; gap: 10px; align-items: flex-end;">
+            <div class="form-group" style="margin-bottom: 0; min-width: 140px;">
+                <label class="form-label" for="from_date" style="margin-bottom: 4px; font-size: 12px;">From Date</label>
+                <input type="date" name="from_date" id="from_date" class="form-control" style="height: 38px; padding: 0 10px; font-size: 13px;" value="<?= h($fromDate) ?>">
+            </div>
+            <div class="form-group" style="margin-bottom: 0; min-width: 140px;">
+                <label class="form-label" for="to_date" style="margin-bottom: 4px; font-size: 12px;">To Date</label>
+                <input type="date" name="to_date" id="to_date" class="form-control" style="height: 38px; padding: 0 10px; font-size: 13px;" value="<?= h($toDate) ?>">
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            <button type="submit" class="btn btn-primary" style="width: auto; height: 38px; padding: 0 20px; font-size: 13px; line-height: 38px;">
+                <i class="fa fa-filter"></i> Apply Filter
+            </button>
+            <a href="budget-report.php?filter_type=<?= $filterType ?>&year=<?= $selectedYear ?>&month=<?= $selectedMonth ?>&from_date=<?= $fromDate ?>&to_date=<?= $toDate ?>&export=csv" class="btn" style="width: auto; height: 38px; line-height: 38px; padding: 0 20px; font-size: 13px; border: 1px solid var(--accent); color: var(--accent); background: transparent; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                <i class="fa fa-file-csv"></i> Export Master CSV for CA
+            </a>
+        </div>
+    </form>
+</div>
+
+<!-- Period Header Badge -->
+<div style="margin-bottom: 25px;">
+    <span style="font-size: 13px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px;">Active Master Reporting Period:</span>
+    <h2 style="font-size: 20px; font-weight: 800; color: var(--primary); margin-top: 4px;"><?= h($periodLabel) ?></h2>
 </div>
 
 <!-- Progress Metrics -->
@@ -216,8 +320,8 @@ include __DIR__ . '/../includes/header.php';
                 <tr>
                     <th>Director Name</th>
                     <th>Employee ID</th>
-                    <th>Total Allocated (<?= h($selectedYear) ?>)</th>
-                    <th>Total Expensed (<?= h($selectedYear) ?>)</th>
+                    <th>Allocated (In Period)</th>
+                    <th>Expensed (In Period)</th>
                     <th>Current Wallet Balance</th>
                 </tr>
             </thead>
@@ -244,7 +348,7 @@ include __DIR__ . '/../includes/header.php';
     <!-- Recent Allocations -->
     <div class="desktop-card" style="padding: 0;">
         <div style="padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-            <h3 style="font-size: 15px; font-weight: 700; margin: 0;">Recent Allocations Log</h3>
+            <h3 style="font-size: 15px; font-weight: 700; margin: 0;">Allocations Log</h3>
             <a href="allocate-funds.php" style="font-size: 12px; color: var(--accent); text-decoration: none; font-weight: 600;">Allocate Funds &rarr;</a>
         </div>
         <div class="table-responsive">
@@ -258,10 +362,21 @@ include __DIR__ . '/../includes/header.php';
                 </thead>
                 <tbody>
                     <?php
+                    // Fetch allocations based on active filter
+                    $whereAllocList = "YEAR(a.created_at) = ?";
+                    $paramsAllocList = [$selectedYear];
+                    if ($filterType === 'month') {
+                        $whereAllocList = "DATE_FORMAT(a.created_at, '%Y-%m') = ?";
+                        $paramsAllocList = [$selectedMonth];
+                    } elseif ($filterType === 'range') {
+                        $whereAllocList = "DATE(a.created_at) BETWEEN ? AND ?";
+                        $paramsAllocList = [$fromDate, $toDate];
+                    }
+
                     $stmt = $db->prepare("SELECT a.*, d.name as director_name FROM fund_allocations a 
                         JOIN users d ON a.director_id = d.id 
-                        WHERE YEAR(a.created_at) = ? ORDER BY a.created_at DESC LIMIT 5");
-                    $stmt->execute([$selectedYear]);
+                        WHERE $whereAllocList ORDER BY a.created_at DESC LIMIT 5");
+                    $stmt->execute($paramsAllocList);
                     $allocs = $stmt->fetchAll();
                     if (empty($allocs)): ?>
                         <tr><td colspan="3" style="text-align: center; color: var(--text-muted); padding: 20px;">No allocations in this period.</td></tr>
@@ -296,11 +411,22 @@ include __DIR__ . '/../includes/header.php';
                 </thead>
                 <tbody>
                     <?php
+                    // Fetch expenses based on active filter
+                    $whereUsageList = "YEAR(f.resolved_at) = ?";
+                    $paramsUsageList = [$selectedYear];
+                    if ($filterType === 'month') {
+                        $whereUsageList = "DATE_FORMAT(f.resolved_at, '%Y-%m') = ?";
+                        $paramsUsageList = [$selectedMonth];
+                    } elseif ($filterType === 'range') {
+                        $whereUsageList = "DATE(f.resolved_at) BETWEEN ? AND ?";
+                        $paramsUsageList = [$fromDate, $toDate];
+                    }
+
                     $stmt = $db->prepare("SELECT f.*, d.name as director_name FROM fund_usages f 
                         JOIN users d ON f.director_id = d.id 
-                        WHERE f.status = 'approved' AND YEAR(f.resolved_at) = ? 
+                        WHERE f.status = 'approved' AND $whereUsageList 
                         ORDER BY f.resolved_at DESC LIMIT 5");
-                    $stmt->execute([$selectedYear]);
+                    $stmt->execute($paramsUsageList);
                     $exps = $stmt->fetchAll();
                     if (empty($exps)): ?>
                         <tr><td colspan="3" style="text-align: center; color: var(--text-muted); padding: 20px;">No expenses approved in this period.</td></tr>
@@ -318,5 +444,16 @@ include __DIR__ . '/../includes/header.php';
         </div>
     </div>
 </div>
+
+<script>
+function handleFilterTypeChange() {
+    const type = document.getElementById('filter_type').value;
+    document.getElementById('year-filter-group').style.display = type === 'year' ? 'block' : 'none';
+    document.getElementById('month-filter-group').style.display = type === 'month' ? 'block' : 'none';
+    document.getElementById('range-filter-group').style.display = type === 'range' ? 'flex' : 'none';
+}
+// Run on load to set initial state
+document.addEventListener('DOMContentLoaded', handleFilterTypeChange);
+</script>
 
 <?php include __DIR__ . '/../includes/footer.php'; ?>
