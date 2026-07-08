@@ -1,0 +1,122 @@
+/* Mobile-First Overrides for Surveyer Panel */
+
+:root {
+    --mobile-nav-height: 70px;
+}
+
+body.mobile-view {
+    padding-bottom: var(--mobile-nav-height);
+}
+
+.mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--mobile-nav-height);
+    background: var(--surface);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+    z-index: 1000;
+}
+
+.mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.mobile-nav-item.active {
+    color: var(--accent);
+}
+
+.mobile-nav-item i {
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+}
+
+.stats-card {
+    text-align: center;
+    padding: 24px;
+}
+
+.stats-card .value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 4px;
+}
+
+.stats-card .label {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Form Styles for Mobile */
+.mobile-form .form-group {
+    margin-bottom: 24px;
+}
+
+.mobile-form .form-control {
+    font-size: 16px; /* Prevents iOS zoom */
+}
+
+.upload-area {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 30px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.upload-area:hover {
+    border-color: var(--accent);
+    background: rgba(245, 158, 11, 0.02);
+}
+
+.upload-area i {
+    font-size: 32px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.customer-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.customer-item:last-child {
+    border-bottom: none;
+}
+
+.customer-info h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.customer-info p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
