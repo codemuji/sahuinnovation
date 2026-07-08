@@ -154,4 +154,60 @@ include __DIR__ . '/../includes/header.php';
     </div>
 </div>
 
+<!-- Wallet Transactions Log -->
+<div class="desktop-card" style="padding: 0; margin-top: 40px;">
+    <div style="padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="font-size: 16px; font-weight: 700; margin: 0;">Recent Wallet Transactions (Last 7)</h3>
+    </div>
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Reference</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $stmt = $db->prepare("SELECT * FROM wallet_transactions WHERE user_id = ? ORDER BY created_at DESC LIMIT 7");
+                $stmt->execute([$userId]);
+                $txs = $stmt->fetchAll();
+                if (empty($txs)): ?>
+                    <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 30px;">No wallet transactions logged yet.</td></tr>
+                <?php else:
+                    foreach ($txs as $t): ?>
+                        <tr>
+                            <td><?= date('d M Y H:i', strtotime($t['created_at'])) ?></td>
+                            <td>
+                                <span style="font-weight: 600; text-transform: uppercase; font-size: 11px; color: <?= $t['type'] === 'credit' ? 'var(--success)' : 'var(--danger)' ?>;">
+                                    <?= h($t['type']) ?>
+                                </span>
+                            </td>
+                            <td><span style="font-size: 12px; font-weight: 600; text-transform: capitalize; color: var(--text-muted);"><?= str_replace('_', ' ', $t['ref_type']) ?> #<?= $t['ref_id'] ?></span></td>
+                            <td style="font-weight: 700; color: <?= $t['type'] === 'credit' ? 'var(--success)' : 'var(--text-main)' ?>;">
+                                <?= ($t['type'] === 'credit' ? '+' : '-') . formatCurrency($t['amount']) ?>
+                            </td>
+                            <td>
+                                <?php
+                                $tbg = '#fef3c7'; $tfg = '#92400e';
+                                if ($t['status'] === 'approved') { $tbg = '#d1fae5'; $tfg = '#065f46'; }
+                                elseif ($t['status'] === 'rejected') { $tbg = '#fee2e2'; $tfg = '#991b1b'; }
+                                ?>
+                                <span class="badge" style="background: <?= $tbg ?>; color: <?= $tfg ?>; font-size: 10px;">
+                                    <?= strtoupper($t['status']) ?>
+                                </span>
+                            </td>
+                            <td style="font-size: 13px; color: var(--text-muted);"><?= h($t['description']) ?></td>
+                        </tr>
+                    <?php endforeach;
+                endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <?php include __DIR__ . '/../includes/footer.php'; ?>
