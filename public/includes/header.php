@@ -2,6 +2,12 @@
 require_once __DIR__ . '/../../app/core/Auth.php';
 $user = Auth::user();
 $flash = getFlash();
+
+$pendingExpenseCount = 0;
+if (Auth::check() && Auth::userRole() === 'admin') {
+    $db = Database::getInstance()->getConnection();
+    $pendingExpenseCount = $db->query("SELECT COUNT(*) FROM fund_usages WHERE status = 'pending'")->fetchColumn();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -117,6 +123,9 @@ $flash = getFlash();
                     <li style="margin-bottom: 8px;">
                         <a href="<?= site_url('public/admin/expense-reviews.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'expense-reviews.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
                             <i class="fa fa-clipboard-check" style="width: 24px;"></i> Expense Reviews
+                            <?php if ($pendingExpenseCount > 0): ?>
+                                <span style="background-color: var(--danger); color: white; border-radius: 50%; font-size: 11px; padding: 2px 6px; margin-left: auto; font-weight: 700;"><?= $pendingExpenseCount ?></span>
+                            <?php endif; ?>
                         </a>
                     </li>
                     <li style="margin-bottom: 8px;">
