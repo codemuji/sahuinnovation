@@ -21,26 +21,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirect(site_url("public/{$role}/wallet.php"));
     }
 
-    // Check balance
-    $stmt = $db->prepare("SELECT balance FROM wallets WHERE user_id = ?");
-    $stmt->execute([$userId]);
-    $wallet = $stmt->fetch();
-    $balance = $wallet['balance'] ?? 0;
-
-    if ($amount > $balance) {
-        setFlash('danger', 'Insufficient balance.');
-        redirect(site_url("public/{$role}/wallet.php"));
-    }
-
     try {
         $db->beginTransaction();
+
+        // Check balance inside transaction with write-lock to prevent race conditions
+        $stmt = $db->prepare("SELECT balance FROM wallets WHERE user_id = ? FOR UPDATE");
+        $stmt->execute([$userId]);
+        $wallet = $stmt->fetch();
+        $balance = $wallet['balance'] ?? 0;
+
+        if ($amount > $balance) {
+            throw new Exception("Insufficient balance.");
+        }
 
         // 1. Insert Withdrawal Request
         $stmt = $db->prepare("INSERT INTO withdrawal_requests (user_id, amount, upi_or_account, status) VALUES (?, ?, ?, 'pending')");
         $stmt->execute([$userId, $amount, $paymentInfo]);
         $requestId = $db->lastInsertId();
 
-        // 2. Deduct from Wallet Balance (LOCKING)
+        // 2. Deduct from Wallet Balance
         $stmt = $db->prepare("UPDATE wallets SET balance = balance - ? WHERE user_id = ?");
         $stmt->execute([$amount, $userId]);
 

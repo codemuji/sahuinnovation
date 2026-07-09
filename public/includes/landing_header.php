@@ -6,13 +6,7 @@ $isLoggedIn = Auth::check();
 $dashboardUrl = '';
 if ($isLoggedIn) {
     $role = Auth::userRole();
-    switch ($role) {
-        case 'surveyer': $dashboardUrl = site_url('public/surveyer/dashboard.php'); break;
-        case 'dm':
-        case 'pe': $dashboardUrl = site_url('public/dm/dashboard.php'); break;
-        case 'staff': $dashboardUrl = site_url('public/staff/dashboard.php'); break;
-        case 'admin': $dashboardUrl = site_url('public/admin/dashboard.php'); break;
-    }
+    $dashboardUrl = site_url('public/' . ($role === 'pe' ? 'dm' : $role) . '/dashboard.php');
 }
 ?>
 <!DOCTYPE html>

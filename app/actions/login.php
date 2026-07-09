@@ -29,26 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_name'] = $user['name'];
 
         // Redirect based on role
-        switch ($user['role']) {
-            case 'surveyer':
-                redirect(site_url('public/surveyer/dashboard.php'));
-                break;
-            case 'dm':
-            case 'pe':
-                redirect(site_url('public/dm/dashboard.php'));
-                break;
-            case 'director':
-                redirect(site_url('public/director/dashboard.php'));
-                break;
-            case 'staff':
-                redirect(site_url('public/staff/dashboard.php'));
-                break;
-            case 'admin':
-                redirect(site_url('public/admin/dashboard.php'));
-                break;
-            default:
-                setFlash('danger', 'Unknown user role.');
-                redirect(site_url('public/login.php'));
+        $role = $user['role'];
+        $validRoles = ['surveyer', 'dm', 'pe', 'director', 'staff', 'admin'];
+        if (in_array($role, $validRoles)) {
+            redirect(site_url('public/' . ($role === 'pe' ? 'dm' : $role) . '/dashboard.php'));
+        } else {
+            setFlash('danger', 'Unknown user role.');
+            redirect(site_url('public/login.php'));
         }
     } else {
         setFlash('danger', 'Invalid email or password.');

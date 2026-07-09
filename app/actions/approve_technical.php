@@ -40,9 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $db->prepare("UPDATE wallet_transactions SET status = 'approved' WHERE ref_type = 'technical' AND ref_id = ? AND user_id = ?");
         $stmt->execute([$id, $dmId]);
 
-        // 4. Update wallet balance
-        $stmt = $db->prepare("UPDATE wallets SET balance = balance + ? WHERE user_id = ?");
-        $stmt->execute([$incentiveAmount, $dmId]);
+        // 4. Update wallet balance (create wallet row if it does not exist)
+        $stmt = $db->prepare("INSERT INTO wallets (user_id, balance) VALUES (?, ?) ON DUPLICATE KEY UPDATE balance = balance + ?");
+        $stmt->execute([$dmId, $incentiveAmount, $incentiveAmount]);
 
         $db->commit();
         setFlash('success', 'Technical record approved. Incentive of ' . formatCurrency($incentiveAmount) . ' credited.');

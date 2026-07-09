@@ -4,13 +4,7 @@ require_once __DIR__ . '/../app/core/Auth.php';
 // If already logged in, redirect to dashboard
 if (Auth::check()) {
     $role = Auth::userRole();
-    switch ($role) {
-        case 'surveyer': redirect(site_url('public/surveyer/dashboard.php')); break;
-        case 'dm':
-        case 'pe': redirect(site_url('public/dm/dashboard.php')); break;
-        case 'staff': redirect(site_url('public/staff/dashboard.php')); break;
-        case 'admin': redirect(site_url('public/admin/dashboard.php')); break;
-    }
+    redirect(site_url('public/' . ($role === 'pe' ? 'dm' : $role) . '/dashboard.php'));
 }
 
 $flash = getFlash();

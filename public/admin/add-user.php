@@ -42,6 +42,7 @@ include __DIR__ . '/../includes/header.php';
                     <option value="pe">PE (Technical)</option>
                     <option value="staff">Staff (Reviewer)</option>
                     <option value="admin">Administrator</option>
+                    <option value="director">Director</option>
                 </select>
             </div>
 
@@ -63,6 +64,7 @@ include __DIR__ . '/../includes/header.php';
             <li><strong>DM/PE:</strong> Add technical customers, upload ownership docs, track ₹20k/₹15k incentives.</li>
             <li><strong>Staff:</strong> Review all submissions, approve or reject records.</li>
             <li><strong>Admin:</strong> System management, user control, and payout processing.</li>
+            <li><strong>Director:</strong> Log budget usages, upload payment proofs, view CA reports.</li>
         </ul>
     </div>
 </div>

@@ -39,6 +39,7 @@ include __DIR__ . '/../includes/header.php';
     <a href="users.php?role=pe" class="badge" style="background: <?= $roleFilter == 'pe' ? 'var(--info)' : '#e2e8f0' ?>; color: <?= $roleFilter == 'pe' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">PE</a>
     <a href="users.php?role=staff" class="badge" style="background: <?= $roleFilter == 'staff' ? 'var(--success)' : '#e2e8f0' ?>; color: <?= $roleFilter == 'staff' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Staff</a>
     <a href="users.php?role=admin" class="badge" style="background: <?= $roleFilter == 'admin' ? '#475569' : '#e2e8f0' ?>; color: <?= $roleFilter == 'admin' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Admins</a>
+    <a href="users.php?role=director" class="badge" style="background: <?= $roleFilter == 'director' ? 'var(--accent)' : '#e2e8f0' ?>; color: <?= $roleFilter == 'director' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Directors</a>
 </div>
 
 <div class="desktop-card" style="padding: 0;">

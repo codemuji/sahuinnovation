@@ -5,6 +5,7 @@
 
 require_once __DIR__ . '/../core/Auth.php';
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../models/Wallet.php';
 
 Auth::requireRole('admin');
 
@@ -49,8 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$employeeId, $userId]);
 
         // 3. Create Wallet
-        $stmt = $db->prepare("INSERT INTO wallets (user_id, balance) VALUES (?, 0.00)");
-        $stmt->execute([$userId]);
+        Wallet::ensureWallet($userId);
 
         $db->commit();
         setFlash('success', "User account for {$name} created successfully. Employee ID: {$employeeId}");

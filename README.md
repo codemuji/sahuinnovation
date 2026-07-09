@@ -5,14 +5,27 @@ A premium, role-based platform designed to coordinate clean energy surveying, te
 ---
 
 ## 📖 Table of Contents
-1. [Overview](#-overview)
-2. [The Problem It Solves](#-the-problem-it-solves)
-3. [Impact on the Work Field](#-impact-on-the-work-field)
-4. [Key Features](#-key-features)
-5. [Technical Architecture](#-technical-architecture)
-6. [Directory Structure](#-directory-structure)
-7. [Installation & Setup](#-installation--setup)
-8. [License](#-license)
+1. [Portfolio & Resume Highlights](#-portfolio--resume-highlights)
+2. [Overview](#-overview)
+3. [The Problem It Solves](#-the-problem-it-solves)
+4. [Impact on the Work Field](#-impact-on-the-work-field)
+5. [Key Features](#-key-features)
+6. [Technical Architecture](#-technical-architecture)
+7. [Directory Structure](#-directory-structure)
+8. [Installation & Setup](#-installation--setup)
+9. [License](#-license)
+
+---
+
+## 💼 Portfolio & Resume Highlights
+
+* **Project Type:** Commercial-grade Role-Based Demand/Incentive Management System (DMS) & Financial Ledger Portal.
+* **Complexity Level:** Intermediate to Advanced (solving enterprise problems around concurrency, data integrity, and role management).
+* **Core Engineering Accomplishments:**
+  * **Transactional Concurrency Safety:** Prevented database race conditions (double-spend vulnerabilities) in the financial ledger logic using exclusive row-level locking (`SELECT ... FOR UPDATE`) inside atomic database transactions.
+  * **Role-Based Workspaces:** Built a secure multi-role environment (Admin, Director, Staff, District Manager, and Field Surveyor) using compact dynamic routing.
+  * **Dynamic QR Identity Verification:** Designed a secure, public employee validation mechanism with client-side image-generation techniques (`html2canvas`, `jsPDF`, and `qrcode.js`) and secure routing proxies.
+  * **Data Integrity Upserts:** Implemented atomic upserts (`INSERT ... ON DUPLICATE KEY UPDATE`) to guarantee transaction consistency and prevent database balance synchronization gaps.
 
 ---
 

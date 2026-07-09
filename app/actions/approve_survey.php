@@ -39,8 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $db->prepare("UPDATE wallet_transactions SET status = 'approved' WHERE ref_type = 'survey' AND ref_id = ? AND user_id = ?");
         $stmt->execute([$id, $surveyerId]);
 
-        // 4. Update wallet balance
-        $stmt = $db->prepare("UPDATE wallets SET balance = balance + 30.00 WHERE user_id = ?");
+        // 4. Update wallet balance (create wallet row if it does not exist)
+        $stmt = $db->prepare("INSERT INTO wallets (user_id, balance) VALUES (?, 30.00) ON DUPLICATE KEY UPDATE balance = balance + 30.00");
         $stmt->execute([$surveyerId]);
 
         $db->commit();
