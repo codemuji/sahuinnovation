@@ -113,4 +113,63 @@ include __DIR__ . '/../includes/header.php';
     </div>
 </div>
 
+<?php
+// Fetch last 10 expenses from all directors
+$stmtAll = $db->query("SELECT f.*, u.name as director_name FROM fund_usages f 
+    JOIN users u ON f.director_id = u.id 
+    ORDER BY f.created_at DESC LIMIT 10");
+$allUsages = $stmtAll->fetchAll();
+?>
+
+<!-- Recent Expenses of All Directors Section -->
+<div class="desktop-card" style="padding: 0; margin-top: 40px; margin-bottom: 40px;">
+    <div style="padding: 20px; border-bottom: 1px solid var(--border);">
+        <h3 style="font-size: 16px; font-weight: 700; margin: 0;">Recent Expenses of All Directors (Last 10)</h3>
+    </div>
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Director</th>
+                    <th>Purpose</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($allUsages)): ?>
+                    <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 40px;">No expenses logged by any directors yet.</td></tr>
+                <?php else:
+                    foreach ($allUsages as $au): ?>
+                        <tr>
+                            <td><?= date('d M Y H:i', strtotime($au['created_at'])) ?></td>
+                            <td>
+                                <strong style="color: var(--primary);"><?= h($au['director_name']) ?></strong>
+                                <?php if ($au['director_id'] == $userId): ?>
+                                    <span style="font-size: 10px; background: #e0f2fe; color: #0369a1; padding: 2px 6px; border-radius: 4px; font-weight: 700; margin-left: 4px;">YOU</span>
+                                <?php endif; ?>
+                            </td>
+                            <td><?= h($au['purpose']) ?></td>
+                            <td style="max-width: 250px; font-size: 13px;"><?= nl2br(h($au['description'])) ?: '<span style="color: var(--text-muted);">No description</span>' ?></td>
+                            <td style="font-weight: 700;"><?= formatCurrency($au['amount']) ?></td>
+                            <td>
+                                <?php
+                                $bg = '#fef3c7'; $fg = '#92400e';
+                                if ($au['status'] === 'approved') { $bg = '#d1fae5'; $fg = '#065f46'; }
+                                elseif ($au['status'] === 'revert_back') { $bg = '#fee2e2'; $fg = '#991b1b'; }
+                                ?>
+                                <span class="badge" style="background: <?= $bg ?>; color: <?= $fg ?>; font-size: 10px;">
+                                    <?= strtoupper($au['status'] === 'revert_back' ? 'REVERTED' : $au['status']) ?>
+                                </span>
+                            </td>
+                        </tr>
+                    <?php endforeach;
+                endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <?php include __DIR__ . '/../includes/footer.php'; ?>

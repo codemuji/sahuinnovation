@@ -51,7 +51,7 @@ if (Auth::check() && Auth::userRole() === 'admin') {
             <ul style="list-style: none;">
                 <li style="margin-bottom: 8px;">
                     <a href="<?= site_url('public/'.Auth::userRole().'/dashboard.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'dashboard.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
-                        <i class="fa fa-home" style="width: 24px;"></i> Dashboard
+                        <i class="fa fa-home" style="width: 24px;"></i> <?= Auth::userRole() === 'director' ? 'Home' : 'Dashboard' ?>
                     </a>
                 </li>
                 
@@ -94,7 +94,17 @@ if (Auth::check() && Auth::userRole() === 'admin') {
                     </li>
                     <li style="margin-bottom: 8px;">
                         <a href="<?= site_url('public/director/usages.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'usages.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
-                            <i class="fa fa-receipt" style="width: 24px;"></i> Expense Logs
+                            <i class="fa fa-receipt" style="width: 24px;"></i> Expense
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/director/total-expenses.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'total-expenses.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-calculator" style="width: 24px;"></i> Total Expense
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/director/profile.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'profile.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-user" style="width: 24px;"></i> Profile
                         </a>
                     </li>
                     <li style="margin-bottom: 8px;">
@@ -105,6 +115,7 @@ if (Auth::check() && Auth::userRole() === 'admin') {
                 <?php endif; ?>
 
                 <?php if (Auth::userRole() === 'admin'): ?>
+                    <li style="padding: 10px 12px 5px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px;">User Management</li>
                     <li style="margin-bottom: 8px;">
                         <a href="<?= site_url('public/admin/users.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'users.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
                             <i class="fa fa-user-gear" style="width: 24px;"></i> User Management
@@ -115,6 +126,8 @@ if (Auth::check() && Auth::userRole() === 'admin') {
                             <i class="fa fa-money-bill-transfer" style="width: 24px;"></i> Withdrawals
                         </a>
                     </li>
+
+                    <li style="padding: 15px 12px 5px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px;">Expense Management</li>
                     <li style="margin-bottom: 8px;">
                         <a href="<?= site_url('public/admin/allocate-funds.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'allocate-funds.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
                             <i class="fa fa-hand-holding-dollar" style="width: 24px;"></i> Allocate Funds
@@ -131,6 +144,11 @@ if (Auth::check() && Auth::userRole() === 'admin') {
                     <li style="margin-bottom: 8px;">
                         <a href="<?= site_url('public/admin/budget-report.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'budget-report.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
                             <i class="fa fa-briefcase" style="width: 24px;"></i> Annual Budget Report
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/admin/director-reports.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'director-reports.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-users-rectangle" style="width: 24px;"></i> Director-wise Reports
                         </a>
                     </li>
                 <?php endif; ?>
