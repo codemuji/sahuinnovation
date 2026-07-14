@@ -21,10 +21,19 @@ if (Auth::check() && Auth::userRole() === 'admin') {
     <link rel="stylesheet" href="<?= asset_url('css/main.css') ?>">
     <?php if (Auth::userRole() === 'surveyer'): ?>
         <link rel="stylesheet" href="<?= asset_url('css/mobile.css') ?>">
+    <?php elseif (in_array(Auth::userRole(), ['director', 'office_staff'])): ?>
+        <link rel="stylesheet" href="<?= asset_url('css/desktop.css') ?>">
+        <link rel="stylesheet" href="<?= asset_url('css/director-mobile.css') ?>">
     <?php else: ?>
         <link rel="stylesheet" href="<?= asset_url('css/desktop.css') ?>">
     <?php endif; ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <?php if (in_array(Auth::userRole(), ['director', 'office_staff'])): ?>
+    <script>
+        function openSidebar()  { document.body.classList.add('sidebar-open');    document.getElementById('sidebarOverlay').classList.add('open'); }
+        function closeSidebar() { document.body.classList.remove('sidebar-open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
+    </script>
+    <?php endif; ?>
     <style>
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3, h4, h5, h6, .font-display { font-family: 'Outfit', sans-serif; }
@@ -51,7 +60,7 @@ if (Auth::check() && Auth::userRole() === 'admin') {
             <ul style="list-style: none;">
                 <li style="margin-bottom: 8px;">
                     <a href="<?= site_url('public/'.Auth::userRole().'/dashboard.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'dashboard.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
-                        <i class="fa fa-home" style="width: 24px;"></i> <?= Auth::userRole() === 'director' ? 'Home' : 'Dashboard' ?>
+                        <i class="fa fa-home" style="width: 24px;"></i> <?= in_array(Auth::userRole(), ['director', 'office_staff']) ? 'Home' : 'Dashboard' ?>
                     </a>
                 </li>
                 
@@ -86,35 +95,50 @@ if (Auth::check() && Auth::userRole() === 'admin') {
                     </li>
                 <?php endif; ?>
 
-                <?php if (Auth::userRole() === 'director'): ?>
+                <?php if (in_array(Auth::userRole(), ['director', 'office_staff'])):
+                    $panelDir = Auth::userRole() === 'office_staff' ? 'office_staff' : 'director';
+                ?>
                     <li style="margin-bottom: 8px;">
-                        <a href="<?= site_url('public/director/add-usage.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'add-usage.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                        <a href="<?= site_url('public/' . $panelDir . '/add-usage.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'add-usage.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
                             <i class="fa fa-plus-circle" style="width: 24px;"></i> Add Expense
                         </a>
                     </li>
                     <li style="margin-bottom: 8px;">
-                        <a href="<?= site_url('public/director/usages.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'usages.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                        <a href="<?= site_url('public/' . $panelDir . '/usages.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'usages.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
                             <i class="fa fa-receipt" style="width: 24px;"></i> Expense
                         </a>
                     </li>
                     <li style="margin-bottom: 8px;">
-                        <a href="<?= site_url('public/director/total-expenses.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'total-expenses.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                        <a href="<?= site_url('public/' . $panelDir . '/total-expenses.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'total-expenses.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
                             <i class="fa fa-calculator" style="width: 24px;"></i> Total Expense
                         </a>
                     </li>
                     <li style="margin-bottom: 8px;">
-                        <a href="<?= site_url('public/director/profile.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'profile.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                        <a href="<?= site_url('public/' . $panelDir . '/salary-advance.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'salary-advance.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-money-check-dollar" style="width: 24px;"></i> Salary & Advance
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/' . $panelDir . '/profile.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'profile.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
                             <i class="fa fa-user" style="width: 24px;"></i> Profile
                         </a>
                     </li>
                     <li style="margin-bottom: 8px;">
-                        <a href="<?= site_url('public/director/report.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'report.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                        <a href="<?= site_url('public/' . $panelDir . '/report.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'report.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
                             <i class="fa fa-chart-line" style="width: 24px;"></i> CA Budget Report
                         </a>
                     </li>
                 <?php endif; ?>
 
-                <?php if (Auth::userRole() === 'admin'): ?>
+                <?php if (Auth::userRole() === 'admin'):
+                    // Determine which admin section we're in
+                    $expensePages = ['allocate-funds.php', 'disburse-salary.php', 'expense-reviews.php', 'budget-report.php', 'director-reports.php'];
+                    $currentPage  = basename($_SERVER['PHP_SELF']);
+                    $isExpenseSection = in_array($currentPage, $expensePages);
+                ?>
+
+                    <?php if (!$isExpenseSection): ?>
+                    <!-- USER MANAGEMENT NAV -->
                     <li style="padding: 10px 12px 5px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px;">User Management</li>
                     <li style="margin-bottom: 8px;">
                         <a href="<?= site_url('public/admin/users.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'users.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
@@ -126,11 +150,24 @@ if (Auth::check() && Auth::userRole() === 'admin') {
                             <i class="fa fa-money-bill-transfer" style="width: 24px;"></i> Withdrawals
                         </a>
                     </li>
+                    <!-- Switch to Expense panel -->
+                    <li style="margin-top: 24px;">
+                        <a href="<?= site_url('public/admin/allocate-funds.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.4); font-size: 13px; font-weight: 600; gap: 8px;">
+                            <i class="fa fa-arrow-right-long"></i> Expense Management
+                        </a>
+                    </li>
 
-                    <li style="padding: 15px 12px 5px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px;">Expense Management</li>
+                    <?php else: ?>
+                    <!-- EXPENSE MANAGEMENT NAV -->
+                    <li style="padding: 10px 12px 5px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px;">Expense Management</li>
                     <li style="margin-bottom: 8px;">
                         <a href="<?= site_url('public/admin/allocate-funds.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'allocate-funds.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
                             <i class="fa fa-hand-holding-dollar" style="width: 24px;"></i> Allocate Funds
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/admin/disburse-salary.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'disburse-salary.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-money-check-dollar" style="width: 24px;"></i> Salary / Advance
                         </a>
                     </li>
                     <li style="margin-bottom: 8px;">
@@ -151,6 +188,14 @@ if (Auth::check() && Auth::userRole() === 'admin') {
                             <i class="fa fa-users-rectangle" style="width: 24px;"></i> Director-wise Reports
                         </a>
                     </li>
+                    <!-- Switch to User panel -->
+                    <li style="margin-top: 24px;">
+                        <a href="<?= site_url('public/admin/dashboard.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.4); font-size: 13px; font-weight: 600; gap: 8px;">
+                            <i class="fa fa-arrow-left-long"></i> User Management
+                        </a>
+                    </li>
+                    <?php endif; ?>
+
                 <?php endif; ?>
             </ul>
         </nav>
@@ -170,7 +215,28 @@ if (Auth::check() && Auth::userRole() === 'admin') {
             </a>
         </div>
     </aside>
-    
+
+    <?php if (in_array(Auth::userRole(), ['director', 'office_staff'])):
+        $panelDir = Auth::userRole() === 'office_staff' ? 'office_staff' : 'director';
+    ?>
+    <!-- Mobile: sidebar overlay backdrop -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- Mobile: top bar -->
+    <div class="director-mobile-topbar">
+        <span class="topbar-logo">Sahu <span>Innovation</span></span>
+        <div class="topbar-actions">
+            <a href="<?= site_url('public/' . $panelDir . '/profile.php') ?>" class="topbar-avatar"
+               style="background-image: url('<?= $user['profile_pic'] ? site_url('public/file.php?type=profile&file='.$user['profile_pic']) : asset_url('img/default-avatar.png') ?>')">
+               <?php if (!$user['profile_pic']) echo substr($user['name'], 0, 1); ?>
+            </a>
+            <button class="hamburger-btn" onclick="openSidebar()" aria-label="Open menu">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+    </div>
+    <?php endif; ?>
+
     <main class="main-content">
 <?php endif; ?>
 

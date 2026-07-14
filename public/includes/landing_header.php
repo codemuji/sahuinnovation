@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../app/core/helpers.php';
 
 $isLoggedIn = Auth::check();
 $dashboardUrl = '';
-if ($isLoggedIn) {
+if ($isLoggedIn && !empty(Auth::userRole())) {
     $role = Auth::userRole();
     $dashboardUrl = site_url('public/' . ($role === 'pe' ? 'dm' : $role) . '/dashboard.php');
 }

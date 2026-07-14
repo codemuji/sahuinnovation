@@ -1,0 +1,352 @@
+/* ============================================================
+   Director Panel — Mobile Responsiveness
+   All rules scoped to max-width: 767px so desktop is untouched.
+   ============================================================ */
+
+/* ── Mobile Top Bar ─────────────────────────────────────── */
+.director-mobile-topbar {
+    display: none;
+}
+
+/* Hidden on desktop; shown only inside the mobile media query below */
+.director-mobile-nav {
+    display: none;
+}
+
+@media (max-width: 767px) {
+
+    /* ── Layout ─────────────────────────────────────────── */
+    body {
+        padding-bottom: 70px; /* room for bottom nav */
+    }
+
+    .dashboard-container {
+        flex-direction: column;
+    }
+
+    /* Hide the sidebar completely — replaced by bottom nav */
+    .sidebar {
+        display: none !important;
+    }
+
+    .main-content {
+        padding: 16px;
+        width: 100%;
+    }
+
+    /* ── Mobile Top Bar ─────────────────────────────────── */
+    .director-mobile-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #0B1F3A;
+        color: white;
+        padding: 0 16px;
+        height: 56px;
+        position: sticky;
+        top: 0;
+        z-index: 200;
+        flex-shrink: 0;
+    }
+
+    .director-mobile-topbar .topbar-logo {
+        font-family: 'Outfit', sans-serif;
+        font-size: 17px;
+        font-weight: 800;
+        color: white;
+        letter-spacing: -0.3px;
+    }
+
+    .director-mobile-topbar .topbar-logo span {
+        color: #B09362;
+    }
+
+    .director-mobile-topbar .topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .director-mobile-topbar .topbar-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid rgba(255,255,255,0.2);
+        background-size: cover;
+        background-position: center;
+        background-color: #B09362;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 13px;
+        color: white;
+        text-decoration: none;
+    }
+
+    .director-mobile-topbar .hamburger-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 4px;
+        line-height: 1;
+    }
+
+    /* ── Sidebar Drawer (mobile) ─────────────────────────── */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 300;
+    }
+
+    .sidebar-overlay.open {
+        display: block;
+    }
+
+    body.sidebar-open .sidebar {
+        display: flex !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 260px;
+        z-index: 400;
+        overflow-y: auto;
+    }
+
+    /* ── Bottom Navigation ───────────────────────────────── */
+    .director-mobile-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 70px;
+        background: white;
+        border-top: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 200;
+        box-shadow: 0 -4px 12px rgba(0,0,0,0.07);
+    }
+
+    .director-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: #64748b;
+        font-size: 10px;
+        font-weight: 500;
+        gap: 3px;
+        padding: 6px 8px;
+        border-radius: 8px;
+        min-width: 52px;
+        transition: color 0.15s;
+    }
+
+    .director-nav-item.active {
+        color: #B09362;
+    }
+
+    .director-nav-item i {
+        font-size: 20px;
+    }
+
+    /* ── Panel Header ────────────────────────────────────── */
+    .panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .panel-title h1 {
+        font-size: 20px;
+    }
+
+    .panel-header .btn {
+        width: 100% !important;
+    }
+
+    /* ── Cards / Grids ───────────────────────────────────── */
+    .desktop-card {
+        padding: 16px;
+        border-radius: 10px;
+    }
+
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* ── Filter Tabs ─────────────────────────────────────── */
+    .desktop-card .filter-tabs {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    /* Override inline-styled filter links to wrap cleanly */
+    .desktop-card a.btn[href*="status"] {
+        height: 34px !important;
+        line-height: 34px !important;
+        font-size: 12px !important;
+    }
+
+    /* ── Stacked Table Rows ──────────────────────────────── */
+    /* 
+       Tables become card-stack layout on mobile.
+       Each <td> must have a data-label="Column Name" attribute
+       which is rendered via ::before as the row key.
+    */
+    .data-table thead {
+        display: none; /* hide column headers — labels shown via ::before */
+    }
+
+    .data-table,
+    .data-table tbody,
+    .data-table tr,
+    .data-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .data-table tr {
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        margin: 0 0 12px 0;
+        padding: 4px 0;
+        background: white;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+
+    .data-table td {
+        padding: 10px 14px;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 13px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        min-height: 40px;
+    }
+
+    .data-table td:last-child {
+        border-bottom: none;
+    }
+
+    /* Column label rendered before value */
+    .data-table td[data-label]::before {
+        content: attr(data-label);
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #64748b;
+        letter-spacing: 0.4px;
+        flex-shrink: 0;
+        margin-right: 8px;
+    }
+
+    /* Colspan empty-state rows — center them normally */
+    .data-table td[colspan] {
+        justify-content: center;
+        display: flex;
+    }
+
+    .data-table td[colspan]::before {
+        display: none;
+    }
+
+    /* Admin-note rows (revert_back) */
+    .data-table tr.note-row {
+        border-radius: 0 0 8px 8px;
+        margin-top: -16px;
+        border-top: none;
+    }
+
+    /* ── Report Page — Collapsible Filter ────────────────── */
+    .report-filter-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        padding: 14px 16px;
+        background: white;
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+        font-weight: 600;
+        font-size: 14px;
+        color: #1e293b;
+        margin-bottom: 12px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+
+    .report-filter-toggle i.chevron {
+        transition: transform 0.2s;
+    }
+
+    .report-filter-toggle.open i.chevron {
+        transform: rotate(180deg);
+    }
+
+    .report-filter-body {
+        display: none;
+    }
+
+    .report-filter-body.open {
+        display: block;
+    }
+
+    /* Report filter form — stack items */
+    .report-filter-body form {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    .report-filter-body .form-group {
+        min-width: unset !important;
+        width: 100% !important;
+    }
+
+    .report-filter-body #range-filter-group {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    .report-filter-body #range-filter-group .form-group {
+        min-width: unset !important;
+    }
+
+    .report-filter-body .form-control {
+        height: 44px !important;
+        font-size: 15px !important; /* prevent iOS zoom */
+    }
+
+    .report-filter-body > form > div:last-child {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+
+    .report-filter-body .btn {
+        width: 100% !important;
+        height: 44px !important;
+        font-size: 14px !important;
+        justify-content: center;
+    }
+
+    /* grid-2 in report goes to single col */
+    .grid-2 {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* ── Typography Tweaks ───────────────────────────────── */
+    .panel-title p {
+        font-size: 13px;
+    }
+
+}

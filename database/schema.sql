@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role ENUM('surveyer', 'dm', 'pe', 'staff', 'admin') NOT NULL,
+    role ENUM('surveyer', 'dm', 'pe', 'staff', 'admin', 'director', 'office_staff') NOT NULL,
     phone VARCHAR(20),
     profile_pic VARCHAR(255),
     bank_name VARCHAR(150),
@@ -122,6 +122,19 @@ CREATE TABLE IF NOT EXISTS withdrawal_requests (
     admin_note TEXT,
     requested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     resolved_at TIMESTAMP NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Salary & Advance Disbursements table
+CREATE TABLE IF NOT EXISTS salary_disbursements (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    admin_id INT NOT NULL,
+    user_id INT NOT NULL,
+    type ENUM('salary', 'advance') NOT NULL DEFAULT 'salary',
+    amount DECIMAL(10, 2) NOT NULL,
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (admin_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

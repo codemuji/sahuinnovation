@@ -56,6 +56,7 @@ include __DIR__ . '/../includes/header.php';
                     <option value="staff" <?= $userToEdit['role'] == 'staff' ? 'selected' : '' ?>>Staff</option>
                     <option value="admin" <?= $userToEdit['role'] == 'admin' ? 'selected' : '' ?>>Administrator</option>
                     <option value="director" <?= $userToEdit['role'] == 'director' ? 'selected' : '' ?>>Director</option>
+                    <option value="office_staff" <?= $userToEdit['role'] == 'office_staff' ? 'selected' : '' ?>>Office Staff</option>
                 </select>
             </div>
 

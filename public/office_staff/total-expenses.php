@@ -1,28 +1,28 @@
 <?php
 require_once __DIR__ . '/../../app/core/Auth.php';
-Auth::requireRole('director');
+Auth::requireRole('office_staff');
 
 $db = Database::getInstance()->getConnection();
 
-// Query to get each director's total approved expenses
+// Query to get each office staff member's total approved expenses
 $stmt = $db->query("SELECT u.id, u.name, u.employee_id, 
        COALESCE(SUM(CASE WHEN f.status = 'approved' THEN f.amount ELSE 0 END), 0) as total_approved_expense
 FROM users u
 LEFT JOIN fund_usages f ON u.id = f.director_id
-WHERE u.role = 'director' AND u.is_active = 1
+WHERE u.role = 'office_staff' AND u.is_active = 1
 GROUP BY u.id
 ORDER BY total_approved_expense DESC");
 $directorsExpenses = $stmt->fetchAll();
 
-// Calculate the grand total across all directors
+// Calculate the grand total across all office staff
 $grandTotal = array_sum(array_column($directorsExpenses, 'total_approved_expense'));
 
 // Query to get total allocations
-$totalAllocationsStmt = $db->query("SELECT SUM(a.amount) FROM fund_allocations a JOIN users u ON a.director_id = u.id WHERE u.role = 'director' AND u.is_active = 1");
+$totalAllocationsStmt = $db->query("SELECT SUM(a.amount) FROM fund_allocations a JOIN users u ON a.director_id = u.id WHERE u.role = 'office_staff' AND u.is_active = 1");
 $totalAllocations = $totalAllocationsStmt->fetchColumn() ?? 0.00;
 
 // Query to get total wallet balance
-$totalBalanceStmt = $db->query("SELECT SUM(w.balance) FROM wallets w JOIN users u ON w.user_id = u.id WHERE u.role = 'director' AND u.is_active = 1");
+$totalBalanceStmt = $db->query("SELECT SUM(w.balance) FROM wallets w JOIN users u ON w.user_id = u.id WHERE u.role = 'office_staff' AND u.is_active = 1");
 $totalBalance = $totalBalanceStmt->fetchColumn() ?? 0.00;
 
 // Pagination for transactions list

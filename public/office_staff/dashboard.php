@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../app/core/Auth.php';
-Auth::requireRole('director');
+Auth::requireRole('office_staff');
 
 $db = Database::getInstance()->getConnection();
 $userId = Auth::userId();
@@ -36,13 +36,13 @@ $stmt = $db->prepare("SELECT SUM(amount) FROM salary_disbursements WHERE user_id
 $stmt->execute([$userId]);
 $totalSalaryAdvance = $stmt->fetchColumn() ?: 0.00;
 
-$pageTitle = "Director Dashboard";
+$pageTitle = "Office Staff Dashboard";
 include __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="panel-header">
     <div class="panel-title">
-        <h1>Director Dashboard</h1>
+        <h1>Office Staff Dashboard</h1>
         <p>Overview of allocated funds, salary/advance, and logged expenses.</p>
     </div>
 </div>

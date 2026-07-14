@@ -21,7 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password'])) {
-        // Regenerate session ID for security
+        // Ensure ENUM supports office_staff
+        @$db->exec("ALTER TABLE users MODIFY COLUMN role ENUM('surveyer', 'dm', 'pe', 'staff', 'admin', 'director', 'office_staff') NOT NULL");
+
         session_regenerate_id(true);
         
         $_SESSION['user_id'] = $user['id'];
@@ -30,11 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Redirect based on role
         $role = $user['role'];
-        $validRoles = ['surveyer', 'dm', 'pe', 'director', 'staff', 'admin'];
+        $validRoles = ['surveyer', 'dm', 'pe', 'director', 'office_staff', 'staff', 'admin'];
         if (in_array($role, $validRoles)) {
             redirect(site_url('public/' . ($role === 'pe' ? 'dm' : $role) . '/dashboard.php'));
         } else {
-            setFlash('danger', 'Unknown user role.');
+            session_destroy();
+            setFlash('danger', 'Your account role is invalid or unassigned. Please contact Admin.');
             redirect(site_url('public/login.php'));
         }
     } else {

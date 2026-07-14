@@ -4,8 +4,8 @@ Auth::requireRole('admin');
 
 $db = Database::getInstance()->getConnection();
 
-// Fetch all active directors
-$stmt = $db->query("SELECT id, name, employee_id FROM users WHERE role = 'director' AND is_active = 1 ORDER BY name ASC");
+// Fetch all active directors and office staff
+$stmt = $db->query("SELECT id, name, employee_id, role FROM users WHERE role IN ('director', 'office_staff') AND is_active = 1 ORDER BY name ASC");
 $directors = $stmt->fetchAll();
 
 $pageTitle = "Allocate Funds";
@@ -14,8 +14,8 @@ include __DIR__ . '/../includes/header.php';
 
 <div class="panel-header">
     <div class="panel-title">
-        <h1>Allocate Funds to Directors</h1>
-        <p>Transfer budget allocation directly to a Director's virtual wallet.</p>
+        <h1>Allocate Funds</h1>
+        <p>Transfer budget allocation directly to a Director or Office Staff virtual wallet.</p>
     </div>
 </div>
 
@@ -25,11 +25,11 @@ include __DIR__ . '/../includes/header.php';
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">New Allocation</h3>
         <form action="<?= site_url('app/actions/allocate_fund.php') ?>" method="POST">
             <div class="form-group">
-                <label class="form-label" for="director_id">Select Director <span style="color: var(--danger);">*</span></label>
+                <label class="form-label" for="director_id">Select Director / Office Staff <span style="color: var(--danger);">*</span></label>
                 <select class="form-control" id="director_id" name="director_id" required>
-                    <option value="">-- Select Director --</option>
+                    <option value="">-- Select Recipient --</option>
                     <?php foreach ($directors as $d): ?>
-                        <option value="<?= $d['id'] ?>"><?= h($d['name']) ?> (<?= h($d['employee_id']) ?>)</option>
+                        <option value="<?= $d['id'] ?>"><?= h($d['name']) ?> (<?= h($d['employee_id']) ?> - <?= strtoupper(h($d['role'])) ?>)</option>
                     <?php endforeach; ?>
                 </select>
             </div>

@@ -24,13 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $db->beginTransaction();
 
-        // 1. Verify target user is a director
+        // 1. Verify target user is a director or office staff
         $stmt = $db->prepare("SELECT role FROM users WHERE id = ?");
         $stmt->execute([$directorId]);
         $role = $stmt->fetchColumn();
 
-        if ($role !== 'director') {
-            throw new Exception("Selected user is not a Director.");
+        if (!in_array($role, ['director', 'office_staff'])) {
+            throw new Exception("Selected user is not a Director or Office Staff.");
         }
 
         // 2. Insert Fund Allocation Record

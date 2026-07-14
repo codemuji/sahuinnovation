@@ -4,7 +4,12 @@ require_once __DIR__ . '/../app/core/Auth.php';
 // If already logged in, redirect to dashboard
 if (Auth::check()) {
     $role = Auth::userRole();
-    redirect(site_url('public/' . ($role === 'pe' ? 'dm' : $role) . '/dashboard.php'));
+    $validRoles = ['surveyer', 'dm', 'pe', 'director', 'office_staff', 'staff', 'admin'];
+    if (in_array($role, $validRoles)) {
+        redirect(site_url('public/' . ($role === 'pe' ? 'dm' : $role) . '/dashboard.php'));
+    } else {
+        unset($_SESSION['user_id'], $_SESSION['role'], $_SESSION['user_name']);
+    }
 }
 
 $flash = getFlash();

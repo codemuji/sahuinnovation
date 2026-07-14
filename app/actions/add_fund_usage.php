@@ -6,7 +6,8 @@
 require_once __DIR__ . '/../core/Auth.php';
 require_once __DIR__ . '/../config/database.php';
 
-Auth::requireRole('director');
+Auth::requireRole(['director', 'office_staff']);
+$basePath = Auth::userRole() === 'office_staff' ? 'public/office_staff/' : 'public/director/';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db = Database::getInstance()->getConnection();
@@ -18,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($amount <= 0 || empty($purpose)) {
         setFlash('danger', 'Please enter a valid amount and purpose.');
-        redirect(site_url('public/director/add-usage.php'));
+        redirect(site_url($basePath . 'add-usage.php'));
     }
 
     // Verify sufficient wallet balance before allowing entry
@@ -29,13 +30,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($amount > $balance) {
         setFlash('danger', 'Insufficient wallet balance. You cannot log an expense exceeding your current balance.');
-        redirect(site_url('public/director/add-usage.php'));
+        redirect(site_url($basePath . 'add-usage.php'));
     }
 
     // Verify file upload
     if (!isset($_FILES['payment_proof']) || $_FILES['payment_proof']['error'] !== UPLOAD_ERR_OK) {
         setFlash('danger', 'Payment proof (receipt/invoice) is required.');
-        redirect(site_url('public/director/add-usage.php'));
+        redirect(site_url($basePath . 'add-usage.php'));
     }
 
     try {
@@ -58,13 +59,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $db->commit();
         setFlash('success', 'Expense logged successfully. Sent for MD review.');
-        redirect(site_url('public/director/usages.php'));
+        redirect(site_url($basePath . 'usages.php'));
 
     } catch (Exception $e) {
         if ($db->inTransaction()) $db->rollBack();
         setFlash('danger', 'Error: ' . $e->getMessage());
-        redirect(site_url('public/director/add-usage.php'));
+        redirect(site_url($basePath . 'add-usage.php'));
     }
 } else {
-    redirect(site_url('public/director/dashboard.php'));
+    redirect(site_url($basePath . 'dashboard.php'));
 }

@@ -43,6 +43,7 @@ include __DIR__ . '/../includes/header.php';
                     <option value="staff">Staff (Reviewer)</option>
                     <option value="admin">Administrator</option>
                     <option value="director">Director</option>
+                    <option value="office_staff">Office Staff</option>
                 </select>
             </div>
 
