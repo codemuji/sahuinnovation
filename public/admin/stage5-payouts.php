@@ -78,8 +78,8 @@ include __DIR__ . '/../includes/header.php';
                     <?php foreach ($customers as $c): ?>
                         <tr>
                             <td>
-                                <div style="font-weight: 700; color: var(--text-main); font-size: 14px;"><?= h($c['customer_name']) ?></div>
-                                <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;"><i class="fa fa-phone" style="font-size: 10px;"></i> <?= h($c['contact_number']) ?></div>
+                                <div style="font-weight: 700; color: var(--text-main); font-size: 14px;"><?= h($c['name'] ?? '') ?></div>
+                                <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;"><i class="fa fa-phone" style="font-size: 10px;"></i> <?= h($c['phone'] ?? '') ?></div>
                                 <div style="font-size: 11px; color: var(--text-muted);"><?= h($c['district'] ?: $c['address']) ?></div>
                             </td>
                             <td>

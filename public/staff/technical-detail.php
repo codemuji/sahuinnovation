@@ -79,7 +79,11 @@ include __DIR__ . '/../includes/header.php';
                 <button type="submit" class="btn" style="width: auto; background: var(--danger); color: white;">Reject</button>
             </form>
         <?php endif; ?>
-        <span class="badge badge-<?= $customer['status'] === 'rejected' ? 'rejected' : 'approved' ?>" style="font-size: 14px; padding: 12px 24px;">
+        <?php
+        $isAllStepsDone = ($customer['status'] === 'CUSTOMER FEEDBACK');
+        $statusBadgeColor = ($customer['status'] === 'rejected') ? '#ef4444' : ($isAllStepsDone ? '#10b981' : '#f97316');
+        ?>
+        <span class="badge" style="background: <?= $statusBadgeColor ?>; color: white; font-size: 14px; padding: 12px 24px;">
             <?= strtoupper($customer['status']) ?>
         </span>
     </div>
@@ -97,7 +101,7 @@ include __DIR__ . '/../includes/header.php';
             <?php foreach ($stages as $idx => $stageName): 
                 $isPassed = ($currentStepIdx !== false && $idx < $currentStepIdx);
                 $isCurrent = ($currentStepIdx !== false && $idx === $currentStepIdx);
-                $bg = $isCurrent ? 'var(--primary)' : ($isPassed ? '#10b981' : '#e2e8f0');
+                $bg = $isCurrent ? 'var(--primary)' : ($isPassed ? ($isAllStepsDone ? '#10b981' : '#f97316') : '#e2e8f0');
                 $fg = ($isCurrent || $isPassed) ? 'white' : 'var(--text-muted)';
             ?>
                 <div style="background: <?= $bg ?>; color: <?= $fg ?>; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
@@ -326,7 +330,7 @@ include __DIR__ . '/../includes/header.php';
             </div>
             <div style="margin-bottom: 16px;">
                 <label style="display: block; font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Status</label>
-                <span class="badge badge-<?= $customer['status'] === 'rejected' ? 'rejected' : 'approved' ?>" style="display: inline-block; margin-top: 4px;"><?= strtoupper($customer['status']) ?></span>
+                <span class="badge" style="background: <?= $statusBadgeColor ?>; color: white; display: inline-block; margin-top: 4px;"><?= strtoupper($customer['status']) ?></span>
             </div>
             <?php if ($customer['status'] === 'rejected'): ?>
                 <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border);">

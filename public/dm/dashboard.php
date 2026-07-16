@@ -20,15 +20,10 @@ foreach ($counts as $stg => $cnt) {
     }
 }
 
-// Wallet info
-$stmt = $db->prepare("SELECT balance FROM wallets WHERE user_id = ?");
+// Total received amount (credited from Stage 5 approvals)
+$stmt = $db->prepare("SELECT SUM(amount) FROM wallet_transactions WHERE user_id = ? AND status = 'approved' AND type = 'credit' AND amount > 0");
 $stmt->execute([$userId]);
-$wallet = $stmt->fetch();
-$balance = $wallet['balance'] ?? 0.00;
-
-$stmt = $db->prepare("SELECT SUM(amount) FROM wallet_transactions WHERE user_id = ? AND status = 'pending'");
-$stmt->execute([$userId]);
-$pendingEarnings = $stmt->fetchColumn() ?: 0.00;
+$totalReceived = $stmt->fetchColumn() ?: 0.00;
 
 $pageTitle = strtoupper($role) . " Dashboard";
 include __DIR__ . '/../includes/header.php';
@@ -37,27 +32,22 @@ include __DIR__ . '/../includes/header.php';
 <div class="panel-header">
     <div class="panel-title">
         <h1>Welcome, <?= h($user['name']) ?></h1>
-        <p>Manage your technical customer submissions and earnings.</p>
+        <p>Manage your technical customer submissions and view payouts.</p>
     </div>
     <a href="add-customer.php" class="btn btn-primary" style="width: auto;">
-        <i class="fa fa-plus-circle" style="margin-right: 8px;"></i> Add New Technical Customer
+        <i class="fa fa-plus-circle" style="margin-right: 8px;"></i> Add Consumer
     </a>
 </div>
 
-<div class="grid grid-4" style="margin-bottom: 32px;">
+<div class="grid grid-3" style="margin-bottom: 32px;">
     <div class="desktop-card">
-        <div style="font-size: 13px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">Wallet Balance</div>
-        <div style="font-size: 24px; font-weight: 700; color: var(--accent);"><?= formatCurrency($balance) ?></div>
-        <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Available for withdrawal</div>
-    </div>
-    <div class="desktop-card">
-        <div style="font-size: 13px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">Pending Approval</div>
-        <div style="font-size: 24px; font-weight: 700;"><?= formatCurrency($pendingEarnings) ?></div>
-        <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Expected earnings</div>
+        <div style="font-size: 13px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">Total Received Amount</div>
+        <div style="font-size: 24px; font-weight: 700; color: var(--success);"><?= formatCurrency($totalReceived) ?></div>
+        <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Direct payouts on Stage 5 approval</div>
     </div>
     <div class="desktop-card">
         <div style="font-size: 13px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">Approved Records</div>
-        <div style="font-size: 24px; font-weight: 700; color: var(--success);"><?= $approvedCount ?></div>
+        <div style="font-size: 24px; font-weight: 700; color: var(--accent);"><?= $approvedCount ?></div>
         <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Lifetime completions</div>
     </div>
     <div class="desktop-card">

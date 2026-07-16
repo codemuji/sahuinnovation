@@ -18,13 +18,13 @@ $stmt = $db->prepare($query);
 $stmt->execute($params);
 $customers = $stmt->fetchAll();
 
-$pageTitle = "Survey Review List";
+$pageTitle = "Application Review List";
 include __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="panel-header">
     <div class="panel-title">
-        <h1>Survey Review List</h1>
+        <h1>Application Review List</h1>
         <p>Review customer data and documents collected by field agents.</p>
     </div>
 </div>

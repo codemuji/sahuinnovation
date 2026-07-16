@@ -10,13 +10,13 @@ $surveyCount = $db->query("SELECT COUNT(*) FROM survey_customers")->fetchColumn(
 $techCount = $db->query("SELECT COUNT(*) FROM technical_customers")->fetchColumn();
 $pendingWithdrawals = $db->query("SELECT COUNT(*) FROM withdrawal_requests WHERE status = 'pending'")->fetchColumn();
 
-$pageTitle = "Admin Dashboard";
+$pageTitle = "Managing Director Dashboard";
 include __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="panel-header">
     <div class="panel-title">
-        <h1>Admin Dashboard</h1>
+        <h1>Managing Director Dashboard</h1>
         <p>System-wide overview and management.</p>
     </div>
 </div>

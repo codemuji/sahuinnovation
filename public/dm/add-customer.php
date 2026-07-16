@@ -15,7 +15,7 @@ include __DIR__ . '/../includes/header.php';
 
 <div class="panel-header">
     <div class="panel-title">
-        <h1>Add New Technical Customer</h1>
+        <h1>Add Consumer</h1>
         <p>Enter comprehensive consumer and technical data and upload required documents.</p>
     </div>
     <a href="dashboard.php" class="btn" style="width: auto; background: var(--border); color: var(--text-main);">

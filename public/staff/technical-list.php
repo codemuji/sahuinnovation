@@ -32,13 +32,13 @@ $stages = [
     'CUSTOMER FEEDBACK'
 ];
 
-$pageTitle = "Technical Review List";
+$pageTitle = "PM Surya Ghar Application List";
 include __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="panel-header">
     <div class="panel-title">
-        <h1>Technical Review List</h1>
+        <h1>PM Surya Ghar Application List</h1>
         <p>Review and update technical data across all 11 customer status stages.</p>
     </div>
 </div>
@@ -85,8 +85,10 @@ include __DIR__ . '/../includes/header.php';
                             <td><?= h($customer['dm_name']) ?></td>
                             <td><span style="font-size: 11px; text-transform: uppercase; font-weight: 700; opacity: 0.7;"><?= h($customer['dm_role']) ?></span></td>
                             <td><?= h($customer['consumer_number']) ?: 'N/A' ?></td>
-                            <td><?= date('d M Y', strtotime($customer['created_at'])) ?></td>
-                            <td><span class="badge badge-<?= $customer['status'] ?>"><?= strtoupper($customer['status']) ?></span></td>
+                            <?php
+                            $badgeBgList = ($customer['status'] === 'rejected') ? '#ef4444' : (($customer['status'] === 'CUSTOMER FEEDBACK') ? '#10b981' : '#f97316');
+                            ?>
+                            <td><span class="badge" style="background: <?= $badgeBgList ?>; color: white;"><?= strtoupper($customer['status']) ?></span></td>
                             <td>
                                 <a href="technical-detail.php?id=<?= $customer['id'] ?>" class="btn" style="height: 32px; padding: 0 12px; font-size: 12px; width: auto; background: var(--primary); color: white;">
                                     View Details

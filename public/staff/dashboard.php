@@ -26,7 +26,7 @@ include __DIR__ . '/../includes/header.php';
 <div class="panel-header">
     <div class="panel-title">
         <h1>Staff Overview</h1>
-        <p>Monitor pending reviews across both survey and technical pipelines.</p>
+        <p>Monitor pending reviews across both application review and PM Surya Ghar application pipelines.</p>
     </div>
 </div>
 
@@ -34,7 +34,7 @@ include __DIR__ . '/../includes/header.php';
     <!-- Survey Pipeline Card -->
     <div class="desktop-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-            <h3 style="font-size: 18px; font-weight: 700;">Survey Pipeline</h3>
+            <h3 style="font-size: 18px; font-weight: 700;">Application Review</h3>
             <a href="survey-list.php" class="btn btn-primary" style="width: auto; height: 36px; font-size: 13px;">Review All</a>
         </div>
         <div class="grid grid-4">
@@ -60,7 +60,7 @@ include __DIR__ . '/../includes/header.php';
     <!-- Technical Pipeline Card -->
     <div class="desktop-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-            <h3 style="font-size: 18px; font-weight: 700;">Technical Pipeline</h3>
+            <h3 style="font-size: 18px; font-weight: 700;">PM Surya Ghar Application</h3>
             <a href="technical-list.php" class="btn btn-primary" style="width: auto; height: 36px; font-size: 13px;">Review All</a>
         </div>
         <div class="grid grid-4">

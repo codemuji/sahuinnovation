@@ -67,7 +67,7 @@ if (Auth::check() && Auth::userRole() === 'admin') {
                 <?php if (Auth::userRole() === 'dm' || Auth::userRole() === 'pe'): ?>
                     <li style="margin-bottom: 8px;">
                         <a href="<?= site_url('public/dm/add-customer.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'add-customer.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
-                            <i class="fa fa-plus-circle" style="width: 24px;"></i> Add Technical
+                            <i class="fa fa-plus-circle" style="width: 24px;"></i> Add Consumer
                         </a>
                     </li>
                     <li style="margin-bottom: 8px;">
@@ -77,7 +77,7 @@ if (Auth::check() && Auth::userRole() === 'admin') {
                     </li>
                     <li style="margin-bottom: 8px;">
                         <a href="<?= site_url('public/dm/wallet.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'wallet.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
-                            <i class="fa fa-wallet" style="width: 24px;"></i> Wallet
+                            <i class="fa fa-receipt" style="width: 24px;"></i> Payouts History
                         </a>
                     </li>
                 <?php endif; ?>
@@ -85,12 +85,12 @@ if (Auth::check() && Auth::userRole() === 'admin') {
                 <?php if (Auth::userRole() === 'staff'): ?>
                     <li style="margin-bottom: 8px;">
                         <a href="<?= site_url('public/staff/survey-list.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'survey-list.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
-                            <i class="fa fa-file-lines" style="width: 24px;"></i> Survey Review
+                            <i class="fa fa-file-lines" style="width: 24px;"></i> Application Review
                         </a>
                     </li>
                     <li style="margin-bottom: 8px;">
                         <a href="<?= site_url('public/staff/technical-list.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'technical-list.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
-                            <i class="fa fa-file-contract" style="width: 24px;"></i> Technical Review
+                            <i class="fa fa-file-contract" style="width: 24px;"></i> PM Surya Ghar Application
                         </a>
                     </li>
                 <?php endif; ?>
@@ -152,7 +152,7 @@ if (Auth::check() && Auth::userRole() === 'admin') {
                     </li>
                     <li style="margin-bottom: 8px;">
                         <a href="<?= site_url('public/staff/survey-list.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'survey-list.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
-                            <i class="fa fa-file-lines" style="width: 24px;"></i> Survey Review
+                            <i class="fa fa-file-lines" style="width: 24px;"></i> Application Review
                         </a>
                     </li>
                     <li style="margin-bottom: 8px;">
@@ -217,7 +217,7 @@ if (Auth::check() && Auth::userRole() === 'admin') {
                 </div>
                 <div>
                     <div style="font-size: 14px; font-weight: 600;"><?= h($user['name']) ?></div>
-                    <div style="font-size: 11px; opacity: 0.7; text-transform: uppercase;"><?= h($user['role']) ?></div>
+                    <div style="font-size: 11px; opacity: 0.7; text-transform: uppercase;"><?= $user['role'] === 'admin' ? 'MANAGING DIRECTOR' : h($user['role']) ?></div>
                 </div>
             </a>
             <a href="<?= site_url('public/logout.php') ?>" style="color: #ef4444; text-decoration: none; font-size: 14px; font-weight: 600;">
