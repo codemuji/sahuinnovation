@@ -6,7 +6,7 @@
 require_once __DIR__ . '/../core/Auth.php';
 require_once __DIR__ . '/../config/database.php';
 
-Auth::requireRole('staff');
+Auth::requireRole(['staff', 'admin']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db = Database::getInstance()->getConnection();

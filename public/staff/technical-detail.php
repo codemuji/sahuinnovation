@@ -125,6 +125,9 @@ include __DIR__ . '/../includes/header.php';
                 <?= $customer['disbursement_1_amount'] ? ('Rs. ' . formatCurrency($customer['disbursement_1_amount'])) : 'N/A' ?>
                 <?= $customer['disbursement_1_date'] ? (' on ' . h($customer['disbursement_1_date'])) : '' ?>
             </div>
+            <?php if (!empty($customer['disbursement_1_remarks'])): ?>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;"><i class="fa fa-comment-dots"></i> <?= h($customer['disbursement_1_remarks']) ?></div>
+            <?php endif; ?>
         </div>
         <div>
             <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">DM/Agent Payment (Admin Only)</span>
@@ -138,6 +141,9 @@ include __DIR__ . '/../includes/header.php';
                 <?= $customer['disbursement_2_amount'] ? ('Rs. ' . formatCurrency($customer['disbursement_2_amount'])) : 'N/A' ?>
                 <?= $customer['disbursement_2_date'] ? (' on ' . h($customer['disbursement_2_date'])) : '' ?>
             </div>
+            <?php if (!empty($customer['disbursement_2_remarks'])): ?>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;"><i class="fa fa-comment-dots"></i> <?= h($customer['disbursement_2_remarks']) ?></div>
+            <?php endif; ?>
         </div>
         <div style="grid-column: span 2;">
             <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Customer Feedback</span>
@@ -330,18 +336,31 @@ include __DIR__ . '/../includes/header.php';
             <?php endif; ?>
         </div>
 
-        <?php if (in_array($role, ['staff', 'admin']) && $customer['status'] !== 'rejected'): ?>
+        <?php if (in_array($role, ['staff', 'admin']) && $customer['status'] !== 'rejected'): 
+            $isEarlyStage = in_array($customer['status'], ['APPLICATION', 'APPLY ON OFFICIAL SITE', 'LOAN PROCESS TO BANK']);
+            $adminBlocked = ($role === 'admin' && $isEarlyStage);
+        ?>
         <div class="desktop-card" style="margin-top: 20px;">
             <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 16px; color: var(--primary);">Stage & Status Management</h3>
-            <form action="<?= site_url('app/actions/update_technical_status.php') ?>" method="POST">
+            <?php if ($adminBlocked): ?>
+                <div style="background: #fffbeb; border: 1px solid #fcd34d; border-radius: 6px; padding: 12px; margin-bottom: 16px; font-size: 12px; color: #92400e;">
+                    <i class="fa fa-info-circle" style="margin-right: 4px;"></i>
+                    <strong>Staff Pipeline Phase (< Stage 4):</strong> This application has not reached Stage 4 (Loan Disbursement) yet. Early-stage updates are handled exclusively by Staff to prevent accidental interference.
+                </div>
+            <?php endif; ?>
+            <form action="<?= site_url('app/actions/update_technical_status.php') ?>" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="<?= $customer['id'] ?>">
                 
                 <div style="margin-bottom: 16px;">
                     <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px;">Update Current Stage</label>
-                    <select name="status" class="form-control" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border);">
+                    <select name="status" id="stage_select" class="form-control" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border);" onchange="toggleStageFields()" <?= $adminBlocked ? 'disabled' : '' ?>>
                         <?php foreach ($stages as $stg): 
                             $isAdminOnly = ($stg === 'DM/AGENT PAYMENT');
-                            $disabled = ($isAdminOnly && $role !== 'admin') ? 'disabled' : '';
+                            if ($role === 'admin') {
+                                $disabled = ($stg !== 'DM/AGENT PAYMENT' && $stg !== $customer['status']) ? 'disabled' : '';
+                            } else {
+                                $disabled = $isAdminOnly ? 'disabled' : '';
+                            }
                         ?>
                             <option value="<?= h($stg) ?>" <?= $customer['status'] === $stg ? 'selected' : '' ?> <?= $disabled ?>>
                                 <?= h($stg) ?> <?= $isAdminOnly ? ' (Admin Payment Only)' : '' ?>
@@ -350,7 +369,7 @@ include __DIR__ . '/../includes/header.php';
                     </select>
                 </div>
 
-                <div style="border-top: 1px solid var(--border); padding-top: 16px; margin-bottom: 16px;">
+                <div class="stage-fields" data-stage="LOAN PROCESS TO BANK" style="border-top: 1px solid var(--border); padding-top: 16px; margin-bottom: 16px;">
                     <div style="font-size: 12px; font-weight: 700; color: var(--text-main); margin-bottom: 12px;">Stage 3: Bank & Sanction</div>
                     <label style="display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Bank Details</label>
                     <input type="text" name="bank_details" value="<?= h($customer['bank_details'] ?? '') ?>" class="form-control" style="width: 100%; padding: 8px; margin-bottom: 8px; border: 1px solid var(--border); border-radius: 4px;" placeholder="Bank Name & A/C details">
@@ -358,39 +377,60 @@ include __DIR__ . '/../includes/header.php';
                     <input type="number" step="0.01" name="sanction_amount" value="<?= h($customer['sanction_amount'] ?? '') ?>" class="form-control" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;" placeholder="e.g. 150000">
                 </div>
 
-                <div style="border-top: 1px solid var(--border); padding-top: 16px; margin-bottom: 16px;">
+                <div class="stage-fields" data-stage="LOAN DISBURSEMENT" style="border-top: 1px solid var(--border); padding-top: 16px; margin-bottom: 16px;">
                     <div style="font-size: 12px; font-weight: 700; color: var(--text-main); margin-bottom: 12px;">Stage 4: 1st Disbursement</div>
                     <label style="display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Amount (Rs)</label>
                     <input type="number" step="0.01" name="disbursement_1_amount" value="<?= h($customer['disbursement_1_amount'] ?? '') ?>" class="form-control" style="width: 100%; padding: 8px; margin-bottom: 8px; border: 1px solid var(--border); border-radius: 4px;" placeholder="e.g. 80000">
                     <label style="display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Date</label>
-                    <input type="date" name="disbursement_1_date" value="<?= h($customer['disbursement_1_date'] ?? '') ?>" class="form-control" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
+                    <input type="date" name="disbursement_1_date" value="<?= h($customer['disbursement_1_date'] ?? '') ?>" class="form-control" style="width: 100%; padding: 8px; margin-bottom: 8px; border: 1px solid var(--border); border-radius: 4px;">
+                    <label style="display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Remarks</label>
+                    <textarea name="disbursement_1_remarks" rows="2" class="form-control" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;" placeholder="Remarks for 1st disbursement..."><?= h($customer['disbursement_1_remarks'] ?? '') ?></textarea>
                 </div>
 
-                <div style="border-top: 1px solid var(--border); padding-top: 16px; margin-bottom: 16px; background: #f8fafc; padding: 12px; border-radius: 6px;">
+                <div class="stage-fields" data-stage="DM/AGENT PAYMENT" style="border-top: 1px solid var(--border); padding-top: 16px; margin-bottom: 16px; background: #f8fafc; padding: 12px; border-radius: 6px;">
                     <div style="font-size: 12px; font-weight: 700; color: <?= $role === 'admin' ? 'var(--primary)' : 'var(--text-muted)' ?>; margin-bottom: 8px;">
                         Stage 5: DM/Agent Payment <?= $role === 'admin' ? '(Manual Admin Input)' : '(Admin Only)' ?>
                     </div>
                     <label style="display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Payment Amount (Rs)</label>
                     <input type="number" step="0.01" name="payment_amount" value="<?= h($customer['payment_amount'] ?? '') ?>" class="form-control" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;" placeholder="<?= $role === 'admin' ? 'Enter manual payment to credit DM/Agent' : 'Admin only' ?>" <?= $role !== 'admin' ? 'readonly' : '' ?>>
                     <?php if ($role === 'admin'): ?>
-                        <div style="font-size: 11px; color: var(--success); margin-top: 4px;"><i class="fa fa-info-circle"></i> Entering amount & selecting Stage 5 will credit this custom amount to the DM/Agent wallet.</div>
+                        <div style="font-size: 11px; color: var(--success); margin-top: 4px; margin-bottom: 12px;"><i class="fa fa-info-circle"></i> Entering amount & selecting Stage 5 will credit this custom amount to the DM/Agent wallet.</div>
+                        <label style="display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Payment Receipt Proof (Optional Image)</label>
+                        <input type="file" name="payment_receipt" accept="image/*" class="form-control" style="width: 100%; padding: 6px; border: 1px solid var(--border); border-radius: 4px; font-size: 12px;">
+                        <?php if (!empty($customer['payment_receipt'])): ?>
+                            <div style="margin-top: 6px; font-size: 11px;">
+                                <span style="color: var(--success); font-weight: 600;"><i class="fa fa-check-circle"></i> Receipt uploaded:</span>
+                                <a href="<?= site_url('public/uploads/' . h($customer['payment_receipt'])) ?>" target="_blank" style="color: var(--primary); text-decoration: underline; margin-left: 4px;">View Proof</a>
+                            </div>
+                        <?php endif; ?>
+                    <?php elseif (!empty($customer['payment_receipt'])): ?>
+                        <div style="margin-top: 10px; font-size: 11px;">
+                            <span style="color: var(--success); font-weight: 600;"><i class="fa fa-check-circle"></i> Receipt proof:</span>
+                            <a href="<?= site_url('public/uploads/' . h($customer['payment_receipt'])) ?>" target="_blank" style="color: var(--primary); text-decoration: underline; margin-left: 4px;">View Proof</a>
+                        </div>
                     <?php endif; ?>
                 </div>
 
-                <div style="border-top: 1px solid var(--border); padding-top: 16px; margin-bottom: 16px;">
+                <div class="stage-fields" data-stage="LOAN 2ND DISBURSEMENT" style="border-top: 1px solid var(--border); padding-top: 16px; margin-bottom: 16px;">
                     <div style="font-size: 12px; font-weight: 700; color: var(--text-main); margin-bottom: 12px;">Stage 10: 2nd Disbursement</div>
                     <label style="display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Amount (Rs)</label>
                     <input type="number" step="0.01" name="disbursement_2_amount" value="<?= h($customer['disbursement_2_amount'] ?? '') ?>" class="form-control" style="width: 100%; padding: 8px; margin-bottom: 8px; border: 1px solid var(--border); border-radius: 4px;" placeholder="e.g. 70000">
                     <label style="display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Date</label>
-                    <input type="date" name="disbursement_2_date" value="<?= h($customer['disbursement_2_date'] ?? '') ?>" class="form-control" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
+                    <input type="date" name="disbursement_2_date" value="<?= h($customer['disbursement_2_date'] ?? '') ?>" class="form-control" style="width: 100%; padding: 8px; margin-bottom: 8px; border: 1px solid var(--border); border-radius: 4px;">
+                    <label style="display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Remarks</label>
+                    <textarea name="disbursement_2_remarks" rows="2" class="form-control" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;" placeholder="Remarks for 2nd disbursement..."><?= h($customer['disbursement_2_remarks'] ?? '') ?></textarea>
                 </div>
 
-                <div style="border-top: 1px solid var(--border); padding-top: 16px; margin-bottom: 16px;">
+                <div class="stage-fields" data-stage="CUSTOMER FEEDBACK" style="border-top: 1px solid var(--border); padding-top: 16px; margin-bottom: 16px;">
                     <div style="font-size: 12px; font-weight: 700; color: var(--text-main); margin-bottom: 12px;">Stage 11: Customer Feedback</div>
                     <textarea name="customer_feedback" rows="3" class="form-control" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;" placeholder="Feedback or notes..."><?= h($customer['customer_feedback'] ?? '') ?></textarea>
                 </div>
 
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Update Status & Save Details</button>
+                <?php if ($adminBlocked): ?>
+                    <button type="button" class="btn btn-primary" style="width: 100%; opacity: 0.5; cursor: not-allowed;" disabled>Update Disabled (Early Stage)</button>
+                <?php else: ?>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Update Status & Save Details</button>
+                <?php endif; ?>
             </form>
         </div>
         <?php endif; ?>
@@ -398,6 +438,19 @@ include __DIR__ . '/../includes/header.php';
 </div>
 
 <script>
+function toggleStageFields() {
+    const val = document.getElementById('stage_select')?.value;
+    const role = "<?= $role ?>";
+    document.querySelectorAll('.stage-fields').forEach(el => {
+        const isTarget = el.getAttribute('data-stage') === val;
+        el.style.display = isTarget ? 'block' : 'none';
+        if (role === 'admin' && el.getAttribute('data-stage') !== 'DM/AGENT PAYMENT') {
+            el.querySelectorAll('input, textarea, select').forEach(inp => inp.disabled = true);
+        }
+    });
+}
+toggleStageFields();
+
 function promptReject() {
     const reason = prompt("Enter rejection reason:");
     if (reason === null) return false;

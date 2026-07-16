@@ -4,6 +4,7 @@
  */
 
 require_once __DIR__ . '/../core/Auth.php';
+require_once __DIR__ . '/../core/helpers.php';
 require_once __DIR__ . '/../config/database.php';
 
 Auth::requireRole(['staff', 'admin', 'dm', 'pe']);
@@ -53,16 +54,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($status === 'DM/AGENT PAYMENT' && $role !== 'admin') {
             throw new Exception("Only Admin can update status to DM/AGENT PAYMENT and disburse payment.");
         }
+        if ($role === 'admin' && $status !== 'DM/AGENT PAYMENT' && $status !== $customer['status']) {
+            throw new Exception("Only Staff can update stage progression to stages other than DM/AGENT PAYMENT.");
+        }
 
         // Collect optional stage fields
-        $bank_details = isset($_POST['bank_details']) ? trim($_POST['bank_details']) : $customer['bank_details'];
-        $sanction_amount = isset($_POST['sanction_amount']) && $_POST['sanction_amount'] !== '' ? floatval($_POST['sanction_amount']) : $customer['sanction_amount'];
-        $disbursement_1_amount = isset($_POST['disbursement_1_amount']) && $_POST['disbursement_1_amount'] !== '' ? floatval($_POST['disbursement_1_amount']) : $customer['disbursement_1_amount'];
-        $disbursement_1_date = !empty($_POST['disbursement_1_date']) ? $_POST['disbursement_1_date'] : $customer['disbursement_1_date'];
         $payment_amount = isset($_POST['payment_amount']) && $_POST['payment_amount'] !== '' ? floatval($_POST['payment_amount']) : $customer['payment_amount'];
-        $disbursement_2_amount = isset($_POST['disbursement_2_amount']) && $_POST['disbursement_2_amount'] !== '' ? floatval($_POST['disbursement_2_amount']) : $customer['disbursement_2_amount'];
-        $disbursement_2_date = !empty($_POST['disbursement_2_date']) ? $_POST['disbursement_2_date'] : $customer['disbursement_2_date'];
-        $customer_feedback = isset($_POST['customer_feedback']) ? trim($_POST['customer_feedback']) : $customer['customer_feedback'];
+        $payment_receipt = $customer['payment_receipt'] ?? null;
+
+        if ($role === 'admin' && isset($_FILES['payment_receipt']) && $_FILES['payment_receipt']['error'] === UPLOAD_ERR_OK) {
+            $targetDir = __DIR__ . '/../../public/uploads/';
+            $upload = uploadFile($_FILES['payment_receipt'], $targetDir);
+            if (isset($upload['success'])) {
+                $payment_receipt = $upload['path'];
+            } else {
+                throw new Exception("Payment receipt upload failed: " . ($upload['error'] ?? 'Unknown error'));
+            }
+        }
+
+        if ($role === 'admin') {
+            // Admin only updates payment_amount, payment_receipt (and status); protect all Staff fields
+            $bank_details = $customer['bank_details'];
+            $sanction_amount = $customer['sanction_amount'];
+            $disbursement_1_amount = $customer['disbursement_1_amount'];
+            $disbursement_1_date = $customer['disbursement_1_date'];
+            $disbursement_1_remarks = $customer['disbursement_1_remarks'];
+            $disbursement_2_amount = $customer['disbursement_2_amount'];
+            $disbursement_2_date = $customer['disbursement_2_date'];
+            $disbursement_2_remarks = $customer['disbursement_2_remarks'];
+            $customer_feedback = $customer['customer_feedback'];
+        } else {
+            $bank_details = isset($_POST['bank_details']) ? trim($_POST['bank_details']) : $customer['bank_details'];
+            $sanction_amount = isset($_POST['sanction_amount']) && $_POST['sanction_amount'] !== '' ? floatval($_POST['sanction_amount']) : $customer['sanction_amount'];
+            $disbursement_1_amount = isset($_POST['disbursement_1_amount']) && $_POST['disbursement_1_amount'] !== '' ? floatval($_POST['disbursement_1_amount']) : $customer['disbursement_1_amount'];
+            $disbursement_1_date = !empty($_POST['disbursement_1_date']) ? $_POST['disbursement_1_date'] : $customer['disbursement_1_date'];
+            $disbursement_1_remarks = isset($_POST['disbursement_1_remarks']) ? trim($_POST['disbursement_1_remarks']) : ($customer['disbursement_1_remarks'] ?? null);
+            $disbursement_2_amount = isset($_POST['disbursement_2_amount']) && $_POST['disbursement_2_amount'] !== '' ? floatval($_POST['disbursement_2_amount']) : $customer['disbursement_2_amount'];
+            $disbursement_2_date = !empty($_POST['disbursement_2_date']) ? $_POST['disbursement_2_date'] : $customer['disbursement_2_date'];
+            $disbursement_2_remarks = isset($_POST['disbursement_2_remarks']) ? trim($_POST['disbursement_2_remarks']) : ($customer['disbursement_2_remarks'] ?? null);
+            $customer_feedback = isset($_POST['customer_feedback']) ? trim($_POST['customer_feedback']) : $customer['customer_feedback'];
+        }
 
         // If no status passed, keep current
         if (empty($status)) {
@@ -76,9 +107,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             sanction_amount = ?, 
             disbursement_1_amount = ?, 
             disbursement_1_date = ?, 
+            disbursement_1_remarks = ?,
             payment_amount = ?, 
+            payment_receipt = ?,
             disbursement_2_amount = ?, 
             disbursement_2_date = ?, 
+            disbursement_2_remarks = ?,
             customer_feedback = ?
             WHERE id = ?";
         $stmt = $db->prepare($sql);
@@ -88,9 +122,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sanction_amount,
             $disbursement_1_amount,
             $disbursement_1_date,
+            $disbursement_1_remarks,
             $payment_amount,
+            $payment_receipt,
             $disbursement_2_amount,
             $disbursement_2_date,
+            $disbursement_2_remarks,
             $customer_feedback,
             $id
         ]);

@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../app/core/Auth.php';
-Auth::requireRole('staff');
+Auth::requireRole(['staff', 'admin']);
 
 $db = Database::getInstance()->getConnection();
 $id = $_GET['id'] ?? 0;

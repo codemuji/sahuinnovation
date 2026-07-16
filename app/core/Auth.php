@@ -53,7 +53,7 @@ class Auth {
             $roles = [$roles];
         }
 
-        if (!in_array(self::userRole(), $roles)) {
+        if (self::userRole() !== 'admin' && !in_array(self::userRole(), $roles)) {
             setFlash('danger', 'You do not have permission to access this page.');
             redirect(site_url('public/index.php'));
         }

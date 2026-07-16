@@ -150,6 +150,16 @@ if (Auth::check() && Auth::userRole() === 'admin') {
                             <i class="fa fa-money-bill-transfer" style="width: 24px;"></i> Withdrawals
                         </a>
                     </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/staff/survey-list.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'survey-list.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-file-lines" style="width: 24px;"></i> Survey Review
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/admin/stage5-payouts.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'stage5-payouts.php') !== false || strpos($_SERVER['PHP_SELF'], 'technical-detail.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-file-contract" style="width: 24px;"></i> Stage 5 Payouts
+                        </a>
+                    </li>
                     <!-- Switch to Expense panel -->
                     <li style="margin-top: 24px;">
                         <a href="<?= site_url('public/admin/allocate-funds.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.4); font-size: 13px; font-weight: 600; gap: 8px;">

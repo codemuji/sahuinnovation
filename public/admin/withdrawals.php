@@ -29,10 +29,11 @@ include __DIR__ . '/../includes/header.php';
     </div>
 </div>
 
-<div style="display: flex; gap: 10px; margin-bottom: 24px;">
+<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 24px;">
     <a href="withdrawals.php?status=pending" class="badge" style="background: <?= $statusFilter == 'pending' ? 'var(--warning)' : '#e2e8f0' ?>; color: <?= $statusFilter == 'pending' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Pending Payouts</a>
     <a href="withdrawals.php?status=paid" class="badge" style="background: <?= $statusFilter == 'paid' ? 'var(--success)' : '#e2e8f0' ?>; color: <?= $statusFilter == 'paid' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Paid History</a>
     <a href="withdrawals.php?status=rejected" class="badge" style="background: <?= $statusFilter == 'rejected' ? 'var(--danger)' : '#e2e8f0' ?>; color: <?= $statusFilter == 'rejected' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Rejected</a>
+    <a href="<?= site_url('public/admin/stage5-payouts.php') ?>" class="badge" style="background: var(--primary); color: white; text-decoration: none; padding: 10px 20px; margin-left: auto;"><i class="fa fa-wallet" style="margin-right: 6px;"></i> Stage 5 Payouts (Credit DM/Agent) &rarr;</a>
 </div>
 
 <div class="desktop-card" style="padding: 0;">
