@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             state, district, post_office, police_station, electrical_subdivision, address, house_type, 
             meter_type, annual_income, survey_number, plot_area, road_width, 
             zone, remarks, status
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')";
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'APPLICATION')";
         
         $stmt = $db->prepare($sql);
         $stmt->execute([
@@ -107,9 +107,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Failed to upload Land Ownership document: " . $upload['error']);
         }
 
-        // 3. Create Pending Wallet Transaction
-        $stmt = $db->prepare("INSERT INTO wallet_transactions (user_id, ref_type, ref_id, type, amount, status, description) VALUES (?, 'technical', ?, 'credit', ?, 'pending', ?)");
-        $stmt->execute([$userId, $customerId, $incentiveAmount, "Technical incentive for customer: {$name} (Consumer #: {$consumer_number})"]);
+        // 3. Create Pending Wallet Transaction (amount set to 0.00 until Admin sets manual payment during DM/AGENT PAYMENT status)
+        $stmt = $db->prepare("INSERT INTO wallet_transactions (user_id, ref_type, ref_id, type, amount, status, description) VALUES (?, 'technical', ?, 'credit', 0.00, 'pending', ?)");
+        $stmt->execute([$userId, $customerId, "Technical incentive for customer: {$name} (Consumer #: {$consumer_number}) - Awaiting Admin Payment"]);
 
         $db->commit();
         setFlash('success', 'Technical data and documents submitted successfully.');

@@ -11,6 +11,13 @@ $surveyCounts = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
 // Get counts for Technical pipeline
 $stmt = $db->query("SELECT status, COUNT(*) as count FROM technical_customers GROUP BY status");
 $techCounts = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+$techPending = ($techCounts['pending'] ?? 0) + ($techCounts['APPLICATION'] ?? 0);
+$techApproved = 0;
+foreach ($techCounts as $stg => $cnt) {
+    if (!in_array($stg, ['pending', 'APPLICATION', 'revert_back', 'rejected'])) {
+        $techApproved += $cnt;
+    }
+}
 
 $pageTitle = "Staff Dashboard";
 include __DIR__ . '/../includes/header.php';
@@ -58,16 +65,16 @@ include __DIR__ . '/../includes/header.php';
         </div>
         <div class="grid grid-4">
             <div style="text-align: center; padding: 15px; background: #fffbeb; border-radius: 8px;">
-                <div style="font-size: 20px; font-weight: 700; color: var(--warning);"><?= $techCounts['pending'] ?? 0 ?></div>
-                <div style="font-size: 11px; font-weight: 600; text-transform: uppercase;">Pending</div>
+                <div style="font-size: 20px; font-weight: 700; color: var(--warning);"><?= $techPending ?></div>
+                <div style="font-size: 11px; font-weight: 600; text-transform: uppercase;">Pending / Stage 1</div>
             </div>
             <div style="text-align: center; padding: 15px; background: #fdf2f8; border-radius: 8px;">
                 <div style="font-size: 20px; font-weight: 700; color: #db2777;"><?= $techCounts['revert_back'] ?? 0 ?></div>
                 <div style="font-size: 11px; font-weight: 600; text-transform: uppercase;">Reverted</div>
             </div>
             <div style="text-align: center; padding: 15px; background: #ecfdf5; border-radius: 8px;">
-                <div style="font-size: 20px; font-weight: 700; color: var(--success);"><?= $techCounts['approved'] ?? 0 ?></div>
-                <div style="font-size: 11px; font-weight: 600; text-transform: uppercase;">Approved</div>
+                <div style="font-size: 20px; font-weight: 700; color: var(--success);"><?= $techApproved ?></div>
+                <div style="font-size: 11px; font-weight: 600; text-transform: uppercase;">In Progress / Done</div>
             </div>
             <div style="text-align: center; padding: 15px; background: #fef2f2; border-radius: 8px;">
                 <div style="font-size: 20px; font-weight: 700; color: var(--danger);"><?= $techCounts['rejected'] ?? 0 ?></div>

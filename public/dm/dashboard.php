@@ -11,9 +11,14 @@ $stmt = $db->prepare("SELECT status, COUNT(*) as count FROM technical_customers 
 $stmt->execute([$userId]);
 $counts = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
 
-$pendingCount = $counts['pending'] ?? 0;
-$approvedCount = $counts['approved'] ?? 0;
+$pendingCount = ($counts['pending'] ?? 0) + ($counts['APPLICATION'] ?? 0);
 $rejectedCount = $counts['rejected'] ?? 0;
+$approvedCount = 0;
+foreach ($counts as $stg => $cnt) {
+    if (!in_array($stg, ['pending', 'APPLICATION', 'rejected'])) {
+        $approvedCount += $cnt;
+    }
+}
 
 // Wallet info
 $stmt = $db->prepare("SELECT balance FROM wallets WHERE user_id = ?");
@@ -95,7 +100,7 @@ include __DIR__ . '/../includes/header.php';
                             <td><?= h($row['phone']) ?></td>
                             <td><?= date('d M Y', strtotime($row['created_at'])) ?></td>
                             <td><?= h($row['zone']) ?></td>
-                            <td><span class="badge badge-<?= $row['status'] ?>"><?= $row['status'] ?></span></td>
+                            <td><span class="badge badge-<?= $row['status'] === 'rejected' ? 'rejected' : 'approved' ?>"><?= h($row['status']) ?></span></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>

@@ -35,11 +35,37 @@ include __DIR__ . '/../includes/header.php';
 </div>
 
 <!-- Filters -->
-<div style="display: flex; gap: 10px; margin-bottom: 24px;">
+<?php
+$stages = [
+    'APPLICATION',
+    'APPLY ON OFFICIAL SITE',
+    'LOAN PROCESS TO BANK',
+    'LOAN DISBURSEMENT',
+    'DM/AGENT PAYMENT',
+    'INSTALLATION',
+    'ACTIVATION BY APDCL',
+    'SUBSIDY REQUEST',
+    'SUBSIDY DISBURSEMENT',
+    'LOAN 2ND DISBURSEMENT',
+    'CUSTOMER FEEDBACK'
+];
+?>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 24px;">
     <a href="my-customers.php" class="badge" style="background: <?= !$statusFilter ? 'var(--primary)' : '#e2e8f0' ?>; color: <?= !$statusFilter ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">All Submissions</a>
-    <a href="my-customers.php?status=pending" class="badge" style="background: <?= $statusFilter == 'pending' ? 'var(--warning)' : '#e2e8f0' ?>; color: <?= $statusFilter == 'pending' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Pending Review</a>
-    <a href="my-customers.php?status=approved" class="badge" style="background: <?= $statusFilter == 'approved' ? 'var(--success)' : '#e2e8f0' ?>; color: <?= $statusFilter == 'approved' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Approved</a>
+    <a href="my-customers.php?status=APPLICATION" class="badge" style="background: <?= $statusFilter == 'APPLICATION' ? 'var(--warning)' : '#e2e8f0' ?>; color: <?= $statusFilter == 'APPLICATION' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">1. Application</a>
+    <a href="my-customers.php?status=DM%2FAGENT+PAYMENT" class="badge" style="background: <?= $statusFilter == 'DM/AGENT PAYMENT' ? 'var(--success)' : '#e2e8f0' ?>; color: <?= $statusFilter == 'DM/AGENT PAYMENT' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">5. DM/Agent Payment</a>
+    <a href="my-customers.php?status=CUSTOMER+FEEDBACK" class="badge" style="background: <?= $statusFilter == 'CUSTOMER FEEDBACK' ? 'var(--info)' : '#e2e8f0' ?>; color: <?= $statusFilter == 'CUSTOMER FEEDBACK' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">11. Customer Feedback</a>
     <a href="my-customers.php?status=rejected" class="badge" style="background: <?= $statusFilter == 'rejected' ? 'var(--danger)' : '#e2e8f0' ?>; color: <?= $statusFilter == 'rejected' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Rejected</a>
+
+    <form method="GET" action="my-customers.php" style="margin-left: auto; display: flex; gap: 8px;">
+        <select name="status" onchange="this.form.submit()" class="form-control" style="padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px;">
+            <option value="">Filter by Stage...</option>
+            <?php foreach ($stages as $idx => $stg): ?>
+                <option value="<?= h($stg) ?>" <?= $statusFilter === $stg ? 'selected' : '' ?>><?= ($idx + 1) . '. ' . h($stg) ?></option>
+            <?php endforeach; ?>
+            <option value="rejected" <?= $statusFilter === 'rejected' ? 'selected' : '' ?>>Rejected</option>
+        </select>
+    </form>
 </div>
 
 <div class="desktop-card" style="padding: 0;">
@@ -52,7 +78,7 @@ include __DIR__ . '/../includes/header.php';
                     <th>Date Submitted</th>
                     <th>Consumer Number</th>
                     <th>Status</th>
-                    <th>Rejection Reason</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,8 +93,12 @@ include __DIR__ . '/../includes/header.php';
                             <td><?= h($customer['phone']) ?></td>
                             <td><?= date('d M Y, h:i A', strtotime($customer['created_at'])) ?></td>
                             <td><?= h($customer['consumer_number']) ?: 'N/A' ?></td>
-                            <td><span class="badge badge-<?= $customer['status'] ?>"><?= strtoupper($customer['status']) ?></span></td>
-                            <td style="color: var(--danger); font-size: 13px;"><?= h($customer['rejection_reason']) ?></td>
+                            <td><span class="badge badge-<?= $customer['status'] === 'rejected' ? 'rejected' : 'approved' ?>"><?= strtoupper($customer['status']) ?></span></td>
+                            <td>
+                                <a href="../staff/technical-detail.php?id=<?= $customer['id'] ?>" class="btn" style="height: 32px; padding: 0 12px; font-size: 12px; width: auto; background: var(--primary); color: white;">
+                                    View Pipeline & Details
+                                </a>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>

@@ -1,10 +1,10 @@
 <?php
 require_once __DIR__ . '/../../app/core/Auth.php';
-Auth::requireRole('staff');
+Auth::requireRole(['staff', 'admin']);
 
 $db = Database::getInstance()->getConnection();
 
-$statusFilter = $_GET['status'] ?? 'pending';
+$statusFilter = $_GET['status'] ?? '';
 $query = "SELECT t.*, u.name as dm_name, u.role as dm_role FROM technical_customers t JOIN users u ON t.dm_id = u.id";
 $params = [];
 
@@ -18,6 +18,20 @@ $stmt = $db->prepare($query);
 $stmt->execute($params);
 $customers = $stmt->fetchAll();
 
+$stages = [
+    'APPLICATION',
+    'APPLY ON OFFICIAL SITE',
+    'LOAN PROCESS TO BANK',
+    'LOAN DISBURSEMENT',
+    'DM/AGENT PAYMENT',
+    'INSTALLATION',
+    'ACTIVATION BY APDCL',
+    'SUBSIDY REQUEST',
+    'SUBSIDY DISBURSEMENT',
+    'LOAN 2ND DISBURSEMENT',
+    'CUSTOMER FEEDBACK'
+];
+
 $pageTitle = "Technical Review List";
 include __DIR__ . '/../includes/header.php';
 ?>
@@ -25,14 +39,26 @@ include __DIR__ . '/../includes/header.php';
 <div class="panel-header">
     <div class="panel-title">
         <h1>Technical Review List</h1>
-        <p>Review technical data and ownership documents submitted by DM and PE users.</p>
+        <p>Review and update technical data across all 11 customer status stages.</p>
     </div>
 </div>
 
-<div style="display: flex; gap: 10px; margin-bottom: 24px;">
-    <a href="technical-list.php?status=pending" class="badge" style="background: <?= $statusFilter == 'pending' ? 'var(--warning)' : '#e2e8f0' ?>; color: <?= $statusFilter == 'pending' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Pending Review</a>
-    <a href="technical-list.php?status=approved" class="badge" style="background: <?= $statusFilter == 'approved' ? 'var(--success)' : '#e2e8f0' ?>; color: <?= $statusFilter == 'approved' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Approved</a>
-    <a href="technical-list.php?status=rejected" class="badge" style="background: <?= $statusFilter == 'rejected' ? 'var(--danger)' : '#e2e8f0' ?>; color: <?= $statusFilter == 'rejected' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Rejected</a>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 24px;">
+    <a href="technical-list.php" class="badge" style="background: <?= $statusFilter === '' ? 'var(--primary)' : '#e2e8f0' ?>; color: <?= $statusFilter === '' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">All Submissions</a>
+    <a href="technical-list.php?status=APPLICATION" class="badge" style="background: <?= $statusFilter === 'APPLICATION' ? 'var(--warning)' : '#e2e8f0' ?>; color: <?= $statusFilter === 'APPLICATION' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">1. Application</a>
+    <a href="technical-list.php?status=DM%2FAGENT+PAYMENT" class="badge" style="background: <?= $statusFilter === 'DM/AGENT PAYMENT' ? 'var(--success)' : '#e2e8f0' ?>; color: <?= $statusFilter === 'DM/AGENT PAYMENT' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">5. DM/Agent Payment</a>
+    <a href="technical-list.php?status=CUSTOMER+FEEDBACK" class="badge" style="background: <?= $statusFilter === 'CUSTOMER FEEDBACK' ? 'var(--info)' : '#e2e8f0' ?>; color: <?= $statusFilter === 'CUSTOMER FEEDBACK' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">11. Customer Feedback</a>
+    <a href="technical-list.php?status=rejected" class="badge" style="background: <?= $statusFilter === 'rejected' ? 'var(--danger)' : '#e2e8f0' ?>; color: <?= $statusFilter === 'rejected' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Rejected</a>
+
+    <form method="GET" action="technical-list.php" style="margin-left: auto; display: flex; gap: 8px;">
+        <select name="status" onchange="this.form.submit()" class="form-control" style="padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px;">
+            <option value="">Filter by Specific Stage...</option>
+            <?php foreach ($stages as $idx => $stg): ?>
+                <option value="<?= h($stg) ?>" <?= $statusFilter === $stg ? 'selected' : '' ?>><?= ($idx + 1) . '. ' . h($stg) ?></option>
+            <?php endforeach; ?>
+            <option value="rejected" <?= $statusFilter === 'rejected' ? 'selected' : '' ?>>Rejected</option>
+        </select>
+    </form>
 </div>
 
 <div class="desktop-card" style="padding: 0;">
