@@ -404,13 +404,13 @@ include __DIR__ . '/../includes/header.php';
                         <?php if (!empty($customer['payment_receipt'])): ?>
                             <div style="margin-top: 6px; font-size: 11px;">
                                 <span style="color: var(--success); font-weight: 600;"><i class="fa fa-check-circle"></i> Receipt uploaded:</span>
-                                <a href="<?= site_url('public/uploads/' . h($customer['payment_receipt'])) ?>" target="_blank" style="color: var(--primary); text-decoration: underline; margin-left: 4px;">View Proof</a>
+                                <a href="<?= site_url('public/file.php?type=technical&file=' . urlencode($customer['payment_receipt'])) ?>" target="_blank" style="color: var(--primary); text-decoration: underline; margin-left: 4px;">View Proof</a>
                             </div>
                         <?php endif; ?>
                     <?php elseif (!empty($customer['payment_receipt'])): ?>
                         <div style="margin-top: 10px; font-size: 11px;">
                             <span style="color: var(--success); font-weight: 600;"><i class="fa fa-check-circle"></i> Receipt proof:</span>
-                            <a href="<?= site_url('public/uploads/' . h($customer['payment_receipt'])) ?>" target="_blank" style="color: var(--primary); text-decoration: underline; margin-left: 4px;">View Proof</a>
+                            <a href="<?= site_url('public/file.php?type=technical&file=' . urlencode($customer['payment_receipt'])) ?>" target="_blank" style="color: var(--primary); text-decoration: underline; margin-left: 4px;">View Proof</a>
                         </div>
                     <?php endif; ?>
                 </div>

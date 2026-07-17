@@ -108,7 +108,7 @@ include __DIR__ . '/../includes/header.php';
                                     <span class="badge" style="background: #d1fae5; color: #065f46; font-size: 10px; margin-top: 4px;">CREDITED TO WALLET</span>
                                     <?php if (!empty($c['payment_receipt'])): ?>
                                         <div style="margin-top: 4px;">
-                                            <a href="<?= site_url('public/uploads/' . h($c['payment_receipt'])) ?>" target="_blank" style="font-size: 11px; color: var(--primary); text-decoration: underline;"><i class="fa fa-receipt"></i> View Proof</a>
+                                            <a href="<?= site_url('public/file.php?type=technical&file=' . urlencode($c['payment_receipt'])) ?>" target="_blank" style="font-size: 11px; color: var(--primary); text-decoration: underline;"><i class="fa fa-receipt"></i> View Proof</a>
                                         </div>
                                     <?php endif; ?>
                                 <?php else: ?>

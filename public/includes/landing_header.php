@@ -149,7 +149,55 @@ if ($isLoggedIn && !empty(Auth::userRole())) {
             <?php if ($isLoggedIn): ?>
                 <a class="font-label-caps text-label-caps bg-primary-container text-on-primary px-6 py-2.5 rounded-lg hover:bg-primary transition-colors hover:-translate-y-[1px] shadow-sm" href="<?= $dashboardUrl ?>">Dashboard</a>
             <?php else: ?>
-                <a class="font-label-caps text-label-caps text-primary-container hover:opacity-70 transition-opacity" href="<?= site_url('public/login.php') ?>">Sign In</a>
+                <!-- Role-based Login Dropdown -->
+                <div class="relative group">
+                    <button class="font-label-caps text-label-caps text-primary-container hover:opacity-70 transition-opacity flex items-center gap-1 py-2 cursor-pointer">
+                        <span>Sign In</span>
+                        <span class="material-symbols-outlined text-sm transition-transform group-hover:rotate-180">expand_more</span>
+                    </button>
+                    <div class="absolute right-0 mt-1 w-64 bg-white rounded-xl shadow-xl border border-outline-variant/30 py-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
+                        <div class="px-4 py-1.5 text-[11px] font-bold text-outline uppercase tracking-wider">Select Role Panel</div>
+                        <a href="<?= site_url('public/login.php?role=admin') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-low transition-colors">
+                            <span class="material-symbols-outlined text-primary-container text-lg">admin_panel_settings</span>
+                            <div>
+                                <div class="font-semibold text-primary-container leading-tight">Managing Director</div>
+                                <div class="text-[11px] text-on-surface-variant leading-tight">Admin & Stage 5 Payouts</div>
+                            </div>
+                        </a>
+                        <a href="<?= site_url('public/login.php?role=director') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-low transition-colors">
+                            <span class="material-symbols-outlined text-primary-container text-lg">corporate_fare</span>
+                            <div>
+                                <div class="font-semibold text-primary-container leading-tight">Director Panel</div>
+                                <div class="text-[11px] text-on-surface-variant leading-tight">Reports & Overview</div>
+                            </div>
+                        </a>
+                        <a href="<?= site_url('public/login.php?role=staff') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-low transition-colors">
+                            <span class="material-symbols-outlined text-primary-container text-lg">badge</span>
+                            <div>
+                                <div class="font-semibold text-primary-container leading-tight">Staff / Review Panel</div>
+                                <div class="text-[11px] text-on-surface-variant leading-tight">11-Stage Pipeline Tracking</div>
+                            </div>
+                        </a>
+                        <a href="<?= site_url('public/login.php?role=dm') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-low transition-colors">
+                            <span class="material-symbols-outlined text-primary-container text-lg">manage_accounts</span>
+                            <div>
+                                <div class="font-semibold text-primary-container leading-tight">DM / PE Panel</div>
+                                <div class="text-[11px] text-on-surface-variant leading-tight">Consumer & Payouts History</div>
+                            </div>
+                        </a>
+                        <a href="<?= site_url('public/login.php?role=surveyer') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-low transition-colors">
+                            <span class="material-symbols-outlined text-primary-container text-lg">engineering</span>
+                            <div>
+                                <div class="font-semibold text-primary-container leading-tight">Field Surveyor Panel</div>
+                                <div class="text-[11px] text-on-surface-variant leading-tight">Mobile Survey & ID Card</div>
+                            </div>
+                        </a>
+                        <div class="h-px bg-outline-variant/20 my-1"></div>
+                        <a href="<?= site_url('public/login.php') ?>" class="block px-4 py-2 text-xs font-semibold text-primary-container hover:bg-surface-container-low text-center transition-colors">
+                            General Portal Login &rarr;
+                        </a>
+                    </div>
+                </div>
                 <a class="font-label-caps text-label-caps bg-primary-container text-on-primary px-6 py-2.5 rounded-lg hover:bg-primary transition-colors hover:-translate-y-[1px] shadow-sm" href="<?= site_url('public/login.php') ?>">Get Started</a>
             <?php endif; ?>
         </div>
@@ -185,8 +233,35 @@ if ($isLoggedIn && !empty(Auth::userRole())) {
             <?php if ($isLoggedIn): ?>
                 <a class="text-center font-label-caps text-label-caps bg-primary-container text-on-primary px-6 py-3 rounded-lg" href="<?= $dashboardUrl ?>">Dashboard</a>
             <?php else: ?>
-                <a class="text-center font-label-caps text-label-caps text-primary-container py-3 border border-primary-container rounded-lg" href="<?= site_url('public/login.php') ?>">Sign In</a>
-                <a class="text-center font-label-caps text-label-caps bg-primary-container text-on-primary px-6 py-3 rounded-lg" href="<?= site_url('public/login.php') ?>">Get Started</a>
+                <div class="border border-outline-variant/30 rounded-xl overflow-hidden bg-white shadow-sm">
+                    <div class="px-4 py-2.5 bg-surface-container-low text-xs font-bold text-primary-container uppercase tracking-wider flex justify-between items-center">
+                        <span>Sign In by Role</span>
+                        <span class="material-symbols-outlined text-sm">login</span>
+                    </div>
+                    <div class="divide-y divide-outline-variant/20">
+                        <a href="<?= site_url('public/login.php?role=admin') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-low transition-colors">
+                            <span class="material-symbols-outlined text-primary-container text-base">admin_panel_settings</span>
+                            <span>Managing Director (Admin)</span>
+                        </a>
+                        <a href="<?= site_url('public/login.php?role=director') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-low transition-colors">
+                            <span class="material-symbols-outlined text-primary-container text-base">corporate_fare</span>
+                            <span>Director Panel</span>
+                        </a>
+                        <a href="<?= site_url('public/login.php?role=staff') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-low transition-colors">
+                            <span class="material-symbols-outlined text-primary-container text-base">badge</span>
+                            <span>Staff / Review Panel</span>
+                        </a>
+                        <a href="<?= site_url('public/login.php?role=dm') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-low transition-colors">
+                            <span class="material-symbols-outlined text-primary-container text-base">manage_accounts</span>
+                            <span>DM / PE Panel</span>
+                        </a>
+                        <a href="<?= site_url('public/login.php?role=surveyer') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-low transition-colors">
+                            <span class="material-symbols-outlined text-primary-container text-base">engineering</span>
+                            <span>Field Surveyor Panel</span>
+                        </a>
+                    </div>
+                </div>
+                <a class="text-center font-label-caps text-label-caps bg-primary-container text-on-primary px-6 py-3 rounded-lg mt-1 shadow-sm" href="<?= site_url('public/login.php') ?>">Get Started</a>
             <?php endif; ?>
         </div>
     </div>

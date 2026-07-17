@@ -13,17 +13,30 @@ if (Auth::check()) {
 }
 
 $flash = getFlash();
+
+$roleNames = [
+    'admin' => 'Managing Director / Admin Panel',
+    'director' => 'Director Panel',
+    'staff' => 'Staff / Review Panel',
+    'office_staff' => 'Staff / Review Panel',
+    'dm' => 'DM / PE Panel',
+    'pe' => 'DM / PE Panel',
+    'surveyer' => 'Field Surveyor Panel'
+];
+$selectedRole = $_GET['role'] ?? '';
+$roleDisplayName = $roleNames[$selectedRole] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Sahu Innovation Portal</title>
+    <title><?= $roleDisplayName ? h($roleDisplayName) . ' Login' : 'Login' ?> | Sahu Innovation Portal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= asset_url('css/main.css') ?>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3, h4, h5, h6, .font-display { font-family: 'Outfit', sans-serif; }
@@ -38,6 +51,11 @@ $flash = getFlash();
                     <h1>Sahu Innovation</h1>
                 </a>
                 <p style="color: var(--text-muted); font-size: 14px; margin-top: 8px;">Internal Management Platform</p>
+                <?php if ($roleDisplayName): ?>
+                    <div style="background: #e0f2fe; color: #0369a1; padding: 8px 14px; border-radius: 6px; font-size: 13px; font-weight: 700; text-align: center; margin-top: 14px; border: 1px solid #bae6fd;">
+                        <i class="fa fa-shield-halved" style="margin-right: 6px;"></i> Signing into <?= h($roleDisplayName) ?>
+                    </div>
+                <?php endif; ?>
             </div>
 
             <?php if ($flash): ?>

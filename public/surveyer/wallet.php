@@ -119,7 +119,7 @@ include __DIR__ . '/../includes/header.php';
                     </span>
                     <?php if ($req['status'] == 'paid' && $req['payment_proof']): ?>
                         <div style="margin-top: 5px;">
-                            <a href="<?= site_url('uploads/payouts/' . $req['payment_proof']) ?>" target="_blank" style="font-size: 11px; color: var(--primary); font-weight: 600; text-decoration: none;">
+                            <a href="<?= site_url('public/file.php?type=payout&file=' . urlencode($req['payment_proof'])) ?>" target="_blank" style="font-size: 11px; color: var(--primary); font-weight: 600; text-decoration: none;">
                                 <i class="fa fa-image"></i> View Proof
                             </a>
                         </div>
