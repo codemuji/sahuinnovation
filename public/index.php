@@ -190,6 +190,40 @@ include_once __DIR__ . '/includes/landing_header.php';
         </div>
     </section>
 
+    <!-- Official Range of Systems Highlight Banner (`#systems-overview`) -->
+    <section class="py-20 px-6 md:px-12 bg-gradient-to-b from-obsidian-deep to-charcoal-surface border-t border-gold-imperial/20 animate-on-scroll relative">
+        <div class="max-w-container-max mx-auto">
+            <div class="p-8 md:p-12 rounded-3xl bg-charcoal-surface border border-gold-imperial/30 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-10">
+                <div class="space-y-4 max-w-2xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-gold-imperial/15 border border-gold-imperial/40 text-gold-champagne font-mono-data text-xs uppercase tracking-widest">
+                        <span class="material-symbols-outlined text-sm">wb_sunny</span>
+                        Official Assam & Northeast Catalog
+                    </div>
+                    <h2 class="font-display text-3xl md:text-4xl text-white font-bold tracking-tight">
+                        Explore Our Full Range of Solar Solutions.
+                    </h2>
+                    <p class="font-body-md text-on-surface-variant text-sm leading-relaxed">
+                        From PM Surya Ghar On-Grid systems starting at <strong class="text-white">₹1,89,000/-</strong> (with ₹1.3L direct government subsidy) to 24/7 Solid-State Hybrid Backup systems and customized <strong class="text-white">Rodali Scheme Commercial Projects</strong> (`21kW+`), we deliver turnkey solar engineering across Assam.
+                    </p>
+                    <div class="font-mono-data text-xs text-gold-champagne pt-2 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">location_on</span>
+                        <span>Head Office: Shankardev Nagar Road, Dhanuhar Basti, Hojai, Pin 782435, Assam</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto shrink-0 font-mono-data text-xs">
+                    <a href="<?= site_url('public/pm-surya-ghar.php#pricing-matrix') ?>" class="px-8 py-4 rounded-xl bg-gold-imperial text-obsidian-deep font-bold hover:bg-gold-champagne transition-all text-center uppercase tracking-wider shadow-xl flex items-center justify-center gap-2">
+                        <span>View Complete Price Lists</span>
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </a>
+                    <a href="<?= site_url('public/about.php#leadership') ?>" class="px-8 py-4 rounded-xl bg-obsidian-deep text-gold-champagne border border-gold-imperial/30 hover:border-gold-imperial transition-all text-center uppercase tracking-wider flex items-center justify-center gap-2">
+                        <span>Meet Board of Directors</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Architectural Intake Rail (Shatering 4 identical box cards) -->
     <section class="py-24 px-6 md:px-12 bg-charcoal-surface border-t border-gold-imperial/20 animate-on-scroll relative">
         <div class="max-w-container-max mx-auto">

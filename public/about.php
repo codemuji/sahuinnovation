@@ -414,6 +414,103 @@ include_once __DIR__ . '/includes/landing_header.php';
             </div>
         </div>
     </section>
+
+    <!-- Official Corporate Governance & Leadership Roster (`#leadership`) -->
+    <section id="leadership" class="py-24 px-6 md:px-12 bg-obsidian-deep border-t border-gold-imperial/20 animate-on-scroll relative">
+        <div class="max-w-container-max mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                <!-- Left Statement Block (`col-span-4`) -->
+                <div class="lg:col-span-4 space-y-6">
+                    <span class="font-mono-data text-xs text-gold-imperial uppercase tracking-[0.25em] block border-l-2 border-gold-imperial pl-3">Official Corporate Identity</span>
+                    <h2 class="font-display text-3xl md:text-4xl text-white font-bold tracking-tight leading-tight">
+                        Incorporated on June 25, 2025.
+                        <span class="block font-serif-title italic text-xl text-gold-champagne font-normal mt-1">Value. Trust. Satisfaction.</span>
+                    </h2>
+                    <p class="font-body-md text-on-surface-variant text-sm leading-relaxed">
+                        Sahu Innovation Private Limited (`SAHU INNOVATION PVT LTD`) is an active, registered Indian clean tech startup headquartered in Hojai, Assam. We specialize in residential rooftop solar independence and commercial government renewable infrastructure.
+                    </p>
+
+                    <div class="p-6 rounded-2xl bg-charcoal-surface border border-gold-imperial/30 space-y-4 font-mono-data text-xs">
+                        <div>
+                            <span class="text-gold-champagne font-bold block uppercase">Head Office Address:</span>
+                            <span class="text-on-surface-variant block mt-0.5">Shankardev Nagar Road, Dhanuhar Basti, Hojai, Pin 782435, Assam</span>
+                        </div>
+                        <div class="pt-3 border-t border-outline-variant/30">
+                            <span class="text-emerald-trust font-bold block uppercase">Corporate Registration:</span>
+                            <span class="text-on-surface-variant block mt-0.5">Active Indian Startup • Ministry of Corporate Affairs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Leadership Matrix (`col-span-8`) -->
+                <div class="lg:col-span-8 space-y-10">
+                    <div>
+                        <div class="flex items-center justify-between border-b border-outline-variant/30 pb-4 mb-6">
+                            <h3 class="font-display text-2xl text-white font-bold">Board of Directors</h3>
+                            <span class="font-mono-data text-xs text-gold-imperial font-bold uppercase tracking-wider">Strategic Governance</span>
+                        </div>
+
+                        <!-- Managing Director Spotlight Card -->
+                        <div class="obsidian-card rounded-2xl p-6 md:p-8 border border-gold-imperial/50 mb-6 flex flex-col sm:flex-row items-center sm:items-start gap-6 bg-gradient-to-r from-charcoal-surface to-obsidian-deep">
+                            <div class="w-20 h-20 rounded-full bg-charcoal-light border-2 border-gold-imperial flex items-center justify-center shrink-0 shadow-xl">
+                                <span class="material-symbols-outlined text-3xl text-gold-imperial">account_circle</span>
+                            </div>
+                            <div class="text-center sm:text-left">
+                                <span class="font-mono-data text-[11px] text-gold-champagne font-bold uppercase tracking-widest px-2.5 py-1 rounded bg-gold-imperial/10 border border-gold-imperial/30 inline-block mb-2">Managing Director (`MD`)</span>
+                                <h4 class="font-display text-2xl text-white font-bold">Prodip Sahu</h4>
+                                <p class="font-body-md text-xs text-on-surface-variant mt-1 leading-relaxed">
+                                    Guiding Sahu Innovation's vision to empower Assam and Northeast India with zero-cost residential solar and uncompromising engineering excellence.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 6 Directors Grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 font-mono-data">
+                            <div class="p-4 rounded-xl bg-charcoal-surface border border-gold-imperial/20 hover:border-gold-imperial/50 transition-all">
+                                <span class="text-[10px] text-gold-champagne font-bold uppercase">DIRECTOR</span>
+                                <h5 class="font-display font-bold text-white text-base mt-1">Dipen Sahu</h5>
+                            </div>
+                            <div class="p-4 rounded-xl bg-charcoal-surface border border-gold-imperial/20 hover:border-gold-imperial/50 transition-all">
+                                <span class="text-[10px] text-gold-champagne font-bold uppercase">DIRECTOR</span>
+                                <h5 class="font-display font-bold text-white text-base mt-1">Khelaton Sahoo (`Sonu`)</h5>
+                            </div>
+                            <div class="p-4 rounded-xl bg-charcoal-surface border border-gold-imperial/20 hover:border-gold-imperial/50 transition-all">
+                                <span class="text-[10px] text-gold-champagne font-bold uppercase">DIRECTOR</span>
+                                <h5 class="font-display font-bold text-white text-base mt-1">Goutum Sahu</h5>
+                            </div>
+                            <div class="p-4 rounded-xl bg-charcoal-surface border border-gold-imperial/20 hover:border-gold-imperial/50 transition-all">
+                                <span class="text-[10px] text-gold-champagne font-bold uppercase">DIRECTOR</span>
+                                <h5 class="font-display font-bold text-white text-base mt-1">Krishna Prasad Sahu</h5>
+                            </div>
+                            <div class="p-4 rounded-xl bg-charcoal-surface border border-gold-imperial/20 hover:border-gold-imperial/50 transition-all">
+                                <span class="text-[10px] text-gold-champagne font-bold uppercase">DIRECTOR</span>
+                                <h5 class="font-display font-bold text-white text-base mt-1">Satra Prakash Sahu (`Ajay`)</h5>
+                            </div>
+                            <div class="p-4 rounded-xl bg-charcoal-surface border border-gold-imperial/20 hover:border-gold-imperial/50 transition-all">
+                                <span class="text-[10px] text-gold-champagne font-bold uppercase">DIRECTOR</span>
+                                <h5 class="font-display font-bold text-white text-base mt-1">Tikam Chand Sahu</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Business Partners & Executives -->
+                    <div>
+                        <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3 mb-4">
+                            <h4 class="font-display text-lg text-white font-bold">Key Office Executives & Business Partners</h4>
+                            <span class="font-mono-data text-xs text-on-surface-variant uppercase">Operations & Field Survey</span>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 font-mono-data text-xs text-center">
+                            <div class="p-3 rounded-lg bg-charcoal-light border border-outline-variant/20 text-white font-semibold">Ankit</div>
+                            <div class="p-3 rounded-lg bg-charcoal-light border border-outline-variant/20 text-white font-semibold">Rahul</div>
+                            <div class="p-3 rounded-lg bg-charcoal-light border border-outline-variant/20 text-white font-semibold">Pankaj</div>
+                            <div class="p-3 rounded-lg bg-charcoal-light border border-outline-variant/20 text-white font-semibold">Utpal</div>
+                            <div class="p-3 rounded-lg bg-charcoal-light border border-outline-variant/20 text-white font-semibold sm:col-span-1 col-span-2">Apon Ch. Das</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </main>
 
 <script>
