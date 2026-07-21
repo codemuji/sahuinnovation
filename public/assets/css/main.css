@@ -2,27 +2,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-    /* Colors */
-    --primary: #0f172a;      /* Navy */
-    --primary-light: #1e293b;
-    --accent: #f59e0b;       /* Amber */
-    --accent-hover: #d97706;
+    /* Colors - Pristine Luxury Light Theme (Navy & Gold) */
+    --primary: #0B1F3A;      /* Sapphire Navy */
+    --primary-light: #16365C;
+    --accent: #D4AF37;       /* Burnished Gold */
+    --accent-hover: #B89728;
     --success: #10b981;      /* Green */
     --danger: #ef4444;       /* Red */
     --warning: #f59e0b;      /* Amber */
     --info: #3b82f6;         /* Blue */
-    --background: #f8fafc;   /* Light Gray */
+    --background: #FDFBF7;   /* Alabaster Cream */
     --surface: #ffffff;      /* White */
-    --text-main: #1e293b;
-    --text-muted: #64748b;
+    --text-main: #0B1F3A;
+    --text-muted: #526173;
     --border: #e2e8f0;
     
     /* Layout */
     --sidebar-width: 260px;
     --header-height: 64px;
     --radius: 8px;
-    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
 }
 
 * {
@@ -46,7 +46,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 20px;
-    background: linear-gradient(135deg, var(--primary) 0%, #1e1b4b 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, #16365C 100%);
 }
 
 .auth-card {

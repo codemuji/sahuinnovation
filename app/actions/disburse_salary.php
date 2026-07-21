@@ -22,21 +22,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirect(site_url('public/admin/disburse-salary.php'));
     }
 
+    // Ensure table exists and ref_type accepts arbitrary string references (must run before transaction to avoid MySQL DDL implicit commit)
+    $db->exec("CREATE TABLE IF NOT EXISTS salary_disbursements (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        admin_id INT NOT NULL,
+        user_id INT NOT NULL,
+        type ENUM('salary', 'advance') NOT NULL DEFAULT 'salary',
+        amount DECIMAL(10, 2) NOT NULL,
+        notes TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    @$db->exec("ALTER TABLE wallet_transactions MODIFY COLUMN ref_type VARCHAR(50) NOT NULL");
+
     try {
         $db->beginTransaction();
-
-        // 0. Ensure table exists and ref_type accepts arbitrary string references
-        $db->exec("CREATE TABLE IF NOT EXISTS salary_disbursements (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            admin_id INT NOT NULL,
-            user_id INT NOT NULL,
-            type ENUM('salary', 'advance') NOT NULL DEFAULT 'salary',
-            amount DECIMAL(10, 2) NOT NULL,
-            notes TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
-
-        @$db->exec("ALTER TABLE wallet_transactions MODIFY COLUMN ref_type VARCHAR(50) NOT NULL");
 
         // 1. Verify target user exists and is a Director or Office Staff
         $stmt = $db->prepare("SELECT name FROM users WHERE id = ? AND role IN ('director', 'office_staff') AND is_active = 1");

@@ -10,7 +10,7 @@ if ($isLoggedIn && !empty(Auth::userRole())) {
 }
 ?>
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html class="light" lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -18,47 +18,48 @@ if ($isLoggedIn && !empty(Auth::userRole())) {
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
         }
-        /* Obsidian & Imperial Gold Design Tokens & Utilities */
+        /* Pristine Alabaster & Imperial Gold Design Tokens & Utilities */
         .gold-gradient-text {
-            background: linear-gradient(135deg, #FFF4D0 0%, #E6C280 30%, #D4AF37 70%, #9A7B38 100%);
+            background: linear-gradient(135deg, #9A6B1F 0%, #D4AF37 45%, #B08B28 80%, #7A5513 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .gold-border {
-            border: 1px solid rgba(212, 175, 55, 0.25);
+            border: 1px solid rgba(212, 175, 55, 0.35);
         }
         .gold-glow {
-            box-shadow: 0 0 30px -5px rgba(212, 175, 55, 0.25);
+            box-shadow: 0 15px 35px -5px rgba(212, 175, 55, 0.18);
         }
         .gold-glow-sm {
-            box-shadow: 0 0 15px -3px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 8px 20px -3px rgba(212, 175, 55, 0.15);
         }
-        .obsidian-card {
-            background: linear-gradient(145deg, rgba(20, 24, 36, 0.88) 0%, rgba(11, 14, 20, 0.96) 100%);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(212, 175, 55, 0.18);
+        .obsidian-card, .luxury-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.94) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.28);
+            box-shadow: 0 12px 30px -10px rgba(11, 31, 58, 0.08), 0 4px 6px -2px rgba(11, 31, 58, 0.04);
         }
-        .obsidian-card-hover {
+        .obsidian-card-hover, .luxury-card-hover {
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .obsidian-card-hover:hover {
+        .obsidian-card-hover:hover, .luxury-card-hover:hover {
             transform: translateY(-5px);
-            border-color: rgba(212, 175, 55, 0.45);
-            box-shadow: 0 20px 40px -12px rgba(212, 175, 55, 0.18), 0 0 20px -5px rgba(0, 240, 255, 0.08);
+            border-color: rgba(212, 175, 55, 0.6);
+            box-shadow: 0 20px 40px -12px rgba(212, 175, 55, 0.22), 0 12px 24px -8px rgba(11, 31, 58, 0.12);
         }
         .bg-grid-pattern {
             background-size: 40px 40px;
-            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+            background-image: linear-gradient(to right, rgba(11, 31, 58, 0.04) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(11, 31, 58, 0.04) 1px, transparent 1px);
         }
         .ambient-shadow {
-            box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.85);
+            box-shadow: 0 15px 35px -10px rgba(11, 31, 58, 0.12);
         }
         /* Scroll & Stagger Animations */
         .animate-on-scroll {
@@ -80,39 +81,30 @@ if ($isLoggedIn && !empty(Auth::userRole())) {
             theme: {
                 extend: {
                     "colors": {
-                        "obsidian-deep": "#0B0E14",
-                        "charcoal-surface": "#141824",
-                        "charcoal-light": "#1C2232",
+                        "navy-deep": "#0B1F3A",
+                        "navy-primary": "#0F172A",
+                        "navy-light": "#1E293B",
+                        "alabaster-cream": "#FAF9F6",
+                        "surface-white": "#FFFFFF",
+                        "surface-tint": "#F8FAFC",
                         "gold-imperial": "#D4AF37",
-                        "gold-champagne": "#E6C280",
-                        "gold-dim": "#9A7B38",
-                        "cyan-pulse": "#00F0FF",
-                        "emerald-trust": "#10B981",
-                        "on-primary": "#0B0E14",
-                        "outline": "#646B80",
-                        "on-surface": "#F6F5F2",
-                        "primary-fixed": "#E6C280",
-                        "inverse-primary": "#9A7B38",
-                        "secondary-container": "#1C2232",
-                        "tertiary": "#00F0FF",
-                        "surface": "#0B0E14",
-                        "tertiary-fixed": "#10B981",
-                        "outline-variant": "#282F44",
-                        "on-primary-container": "#E6C280",
-                        "secondary": "#9A7B38",
-                        "surface-container-highest": "#1C2232",
-                        "primary": "#D4AF37",
-                        "tertiary-container": "#141824",
-                        "on-surface-variant": "#A3A8B8",
-                        "primary-container": "#141824",
-                        "error": "#EF4444",
-                        "on-error": "#ffffff",
-                        "inverse-on-surface": "#0B0E14",
-                        "background": "#0B0E14",
-                        "on-background": "#F6F5F2",
-                        "surface-container-lowest": "#141824",
-                        "on-secondary-container": "#D4AF37",
-                        "surface-container-high": "#1C2232"
+                        "gold-champagne": "#B08B28",
+                        "gold-dim": "#9A6B1F",
+                        "gold-light": "#FFF9E6",
+                        "emerald-trust": "#059669",
+                        "emerald-light": "#D1FAE5",
+                        "text-main": "#0F172A",
+                        "text-muted": "#475569",
+                        "text-subtle": "#64748b",
+                        "border-light": "#E2E8F0",
+                        /* Backward compatibility mappings to transition smoothly */
+                        "obsidian-deep": "#FAF9F6",
+                        "charcoal-surface": "#FFFFFF",
+                        "charcoal-light": "#F1F5F9",
+                        "on-surface": "#0F172A",
+                        "on-surface-variant": "#475569",
+                        "outline-variant": "#CBD5E1",
+                        "primary": "#D4AF37"
                     },
                     "borderRadius": {
                         "DEFAULT": "0.375rem",
@@ -153,167 +145,166 @@ if ($isLoggedIn && !empty(Auth::userRole())) {
         }
     </script>
 </head>
-<body class="bg-obsidian-deep text-on-surface font-body-md antialiased selection:bg-gold-imperial selection:text-obsidian-deep min-h-screen flex flex-col relative overflow-x-hidden">
+<body class="bg-alabaster-cream text-navy-primary font-body-md antialiased selection:bg-gold-imperial selection:text-white min-h-screen flex flex-col relative overflow-x-hidden">
 
-<!-- Atmospheric Top Banner for Govt Scheme -->
-<div class="w-full bg-gradient-to-r from-charcoal-surface via-charcoal-light to-charcoal-surface border-b border-gold-imperial/30 py-2.5 px-4 text-center text-xs font-mono-data text-gold-champagne flex items-center justify-center gap-2 relative z-[60]">
-    <span class="inline-block w-2 h-2 rounded-full bg-emerald-trust animate-pulse"></span>
-    <span>PM SURYA GHAR MUFT BIJLI YOJANA: Claim <strong class="text-white">₹1,30,800 Subsidy</strong> + <strong class="text-white">300 Units/Month Free Power</strong>. Zero Down Payment Available.</span>
+<!-- Atmospheric Top Banner for Govt Scheme in Sapphire Navy -->
+<div class="w-full bg-gradient-to-r from-navy-deep via-navy-primary to-navy-deep border-b border-gold-imperial/40 py-2.5 px-4 text-center text-xs font-mono-data text-gold-light flex items-center justify-center gap-2 relative z-[60] shadow-md">
+    <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+    <span>PM SURYA GHAR MUFT BIJLI YOJANA: Claim <strong class="text-white font-bold">₹1,30,800 Subsidy</strong> + <strong class="text-white font-bold">300 Units/Month Free Power</strong>. Zero Down Payment Available.</span>
     <a href="<?= site_url('public/pm-surya-ghar.php') ?>" class="underline text-white hover:text-gold-imperial font-label-caps tracking-widest ml-1 transition-colors">Verify Eligibility &rarr;</a>
 </div>
 
-<!-- Glassmorphic Navigation Bar -->
-<!-- Glassmorphic Navigation Bar -->
-<nav class="sticky top-0 z-50 w-full bg-obsidian-deep/90 backdrop-blur-2xl border-b border-gold-imperial/20 shadow-xl transition-all duration-300">
-    <div class="flex justify-between items-center w-full px-4 md:px-8 py-3 max-w-[1536px] mx-auto gap-4">
+<!-- Glassmorphic Navigation Bar in Pristine Light Mode -->
+<nav class="sticky top-0 z-50 w-full bg-white/92 backdrop-blur-2xl border-b border-gold-imperial/25 shadow-lg transition-all duration-300">
+    <div class="flex justify-between items-center w-full px-4 md:px-8 py-3.5 max-w-[1536px] mx-auto gap-4">
         <!-- Logo Display -->
-        <a class="flex items-center gap-3 flex-shrink-0 group" href="<?= site_url('public/index.php') ?>">
-            <img alt="Sahu Innovation Logo" class="h-10 w-auto object-contain drop-shadow-[0_0_10px_rgba(212,175,55,0.3)] transition-transform duration-300 group-hover:scale-105" src="<?= site_url('public/assets/img/logo.png') ?>"/>
+        <a class="flex items-center gap-3.5 flex-shrink-0 group" href="<?= site_url('public/index.php') ?>">
+            <img alt="Sahu Innovation Logo" class="h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105" src="<?= site_url('public/assets/img/logo.png') ?>"/>
             <div class="flex flex-col">
-                <span class="text-xl font-display font-bold tracking-tight text-white leading-none">SAHU</span>
-                <span class="gold-gradient-text font-serif-title text-[9px] font-semibold tracking-[0.22em] uppercase leading-tight mt-0.5">INNOVATION</span>
+                <span class="text-xl font-display font-bold tracking-tight text-navy-deep leading-none">SAHU</span>
+                <span class="gold-gradient-text font-serif-title text-[9.5px] font-semibold tracking-[0.22em] uppercase leading-tight mt-0.5">INNOVATION</span>
             </div>
         </a>
         
-        <!-- Desktop Nav Links (Single Line Guarantee) -->
-        <ul class="hidden lg:flex items-center gap-5 xl:gap-7 text-sm font-medium">
-            <li><a class="whitespace-nowrap text-on-surface/80 hover:text-gold-imperial transition-colors duration-200 py-1" href="<?= site_url('public/index.php') ?>">Home</a></li>
-            <li><a class="whitespace-nowrap text-on-surface/80 hover:text-gold-imperial transition-colors duration-200 py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gold-imperial hover:after:w-full after:transition-all after:duration-300" href="<?= site_url('public/about.php') ?>">About & Philosophy</a></li>
-            <li><a class="whitespace-nowrap text-on-surface/80 hover:text-gold-imperial transition-colors duration-200 py-1" href="<?= site_url('public/how-it-works.php') ?>">11-Stage Process</a></li>
-            <li><a class="whitespace-nowrap text-on-surface/80 hover:text-gold-imperial transition-colors duration-200 py-1" href="<?= site_url('public/savings-benefits.php') ?>">ROI & Savings</a></li>
+        <!-- Desktop Nav Links -->
+        <ul class="hidden lg:flex items-center gap-6 xl:gap-8 text-sm font-semibold text-navy-primary">
+            <li><a class="whitespace-nowrap hover:text-gold-imperial transition-colors duration-200 py-1" href="<?= site_url('public/index.php') ?>">Home</a></li>
+            <li><a class="whitespace-nowrap hover:text-gold-imperial transition-colors duration-200 py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gold-imperial hover:after:w-full after:transition-all after:duration-300" href="<?= site_url('public/about.php') ?>">About & Philosophy</a></li>
+            <li><a class="whitespace-nowrap hover:text-gold-imperial transition-colors duration-200 py-1" href="<?= site_url('public/how-it-works.php') ?>">11-Stage Process</a></li>
+            <li><a class="whitespace-nowrap hover:text-gold-imperial transition-colors duration-200 py-1" href="<?= site_url('public/savings-benefits.php') ?>">ROI & Savings</a></li>
             <li>
-                <a class="whitespace-nowrap inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gold-imperial/10 border border-gold-imperial/30 text-gold-champagne hover:border-gold-imperial hover:text-white transition-all duration-300 text-xs font-mono-data tracking-wide" href="<?= site_url('public/pm-surya-ghar.php') ?>">
+                <a class="whitespace-nowrap inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gold-imperial/10 border border-gold-imperial/40 text-navy-deep font-bold hover:bg-gold-imperial hover:text-white transition-all duration-300 text-xs font-mono-data tracking-wide shadow-sm" href="<?= site_url('public/pm-surya-ghar.php') ?>">
                     <span class="material-symbols-outlined text-sm text-gold-imperial leading-none">verified</span>
                     <span>PM Surya Ghar (₹1.3L)</span>
                 </a>
             </li>
         </ul>
 
-        <!-- Action / Login Area (Single Line Guarantee) -->
+        <!-- Action / Login Area -->
         <div class="hidden lg:flex items-center gap-3 xl:gap-4 flex-shrink-0">
             <?php if ($isLoggedIn): ?>
-                <a class="whitespace-nowrap font-label-caps text-xs bg-gradient-to-r from-gold-imperial via-gold-champagne to-gold-imperial text-obsidian-deep font-bold px-5 py-2 rounded-lg hover:shadow-lg hover:shadow-gold-imperial/25 transition-all duration-300 transform hover:-translate-y-0.5 tracking-wider uppercase leading-none" href="<?= $dashboardUrl ?>">Portal Dashboard</a>
+                <a class="whitespace-nowrap font-label-caps text-xs bg-gradient-to-r from-navy-deep via-navy-primary to-navy-deep text-white font-bold px-5 py-2.5 rounded-lg hover:shadow-lg hover:shadow-navy-deep/20 transition-all duration-300 transform hover:-translate-y-0.5 tracking-wider uppercase leading-none border border-gold-imperial/40" href="<?= $dashboardUrl ?>">Portal Dashboard</a>
             <?php else: ?>
                 <!-- Role-based Login Dropdown -->
                 <div class="relative group" id="desktopPortalDropdown">
-                    <button id="desktopPortalBtn" class="whitespace-nowrap font-label-caps text-xs text-gold-champagne hover:text-white transition-colors flex items-center gap-1.5 py-2 px-3 rounded-lg hover:bg-charcoal-surface cursor-pointer border border-transparent hover:border-gold-imperial/20 focus:outline-none">
-                        <span class="material-symbols-outlined text-sm leading-none">login</span>
+                    <button id="desktopPortalBtn" class="whitespace-nowrap font-label-caps text-xs text-navy-deep font-bold hover:text-gold-imperial transition-colors flex items-center gap-1.5 py-2 px-3.5 rounded-lg hover:bg-slate-100 cursor-pointer border border-border-light hover:border-gold-imperial/30 focus:outline-none shadow-sm bg-white">
+                        <span class="material-symbols-outlined text-sm text-gold-imperial leading-none">login</span>
                         <span>Staff Portal</span>
                         <span class="material-symbols-outlined text-sm leading-none transition-transform duration-200 group-hover:rotate-180" id="portalArrow">expand_more</span>
                     </button>
                     <!-- Invisible Bridge Wrapper to prevent hover gap drop -->
                     <div class="absolute right-0 top-full pt-2 w-72 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50" id="portalMenu">
-                        <div class="bg-charcoal-surface rounded-xl shadow-2xl border border-gold-imperial/30 py-3 backdrop-blur-2xl">
-                            <div class="px-4 py-1.5 text-[11px] font-mono-data text-gold-imperial uppercase tracking-wider border-b border-outline-variant/40 pb-2 mb-1">Select Operations Role</div>
-                            <a href="<?= site_url('public/login.php?role=admin') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-charcoal-light hover:text-gold-champagne transition-colors">
+                        <div class="bg-white rounded-xl shadow-2xl border border-gold-imperial/30 py-3 backdrop-blur-2xl ring-1 ring-black/5">
+                            <div class="px-4 py-1.5 text-[11px] font-mono-data text-gold-champagne font-bold uppercase tracking-wider border-b border-border-light pb-2 mb-1">Select Operations Role</div>
+                            <a href="<?= site_url('public/login.php?role=admin') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-navy-primary hover:bg-slate-50 hover:text-gold-imperial transition-colors">
                                 <span class="material-symbols-outlined text-gold-imperial text-lg">admin_panel_settings</span>
                                 <div>
                                     <div class="font-semibold leading-tight">Managing Director</div>
-                                    <div class="text-[11px] text-on-surface-variant leading-tight">Admin & Stage 5 Payouts</div>
+                                    <div class="text-[11px] text-text-muted leading-tight">Admin & Stage 5 Payouts</div>
                                 </div>
                             </a>
-                            <a href="<?= site_url('public/login.php?role=director') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-charcoal-light hover:text-gold-champagne transition-colors">
+                            <a href="<?= site_url('public/login.php?role=director') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-navy-primary hover:bg-slate-50 hover:text-gold-imperial transition-colors">
                                 <span class="material-symbols-outlined text-gold-imperial text-lg">corporate_fare</span>
                                 <div>
                                     <div class="font-semibold leading-tight">Director Panel</div>
-                                    <div class="text-[11px] text-on-surface-variant leading-tight">Reports & Performance</div>
+                                    <div class="text-[11px] text-text-muted leading-tight">Reports & Performance</div>
                                 </div>
                             </a>
-                            <a href="<?= site_url('public/login.php?role=staff') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-charcoal-light hover:text-gold-champagne transition-colors">
+                            <a href="<?= site_url('public/login.php?role=staff') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-navy-primary hover:bg-slate-50 hover:text-gold-imperial transition-colors">
                                 <span class="material-symbols-outlined text-gold-imperial text-lg">badge</span>
                                 <div>
                                     <div class="font-semibold leading-tight">Staff / Review Panel</div>
-                                    <div class="text-[11px] text-on-surface-variant leading-tight">11-Stage Pipeline Tracking</div>
+                                    <div class="text-[11px] text-text-muted leading-tight">11-Stage Pipeline Tracking</div>
                                 </div>
                             </a>
-                            <a href="<?= site_url('public/login.php?role=dm') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-charcoal-light hover:text-gold-champagne transition-colors">
+                            <a href="<?= site_url('public/login.php?role=dm') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-navy-primary hover:bg-slate-50 hover:text-gold-imperial transition-colors">
                                 <span class="material-symbols-outlined text-gold-imperial text-lg">manage_accounts</span>
                                 <div>
                                     <div class="font-semibold leading-tight">DM / PE Panel</div>
-                                    <div class="text-[11px] text-on-surface-variant leading-tight">Consumer & Payouts History</div>
+                                    <div class="text-[11px] text-text-muted leading-tight">Consumer & Payouts History</div>
                                 </div>
                             </a>
-                            <a href="<?= site_url('public/login.php?role=surveyer') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-charcoal-light hover:text-gold-champagne transition-colors">
+                            <a href="<?= site_url('public/login.php?role=surveyer') ?>" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-navy-primary hover:bg-slate-50 hover:text-gold-imperial transition-colors">
                                 <span class="material-symbols-outlined text-gold-imperial text-lg">engineering</span>
                                 <div>
                                     <div class="font-semibold leading-tight">Field Surveyor Panel</div>
-                                    <div class="text-[11px] text-on-surface-variant leading-tight">Mobile Survey & ID Card</div>
+                                    <div class="text-[11px] text-text-muted leading-tight">Mobile Survey & ID Card</div>
                                 </div>
                             </a>
-                            <div class="h-px bg-outline-variant/40 my-2"></div>
-                            <a href="<?= site_url('public/login.php') ?>" class="block px-4 py-2 text-xs font-mono-data text-center text-cyan-pulse hover:underline">
+                            <div class="h-px bg-border-light my-2"></div>
+                            <a href="<?= site_url('public/login.php') ?>" class="block px-4 py-2 text-xs font-mono-data text-center text-navy-deep font-bold hover:underline">
                                 General Consumer Portal Login &rarr;
                             </a>
                         </div>
                     </div>
                 </div>
-                <a class="whitespace-nowrap font-label-caps text-xs bg-gradient-to-r from-gold-imperial via-gold-champagne to-gold-imperial text-obsidian-deep font-bold px-5 py-2 rounded-lg hover:shadow-lg hover:shadow-gold-imperial/25 transition-all duration-300 transform hover:-translate-y-0.5 tracking-wider uppercase leading-none flex items-center" href="<?= site_url('public/about.php#calculator') ?>">Get Free Quote</a>
+                <a class="whitespace-nowrap font-label-caps text-xs bg-gradient-to-r from-navy-deep via-navy-primary to-navy-deep text-white font-bold px-5 py-2.5 rounded-lg hover:shadow-lg hover:shadow-navy-deep/20 transition-all duration-300 transform hover:-translate-y-0.5 tracking-wider uppercase leading-none flex items-center border border-gold-imperial/40" href="<?= site_url('public/about.php#calculator') ?>">Get Free Quote</a>
             <?php endif; ?>
         </div>
 
         <!-- Mobile Menu Toggle -->
-        <button id="mobileMenuBtn" class="lg:hidden text-gold-champagne p-2 hover:bg-charcoal-surface rounded-lg border border-gold-imperial/20 transition-colors flex-shrink-0">
+        <button id="mobileMenuBtn" class="lg:hidden text-navy-deep p-2 hover:bg-slate-100 rounded-lg border border-border-light transition-colors flex-shrink-0">
             <span class="material-symbols-outlined pointer-events-none">menu</span>
         </button>
     </div>
 </nav>
 
 <!-- Mobile Menu Overlay -->
-<div id="mobileMenuOverlay" class="fixed inset-0 bg-obsidian-deep/80 backdrop-blur-md z-[60] opacity-0 pointer-events-none transition-opacity duration-300"></div>
+<div id="mobileMenuOverlay" class="fixed inset-0 bg-navy-deep/60 backdrop-blur-sm z-[60] opacity-0 pointer-events-none transition-opacity duration-300"></div>
 
 <!-- Mobile Menu Panel -->
-<div id="mobileMenuPanel" class="fixed top-0 right-0 h-full w-[88%] max-w-[420px] bg-charcoal-surface border-l border-gold-imperial/30 shadow-2xl z-[70] translate-x-full transition-transform duration-300 flex flex-col">
-    <div class="flex justify-between items-center p-6 border-b border-outline-variant/30">
+<div id="mobileMenuPanel" class="fixed top-0 right-0 h-full w-[88%] max-w-[420px] bg-white border-l border-gold-imperial/30 shadow-2xl z-[70] translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="flex justify-between items-center p-6 border-b border-border-light">
         <a class="flex items-center gap-3" href="<?= site_url('public/index.php') ?>">
             <img alt="Sahu Innovation Logo" class="h-9 w-auto object-contain" src="<?= site_url('public/assets/img/logo.png') ?>"/>
-            <span class="text-lg font-display font-bold tracking-tight text-white">SAHU <span class="gold-gradient-text font-serif-title text-xs font-semibold">INNOVATION</span></span>
+            <span class="text-lg font-display font-bold tracking-tight text-navy-deep">SAHU <span class="gold-gradient-text font-serif-title text-xs font-semibold">INNOVATION</span></span>
         </a>
-        <button id="mobileMenuClose" class="text-gold-champagne p-2 hover:bg-charcoal-light rounded-lg transition-colors">
+        <button id="mobileMenuClose" class="text-navy-deep p-2 hover:bg-slate-100 rounded-lg transition-colors">
             <span class="material-symbols-outlined pointer-events-none">close</span>
         </button>
     </div>
     <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
-        <ul class="flex flex-col gap-4 font-display text-lg font-semibold text-white">
-            <li><a class="block py-2.5 px-3 rounded-lg hover:bg-charcoal-light hover:text-gold-imperial transition-colors" href="<?= site_url('public/index.php') ?>">Home</a></li>
-            <li><a class="block py-2.5 px-3 rounded-lg hover:bg-charcoal-light hover:text-gold-imperial transition-colors" href="<?= site_url('public/about.php') ?>">Company & Philosophy</a></li>
-            <li><a class="block py-2.5 px-3 rounded-lg hover:bg-charcoal-light hover:text-gold-imperial transition-colors" href="<?= site_url('public/how-it-works.php') ?>">11-Stage Process</a></li>
-            <li><a class="block py-2.5 px-3 rounded-lg hover:bg-charcoal-light hover:text-gold-imperial transition-colors" href="<?= site_url('public/savings-benefits.php') ?>">ROI & Savings</a></li>
-            <li><a class="block py-2.5 px-3 rounded-lg bg-gold-imperial/10 border border-gold-imperial/30 text-gold-champagne hover:bg-gold-imperial/20 transition-colors" href="<?= site_url('public/pm-surya-ghar.php') ?>">PM Surya Ghar Scheme (₹1.3L Subsidy)</a></li>
+        <ul class="flex flex-col gap-4 font-display text-lg font-bold text-navy-primary">
+            <li><a class="block py-2.5 px-3 rounded-lg hover:bg-slate-50 hover:text-gold-imperial transition-colors" href="<?= site_url('public/index.php') ?>">Home</a></li>
+            <li><a class="block py-2.5 px-3 rounded-lg hover:bg-slate-50 hover:text-gold-imperial transition-colors" href="<?= site_url('public/about.php') ?>">Company & Philosophy</a></li>
+            <li><a class="block py-2.5 px-3 rounded-lg hover:bg-slate-50 hover:text-gold-imperial transition-colors" href="<?= site_url('public/how-it-works.php') ?>">11-Stage Process</a></li>
+            <li><a class="block py-2.5 px-3 rounded-lg hover:bg-slate-50 hover:text-gold-imperial transition-colors" href="<?= site_url('public/savings-benefits.php') ?>">ROI & Savings</a></li>
+            <li><a class="block py-2.5 px-3 rounded-lg bg-gold-imperial/10 border border-gold-imperial/40 text-navy-deep hover:bg-gold-imperial/20 transition-colors" href="<?= site_url('public/pm-surya-ghar.php') ?>">PM Surya Ghar Scheme (₹1.3L Subsidy)</a></li>
         </ul>
-        <div class="h-px w-full bg-outline-variant/30"></div>
+        <div class="h-px w-full bg-border-light"></div>
         <div class="flex flex-col gap-4">
             <?php if ($isLoggedIn): ?>
-                <a class="text-center font-label-caps bg-gradient-to-r from-gold-imperial via-gold-champagne to-gold-imperial text-obsidian-deep font-bold px-6 py-3.5 rounded-lg uppercase tracking-wider" href="<?= $dashboardUrl ?>">Portal Dashboard</a>
+                <a class="text-center font-label-caps bg-gradient-to-r from-navy-deep via-navy-primary to-navy-deep text-white font-bold px-6 py-3.5 rounded-lg uppercase tracking-wider shadow-md border border-gold-imperial/40" href="<?= $dashboardUrl ?>">Portal Dashboard</a>
             <?php else: ?>
-                <div class="border border-gold-imperial/30 rounded-xl overflow-hidden bg-obsidian-deep shadow-lg">
-                    <div class="px-4 py-3 bg-charcoal-light text-xs font-mono-data font-bold text-gold-champagne uppercase tracking-wider flex justify-between items-center">
+                <div class="border border-gold-imperial/30 rounded-xl overflow-hidden bg-white shadow-lg ring-1 ring-black/5">
+                    <div class="px-4 py-3 bg-slate-100 text-xs font-mono-data font-bold text-navy-deep uppercase tracking-wider flex justify-between items-center border-b border-border-light">
                         <span>Sign In by Operations Role</span>
                         <span class="material-symbols-outlined text-sm text-gold-imperial">login</span>
                     </div>
-                    <div class="divide-y divide-outline-variant/20">
-                        <a href="<?= site_url('public/login.php?role=admin') ?>" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-on-surface hover:bg-charcoal-light transition-colors">
+                    <div class="divide-y divide-border-light">
+                        <a href="<?= site_url('public/login.php?role=admin') ?>" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-navy-primary hover:bg-slate-50 transition-colors">
                             <span class="material-symbols-outlined text-gold-imperial text-base">admin_panel_settings</span>
                             <span>Managing Director (Admin)</span>
                         </a>
-                        <a href="<?= site_url('public/login.php?role=director') ?>" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-on-surface hover:bg-charcoal-light transition-colors">
+                        <a href="<?= site_url('public/login.php?role=director') ?>" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-navy-primary hover:bg-slate-50 transition-colors">
                             <span class="material-symbols-outlined text-gold-imperial text-base">corporate_fare</span>
                             <span>Director Panel</span>
                         </a>
-                        <a href="<?= site_url('public/login.php?role=staff') ?>" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-on-surface hover:bg-charcoal-light transition-colors">
+                        <a href="<?= site_url('public/login.php?role=staff') ?>" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-navy-primary hover:bg-slate-50 transition-colors">
                             <span class="material-symbols-outlined text-gold-imperial text-base">badge</span>
                             <span>Staff / Review Panel</span>
                         </a>
-                        <a href="<?= site_url('public/login.php?role=dm') ?>" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-on-surface hover:bg-charcoal-light transition-colors">
+                        <a href="<?= site_url('public/login.php?role=dm') ?>" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-navy-primary hover:bg-slate-50 transition-colors">
                             <span class="material-symbols-outlined text-gold-imperial text-base">manage_accounts</span>
                             <span>DM / PE Panel</span>
                         </a>
-                        <a href="<?= site_url('public/login.php?role=surveyer') ?>" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-on-surface hover:bg-charcoal-light transition-colors">
+                        <a href="<?= site_url('public/login.php?role=surveyer') ?>" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-navy-primary hover:bg-slate-50 transition-colors">
                             <span class="material-symbols-outlined text-gold-imperial text-base">engineering</span>
                             <span>Field Surveyor Panel</span>
                         </a>
                     </div>
                 </div>
-                <a class="text-center font-label-caps bg-gradient-to-r from-gold-imperial via-gold-champagne to-gold-imperial text-obsidian-deep font-bold px-6 py-3.5 rounded-lg mt-1 shadow-lg uppercase tracking-wider" href="<?= site_url('public/about.php#calculator') ?>">Get Free Quote</a>
+                <a class="text-center font-label-caps bg-gradient-to-r from-navy-deep via-navy-primary to-navy-deep text-white font-bold px-6 py-3.5 rounded-lg mt-1 shadow-lg uppercase tracking-wider border border-gold-imperial/40" href="<?= site_url('public/about.php#calculator') ?>">Get Free Quote</a>
             <?php endif; ?>
         </div>
     </div>
