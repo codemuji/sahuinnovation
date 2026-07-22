@@ -15,6 +15,7 @@ if (Auth::check() && Auth::userRole() === 'admin') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $pageTitle ?? 'Sahu Innovation Portal' ?></title>
+    <link rel="icon" type="image/png" href="<?= asset_url('img/logo.png') ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -122,8 +123,16 @@ if (Auth::check() && Auth::userRole() === 'admin') {
 <?php if (Auth::userRole() !== 'surveyer'): ?>
 <div class="dashboard-container">
     <aside class="sidebar">
-        <div class="auth-logo" style="margin-bottom: 40px; text-align: left;">
-            <h1 style="color: white; font-size: 22px; font-weight: 800; letter-spacing: -0.5px;">Sahu Innovation</h1>
+        <div class="auth-logo" style="margin-bottom: 30px; text-align: left; padding: 4px 0;">
+            <a href="<?= site_url('public/'.Auth::userRole().'/dashboard.php') ?>" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+                <div style="background: rgba(255,255,255,0.08); padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.35); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.25);">
+                    <img src="<?= asset_url('img/logo.png') ?>" alt="Sahu Innovation Logo" style="height: 36px; width: auto; object-fit: contain;">
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <span style="color: #ffffff; font-size: 18px; font-weight: 800; font-family: 'Outfit', sans-serif; letter-spacing: -0.5px; line-height: 1.1;">SAHU</span>
+                    <span style="color: #D4AF37; font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-family: 'Inter', sans-serif; line-height: 1.1; margin-top: 2px;">INNOVATION</span>
+                </div>
+            </a>
         </div>
         
         <nav style="flex-grow: 1;">
@@ -301,7 +310,10 @@ if (Auth::check() && Auth::userRole() === 'admin') {
 
     <!-- Mobile: top bar with navigation hamburger menu -->
     <div class="director-mobile-topbar">
-        <span class="topbar-logo">Sahu <span>Innovation</span></span>
+        <a href="<?= site_url('public/'.Auth::userRole().'/dashboard.php') ?>" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
+            <img src="<?= asset_url('img/logo.png') ?>" alt="Sahu Innovation" style="height: 28px; width: auto; object-fit: contain;">
+            <span class="topbar-logo" style="margin: 0; font-size: 16px;">Sahu <span>Innovation</span></span>
+        </a>
         <div class="topbar-actions">
             <a href="<?= site_url('public/'.Auth::userRole().'/profile.php') ?>" class="topbar-avatar"
                style="background-image: url('<?= $user['profile_pic'] ? site_url('public/file.php?type=profile&file='.$user['profile_pic']) : asset_url('img/default-avatar.png') ?>')">
@@ -317,7 +329,15 @@ if (Auth::check() && Auth::userRole() === 'admin') {
         <!-- Desktop Header Navigation Bar -->
         <header class="portal-desktop-header">
             <div class="header-left">
-                <h2 style="font-size: 18px; font-weight: 800; color: #0B1F3A; margin: 0; font-family: 'Outfit', sans-serif;">
+                <a href="<?= site_url('public/'.Auth::userRole().'/dashboard.php') ?>" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+                    <img src="<?= asset_url('img/logo.png') ?>" alt="Sahu Innovation" style="height: 32px; width: auto; object-fit: contain;">
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="color: #0B1F3A; font-size: 15px; font-weight: 800; font-family: 'Outfit', sans-serif; line-height: 1;">SAHU</span>
+                        <span style="color: #B08B28; font-size: 8px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;">INNOVATION</span>
+                    </div>
+                </a>
+                <div style="height: 24px; width: 1px; background: #e2e8f0; margin: 0 4px;"></div>
+                <h2 style="font-size: 16px; font-weight: 800; color: #0B1F3A; margin: 0; font-family: 'Outfit', sans-serif;">
                     <?= strtoupper(Auth::userRole() === 'admin' ? 'Managing Director Panel' : Auth::userRole() . ' Portal') ?>
                 </h2>
                 <ul class="header-nav-links">
@@ -356,7 +376,10 @@ if (Auth::check() && Auth::userRole() === 'admin') {
 <?php if (Auth::userRole() === 'surveyer'): ?>
     <header style="background: var(--primary); color: white; padding: 20px; position: sticky; top: 0; z-index: 100;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h2 style="font-size: 20px; font-weight: 800; letter-spacing: -0.5px;">Sahu Innovation <span style="font-weight: 400; font-family: 'Inter', sans-serif; font-size: 16px; opacity: 0.8;">| Survey</span></h2>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="<?= asset_url('img/logo.png') ?>" alt="Sahu Innovation Logo" style="height: 32px; width: auto; object-fit: contain; background: #ffffff; padding: 3px 6px; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
+                <h2 style="font-size: 18px; font-weight: 800; letter-spacing: -0.5px; margin: 0;">Sahu Innovation <span style="font-weight: 400; font-family: 'Inter', sans-serif; font-size: 14px; opacity: 0.85;">| Survey</span></h2>
+            </div>
             <div style="display: flex; align-items: center; gap: 15px;">
                 <a href="<?= site_url('public/surveyer/profile.php') ?>" style="color: white; text-decoration: none;">
                     <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--accent); background-image: url('<?= $user['profile_pic'] ? site_url('public/file.php?type=profile&file='.$user['profile_pic']) : asset_url('img/default-avatar.png') ?>'); background-size: cover; background-position: center; border: 2px solid rgba(255,255,255,0.2);"></div>

@@ -2,6 +2,21 @@
 require_once __DIR__ . '/../../app/core/Auth.php';
 require_once __DIR__ . '/../../app/core/helpers.php';
 
+// Public Website Toggle Guard
+if (!defined('SHOW_PUBLIC_WEBSITE') || !SHOW_PUBLIC_WEBSITE) {
+    // Allow logged-in Admin to preview public site if ?preview=1 is passed
+    $isAdminPreview = (Auth::check() && Auth::userRole() === 'admin' && isset($_GET['preview']));
+    
+    if (!$isAdminPreview) {
+        if (Auth::check()) {
+            $role = Auth::userRole();
+            redirect(site_url('public/' . ($role === 'pe' ? 'dm' : $role) . '/dashboard.php'));
+        } else {
+            redirect(site_url('public/login.php'));
+        }
+    }
+}
+
 $isLoggedIn = Auth::check();
 $dashboardUrl = '';
 if ($isLoggedIn && !empty(Auth::userRole())) {

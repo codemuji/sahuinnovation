@@ -46,7 +46,7 @@ class Auth {
     public static function requireRole($roles) {
         if (!self::check()) {
             setFlash('danger', 'Please login to access this page.');
-            redirect(site_url('public/index.php'));
+            redirect(site_url('public/login.php'));
         }
 
         if (is_string($roles)) {
@@ -55,7 +55,7 @@ class Auth {
 
         if (self::userRole() !== 'admin' && !in_array(self::userRole(), $roles)) {
             setFlash('danger', 'You do not have permission to access this page.');
-            redirect(site_url('public/index.php'));
+            redirect(site_url('public/login.php'));
         }
     }
 

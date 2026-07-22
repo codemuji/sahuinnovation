@@ -21,6 +21,34 @@ include __DIR__ . '/../includes/header.php';
     </div>
 </div>
 
+<!-- Public Website Launch / Visibility Status -->
+<div class="desktop-card" style="margin-bottom: 24px; border-left: 4px solid <?= SHOW_PUBLIC_WEBSITE ? 'var(--success)' : '#eab308' ?>; background: <?= SHOW_PUBLIC_WEBSITE ? '#f0fdf4' : '#fefce8' ?>;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <div>
+            <div style="font-size: 13px; font-weight: 700; text-transform: uppercase; color: <?= SHOW_PUBLIC_WEBSITE ? '#15803d' : '#a16207' ?>; letter-spacing: 0.5px;">
+                <i class="fa <?= SHOW_PUBLIC_WEBSITE ? 'fa-globe' : 'fa-eye-slash' ?>" style="margin-right: 6px;"></i>
+                Public Website Status: <?= SHOW_PUBLIC_WEBSITE ? 'LIVE & VISIBLE' : 'HIDDEN (LAUNCH PREPARATION MODE)' ?>
+            </div>
+            <p style="margin: 4px 0 0 0; font-size: 13px; color: var(--text-muted);">
+                <?= SHOW_PUBLIC_WEBSITE 
+                    ? 'The public website is currently live to all visitors.' 
+                    : 'Visitors are currently redirected to the login portal. Internal management system remains fully active.' ?>
+            </p>
+        </div>
+        <div>
+            <?php if (!SHOW_PUBLIC_WEBSITE): ?>
+                <a href="<?= site_url('public/index.php?preview=1') ?>" target="_blank" class="btn btn-primary" style="font-size: 12px; padding: 6px 14px; text-decoration: none;">
+                    <i class="fa fa-eye" style="margin-right: 4px;"></i> Preview Site
+                </a>
+            <?php else: ?>
+                <a href="<?= site_url('public/index.php') ?>" target="_blank" class="btn btn-secondary" style="font-size: 12px; padding: 6px 14px; text-decoration: none;">
+                    <i class="fa fa-external-link" style="margin-right: 4px;"></i> Visit Site
+                </a>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+
 <div class="grid grid-4" style="margin-bottom: 40px;">
     <div class="desktop-card">
         <div style="font-size: 13px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">Total Users</div>
