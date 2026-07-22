@@ -21,19 +21,89 @@ if (Auth::check() && Auth::userRole() === 'admin') {
     <link rel="stylesheet" href="<?= asset_url('css/main.css') ?>">
     <?php if (Auth::userRole() === 'surveyer'): ?>
         <link rel="stylesheet" href="<?= asset_url('css/mobile.css') ?>">
-    <?php elseif (in_array(Auth::userRole(), ['director', 'office_staff'])): ?>
-        <link rel="stylesheet" href="<?= asset_url('css/desktop.css') ?>">
-        <link rel="stylesheet" href="<?= asset_url('css/director-mobile.css') ?>">
     <?php else: ?>
         <link rel="stylesheet" href="<?= asset_url('css/desktop.css') ?>">
+        <link rel="stylesheet" href="<?= asset_url('css/director-mobile.css') ?>">
     <?php endif; ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <?php if (in_array(Auth::userRole(), ['director', 'office_staff'])): ?>
+    <?php if (Auth::userRole() !== 'surveyer'): ?>
     <script>
         function openSidebar()  { document.body.classList.add('sidebar-open');    document.getElementById('sidebarOverlay').classList.add('open'); }
         function closeSidebar() { document.body.classList.remove('sidebar-open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
     </script>
     <?php endif; ?>
+    <style>
+        .portal-desktop-header {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 14px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .portal-desktop-header .header-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .portal-desktop-header .header-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .portal-desktop-header .header-nav-links a {
+            color: #1e293b;
+            font-size: 13.5px;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .portal-desktop-header .header-nav-links a:hover {
+            background: #f1f5f9;
+            color: #0B1F3A;
+        }
+        .portal-desktop-header .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        @media (max-width: 767px) {
+            .portal-desktop-header { display: none !important; }
+        }
+        .surveyer-header-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+        }
+        .surveyer-header-nav a {
+            color: #ffffff;
+            font-size: 12.5px;
+            font-weight: 600;
+            text-decoration: none;
+            background: rgba(255,255,255,0.1);
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.2s;
+        }
+        .surveyer-header-nav a:hover, .surveyer-header-nav a.active {
+            background: #B09362;
+            border-color: #B09362;
+            color: #ffffff;
+        }
+    </style>
     <style>
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3, h4, h5, h6, .font-display { font-family: 'Outfit', sans-serif; }
@@ -226,17 +296,14 @@ if (Auth::check() && Auth::userRole() === 'admin') {
         </div>
     </aside>
 
-    <?php if (in_array(Auth::userRole(), ['director', 'office_staff'])):
-        $panelDir = Auth::userRole() === 'office_staff' ? 'office_staff' : 'director';
-    ?>
     <!-- Mobile: sidebar overlay backdrop -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-    <!-- Mobile: top bar -->
+    <!-- Mobile: top bar with navigation hamburger menu -->
     <div class="director-mobile-topbar">
         <span class="topbar-logo">Sahu <span>Innovation</span></span>
         <div class="topbar-actions">
-            <a href="<?= site_url('public/' . $panelDir . '/profile.php') ?>" class="topbar-avatar"
+            <a href="<?= site_url('public/'.Auth::userRole().'/profile.php') ?>" class="topbar-avatar"
                style="background-image: url('<?= $user['profile_pic'] ? site_url('public/file.php?type=profile&file='.$user['profile_pic']) : asset_url('img/default-avatar.png') ?>')">
                <?php if (!$user['profile_pic']) echo substr($user['name'], 0, 1); ?>
             </a>
@@ -245,9 +312,45 @@ if (Auth::check() && Auth::userRole() === 'admin') {
             </button>
         </div>
     </div>
-    <?php endif; ?>
 
     <main class="main-content">
+        <!-- Desktop Header Navigation Bar -->
+        <header class="portal-desktop-header">
+            <div class="header-left">
+                <h2 style="font-size: 18px; font-weight: 800; color: #0B1F3A; margin: 0; font-family: 'Outfit', sans-serif;">
+                    <?= strtoupper(Auth::userRole() === 'admin' ? 'Managing Director Panel' : Auth::userRole() . ' Portal') ?>
+                </h2>
+                <ul class="header-nav-links">
+                    <li><a href="<?= site_url('public/'.Auth::userRole().'/dashboard.php') ?>"><i class="fa fa-home" style="margin-right: 6px; opacity: 0.7;"></i>Dashboard</a></li>
+                    <?php if (in_array(Auth::userRole(), ['dm', 'pe'])): ?>
+                        <li><a href="<?= site_url('public/dm/add-customer.php') ?>"><i class="fa fa-plus-circle" style="margin-right: 6px; opacity: 0.7;"></i>Add Consumer</a></li>
+                        <li><a href="<?= site_url('public/dm/my-customers.php') ?>"><i class="fa fa-users" style="margin-right: 6px; opacity: 0.7;"></i>My Consumers</a></li>
+                    <?php elseif (Auth::userRole() === 'staff'): ?>
+                        <li><a href="<?= site_url('public/staff/survey-list.php') ?>"><i class="fa fa-file-lines" style="margin-right: 6px; opacity: 0.7;"></i>Review Applications</a></li>
+                    <?php elseif (in_array(Auth::userRole(), ['director', 'office_staff'])):
+                        $panelDir = Auth::userRole() === 'office_staff' ? 'office_staff' : 'director';
+                    ?>
+                        <li><a href="<?= site_url('public/' . $panelDir . '/usages.php') ?>"><i class="fa fa-receipt" style="margin-right: 6px; opacity: 0.7;"></i>Expenses</a></li>
+                        <li><a href="<?= site_url('public/' . $panelDir . '/report.php') ?>"><i class="fa fa-chart-line" style="margin-right: 6px; opacity: 0.7;"></i>CA Report</a></li>
+                    <?php elseif (Auth::userRole() === 'admin'): ?>
+                        <li><a href="<?= site_url('public/admin/users.php') ?>"><i class="fa fa-users-gear" style="margin-right: 6px; opacity: 0.7;"></i>Users</a></li>
+                        <li><a href="<?= site_url('public/admin/allocate-funds.php') ?>"><i class="fa fa-hand-holding-dollar" style="margin-right: 6px; opacity: 0.7;"></i>Expenses</a></li>
+                    <?php endif; ?>
+                    <li><a href="<?= site_url('public/index.php') ?>" target="_blank"><i class="fa fa-globe" style="margin-right: 6px; opacity: 0.7;"></i>Website</a></li>
+                </ul>
+            </div>
+            <div class="header-right">
+                <a href="<?= site_url('public/'.Auth::userRole().'/profile.php') ?>" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #1e293b;">
+                    <div style="width: 34px; height: 34px; border-radius: 50%; background: var(--accent); background-image: url('<?= $user['profile_pic'] ? site_url('public/file.php?type=profile&file='.$user['profile_pic']) : asset_url('img/default-avatar.png') ?>'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; border: 2px solid #e2e8f0;">
+                        <?php if (!$user['profile_pic']) echo substr($user['name'], 0, 1); ?>
+                    </div>
+                    <span style="font-size: 13.5px; font-weight: 600;"><?= h($user['name']) ?></span>
+                </a>
+                <a href="<?= site_url('public/logout.php') ?>" style="color: #ef4444; text-decoration: none; font-size: 13.5px; font-weight: 600; padding: 6px 12px; border-radius: 6px; background: #fef2f2; border: 1px solid #fee2e2;">
+                    <i class="fa fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </header>
 <?php endif; ?>
 
 <?php if (Auth::userRole() === 'surveyer'): ?>
@@ -261,6 +364,13 @@ if (Auth::check() && Auth::userRole() === 'admin') {
                 <a href="<?= site_url('public/logout.php') ?>" style="color: white; opacity: 0.8;"><i class="fa fa-sign-out-alt"></i></a>
             </div>
         </div>
+        <nav class="surveyer-header-nav">
+            <a href="<?= site_url('public/surveyer/dashboard.php') ?>" class="<?= strpos($_SERVER['PHP_SELF'], 'dashboard.php') !== false ? 'active' : '' ?>"><i class="fa fa-home" style="margin-right: 5px;"></i>Dashboard</a>
+            <a href="<?= site_url('public/surveyer/add-customer.php') ?>" class="<?= strpos($_SERVER['PHP_SELF'], 'add-customer.php') !== false ? 'active' : '' ?>"><i class="fa fa-plus-circle" style="margin-right: 5px;"></i>Add Consumer</a>
+            <a href="<?= site_url('public/surveyer/my-customers.php') ?>" class="<?= strpos($_SERVER['PHP_SELF'], 'my-customers.php') !== false ? 'active' : '' ?>"><i class="fa fa-users" style="margin-right: 5px;"></i>My Consumers</a>
+            <a href="<?= site_url('public/surveyer/wallet.php') ?>" class="<?= strpos($_SERVER['PHP_SELF'], 'wallet.php') !== false ? 'active' : '' ?>"><i class="fa fa-receipt" style="margin-right: 5px;"></i>Wallet & Payouts</a>
+            <a href="<?= site_url('public/surveyer/profile.php') ?>" class="<?= strpos($_SERVER['PHP_SELF'], 'profile.php') !== false ? 'active' : '' ?>"><i class="fa fa-user" style="margin-right: 5px;"></i>Profile</a>
+        </nav>
     </header>
     <div class="main-content">
 <?php endif; ?>

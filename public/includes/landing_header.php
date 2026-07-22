@@ -166,10 +166,56 @@ if ($isLoggedIn && !empty(Auth::userRole())) {
             </div>
         </a>
         
-        <!-- Desktop Nav Links -->
+        <!-- Desktop Nav Links with About & Leadership Dropdown -->
         <ul class="hidden lg:flex items-center gap-6 xl:gap-8 text-sm font-semibold text-navy-primary">
             <li><a class="whitespace-nowrap hover:text-gold-imperial transition-colors duration-200 py-1" href="<?= site_url('public/index.php') ?>">Home</a></li>
-            <li><a class="whitespace-nowrap hover:text-gold-imperial transition-colors duration-200 py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gold-imperial hover:after:w-full after:transition-all after:duration-300" href="<?= site_url('public/about.php') ?>">About & Philosophy</a></li>
+            <li class="relative group">
+                <a class="whitespace-nowrap hover:text-gold-imperial transition-colors duration-200 py-1 flex items-center gap-1 cursor-pointer" href="<?= site_url('public/about.php') ?>">
+                    <span>About & Leadership</span>
+                    <span class="material-symbols-outlined text-sm text-gold-imperial leading-none transition-transform duration-200 group-hover:rotate-180">expand_more</span>
+                </a>
+                <!-- Dropdown Menu -->
+                <div class="absolute left-0 top-full pt-2 w-72 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
+                    <div class="bg-white rounded-xl shadow-2xl border border-gold-imperial/30 py-3 backdrop-blur-2xl ring-1 ring-black/5">
+                        <div class="px-4 py-1.5 text-[11px] font-mono-data text-gold-champagne font-bold uppercase tracking-wider border-b border-border-light pb-2 mb-1">Company Sections</div>
+                        <a href="<?= site_url('public/about.php#philosophy') ?>" class="flex items-center gap-3 px-4 py-2 text-sm font-medium text-navy-primary hover:bg-slate-50 hover:text-gold-imperial transition-colors">
+                            <span class="material-symbols-outlined text-gold-imperial text-base">verified</span>
+                            <div>
+                                <div class="font-semibold leading-tight">Corporate Governance</div>
+                                <div class="text-[11px] text-text-muted leading-tight">MCA Status & Hojai HQ</div>
+                            </div>
+                        </a>
+                        <a href="<?= site_url('public/about.php#leadership') ?>" class="flex items-center gap-3 px-4 py-2 text-sm font-medium text-navy-primary hover:bg-slate-50 hover:text-gold-imperial transition-colors">
+                            <span class="material-symbols-outlined text-gold-imperial text-base">star</span>
+                            <div>
+                                <div class="font-semibold leading-tight">MD Spotlight</div>
+                                <div class="text-[11px] text-text-muted leading-tight">Prodip Sahu Showcase</div>
+                            </div>
+                        </a>
+                        <a href="<?= site_url('public/about.php#board') ?>" class="flex items-center gap-3 px-4 py-2 text-sm font-medium text-navy-primary hover:bg-slate-50 hover:text-gold-imperial transition-colors">
+                            <span class="material-symbols-outlined text-gold-imperial text-base">groups</span>
+                            <div>
+                                <div class="font-semibold leading-tight">Board of Directors</div>
+                                <div class="text-[11px] text-text-muted leading-tight">6 Executive Directors</div>
+                            </div>
+                        </a>
+                        <a href="<?= site_url('public/about.php#warranties') ?>" class="flex items-center gap-3 px-4 py-2 text-sm font-medium text-navy-primary hover:bg-slate-50 hover:text-gold-imperial transition-colors">
+                            <span class="material-symbols-outlined text-gold-imperial text-base">gavel</span>
+                            <div>
+                                <div class="font-semibold leading-tight">Legal Guarantees</div>
+                                <div class="text-[11px] text-text-muted leading-tight">5-Year Vendor Agreement</div>
+                            </div>
+                        </a>
+                        <a href="<?= site_url('public/about.php#legacy') ?>" class="flex items-center gap-3 px-4 py-2 text-sm font-medium text-navy-primary hover:bg-slate-50 hover:text-gold-imperial transition-colors">
+                            <span class="material-symbols-outlined text-gold-imperial text-base">history_edu</span>
+                            <div>
+                                <div class="font-semibold leading-tight">Sahu Trajectory</div>
+                                <div class="text-[11px] text-text-muted leading-tight">Engineering Milestones</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </li>
             <li><a class="whitespace-nowrap hover:text-gold-imperial transition-colors duration-200 py-1" href="<?= site_url('public/how-it-works.php') ?>">11-Stage Process</a></li>
             <li><a class="whitespace-nowrap hover:text-gold-imperial transition-colors duration-200 py-1" href="<?= site_url('public/savings-benefits.php') ?>">ROI & Savings</a></li>
             <li>
@@ -266,7 +312,21 @@ if ($isLoggedIn && !empty(Auth::userRole())) {
     <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
         <ul class="flex flex-col gap-4 font-display text-lg font-bold text-navy-primary">
             <li><a class="block py-2.5 px-3 rounded-lg hover:bg-slate-50 hover:text-gold-imperial transition-colors" href="<?= site_url('public/index.php') ?>">Home</a></li>
-            <li><a class="block py-2.5 px-3 rounded-lg hover:bg-slate-50 hover:text-gold-imperial transition-colors" href="<?= site_url('public/about.php') ?>">Company & Philosophy</a></li>
+            <li>
+                <div class="flex flex-col">
+                    <a class="py-2.5 px-3 rounded-lg hover:bg-slate-50 hover:text-gold-imperial transition-colors flex items-center justify-between" href="<?= site_url('public/about.php') ?>">
+                        <span>About & Leadership</span>
+                        <span class="material-symbols-outlined text-base text-gold-imperial">arrow_forward</span>
+                    </a>
+                    <div class="pl-6 flex flex-col gap-2 mt-1 border-l-2 border-gold-imperial/30 font-body-md text-sm font-semibold text-navy-primary">
+                        <a class="py-1.5 hover:text-gold-imperial transition-colors" href="<?= site_url('public/about.php#philosophy') ?>">Corporate Governance & HQ</a>
+                        <a class="py-1.5 hover:text-gold-imperial transition-colors" href="<?= site_url('public/about.php#leadership') ?>">MD Spotlight (Prodip Sahu)</a>
+                        <a class="py-1.5 hover:text-gold-imperial transition-colors" href="<?= site_url('public/about.php#board') ?>">Board of Directors Gallery</a>
+                        <a class="py-1.5 hover:text-gold-imperial transition-colors" href="<?= site_url('public/about.php#warranties') ?>">5-Year Legal Guarantee</a>
+                        <a class="py-1.5 hover:text-gold-imperial transition-colors" href="<?= site_url('public/about.php#legacy') ?>">Company Milestones</a>
+                    </div>
+                </div>
+            </li>
             <li><a class="block py-2.5 px-3 rounded-lg hover:bg-slate-50 hover:text-gold-imperial transition-colors" href="<?= site_url('public/how-it-works.php') ?>">11-Stage Process</a></li>
             <li><a class="block py-2.5 px-3 rounded-lg hover:bg-slate-50 hover:text-gold-imperial transition-colors" href="<?= site_url('public/savings-benefits.php') ?>">ROI & Savings</a></li>
             <li><a class="block py-2.5 px-3 rounded-lg bg-gold-imperial/10 border border-gold-imperial/40 text-navy-deep hover:bg-gold-imperial/20 transition-colors" href="<?= site_url('public/pm-surya-ghar.php') ?>">PM Surya Ghar Scheme (₹1.3L Subsidy)</a></li>
