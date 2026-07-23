@@ -42,7 +42,6 @@ include __DIR__ . '/../includes/header.php';
                 <option value="Travel & Lodging">Travel & Lodging</option>
                 <option value="Office & Administration">Office & Administration</option>
                 <option value="Client & Marketing Expense">Client & Marketing Expense</option>
-                <option value="Salaries & Labor Cost">Salaries & Labor Cost</option>
                 <option value="Taxes & Utility Bills">Taxes & Utility Bills</option>
                 <option value="Other / Miscellaneous">Other / Miscellaneous</option>
             </select>

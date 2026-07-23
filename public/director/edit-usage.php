@@ -67,7 +67,6 @@ include __DIR__ . '/../includes/header.php';
                 <option value="Travel & Lodging" <?= $usage['purpose'] === 'Travel & Lodging' ? 'selected' : '' ?>>Travel & Lodging</option>
                 <option value="Office & Administration" <?= $usage['purpose'] === 'Office & Administration' ? 'selected' : '' ?>>Office & Administration</option>
                 <option value="Client & Marketing Expense" <?= $usage['purpose'] === 'Client & Marketing Expense' ? 'selected' : '' ?>>Client & Marketing Expense</option>
-                <option value="Salaries & Labor Cost" <?= $usage['purpose'] === 'Salaries & Labor Cost' ? 'selected' : '' ?>>Salaries & Labor Cost</option>
                 <option value="Taxes & Utility Bills" <?= $usage['purpose'] === 'Taxes & Utility Bills' ? 'selected' : '' ?>>Taxes & Utility Bills</option>
                 <option value="Other / Miscellaneous" <?= $usage['purpose'] === 'Other / Miscellaneous' ? 'selected' : '' ?>>Other / Miscellaneous</option>
             </select>

@@ -31,14 +31,14 @@ $pageTx = isset($_GET['page_tx']) ? max(1, intval($_GET['page_tx'])) : 1;
 $offsetTx = ($pageTx - 1) * $limitTx;
 
 // Get total count of transactions for pagination
-$countTxStmt = $db->query("SELECT COUNT(*) FROM wallet_transactions wt JOIN users u ON wt.user_id = u.id WHERE u.role = 'director' AND u.is_active = 1");
+$countTxStmt = $db->query("SELECT COUNT(*) FROM wallet_transactions wt JOIN users u ON wt.user_id = u.id WHERE u.role = 'director' AND u.is_active = 1 AND wt.ref_type != 'salary_disbursement'");
 $totalTx = $countTxStmt->fetchColumn();
 $totalPagesTx = ceil($totalTx / $limitTx);
 
 // Fetch transactions page
 $txStmt = $db->prepare("SELECT wt.*, u.name as director_name FROM wallet_transactions wt 
     JOIN users u ON wt.user_id = u.id 
-    WHERE u.role = 'director' AND u.is_active = 1 
+    WHERE u.role = 'director' AND u.is_active = 1 AND wt.ref_type != 'salary_disbursement' 
     ORDER BY wt.created_at DESC 
     LIMIT $limitTx OFFSET $offsetTx");
 $txStmt->execute();

@@ -52,21 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$adminId, $userId, $type, $amount, $notes]);
         $disbursementId = $db->lastInsertId();
 
-        // 3. Update or Create Wallet
-        $stmt = $db->prepare("INSERT INTO wallets (user_id, balance) VALUES (?, ?) ON DUPLICATE KEY UPDATE balance = balance + ?");
-        $stmt->execute([$userId, $amount, $amount]);
-
-        // 4. Record Wallet Transaction
         $typeTitle = ucfirst($type);
-        $desc = "{$typeTitle} Disbursement from Admin: " . ($notes ?: 'No description');
-        $stmt = $db->prepare("INSERT INTO wallet_transactions (user_id, ref_type, ref_id, type, amount, status, description) 
-            VALUES (?, 'salary_disbursement', ?, 'credit', ?, 'approved', ?)");
-        $stmt->execute([
-            $userId,
-            $disbursementId,
-            $amount,
-            $desc
-        ]);
 
         $db->commit();
         setFlash('success', "{$typeTitle} successfully disbursed to {$targetUser['name']}.");

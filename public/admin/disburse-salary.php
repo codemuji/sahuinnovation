@@ -26,7 +26,7 @@ include __DIR__ . '/../includes/header.php';
 <div class="panel-header">
     <div class="panel-title">
         <h1>Disburse Salary / Advance</h1>
-        <p>Transfer salary or advance payments directly to a Director or Office Staff virtual wallet.</p>
+        <p>Transfer salary or advance payments directly to a Director or Office Staff member.</p>
     </div>
 </div>
 
