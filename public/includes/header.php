@@ -172,6 +172,11 @@ if (Auth::check() && Auth::userRole() === 'admin') {
                             <i class="fa fa-file-contract" style="width: 24px;"></i> PM Surya Ghar Application
                         </a>
                     </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/staff/subcontract-list.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'subcontract-list.php') !== false || strpos($_SERVER['PHP_SELF'], 'subcontract-detail.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-diagram-project" style="width: 24px;"></i> Sub-Contract Jobs
+                        </a>
+                    </li>
                 <?php endif; ?>
 
                 <?php if (in_array(Auth::userRole(), ['director', 'office_staff'])):
@@ -209,6 +214,24 @@ if (Auth::check() && Auth::userRole() === 'admin') {
                     </li>
                 <?php endif; ?>
 
+                <?php if (Auth::userRole() === 'subcontractor'): ?>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/subcontractor/dashboard.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'dashboard.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-chart-pie" style="width: 24px;"></i> Dashboard
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/subcontractor/projects.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'projects.php') !== false || strpos($_SERVER['PHP_SELF'], 'project-detail.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-screwdriver-wrench" style="width: 24px;"></i> Sub-Contracts
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/subcontractor/profile.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'profile.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-user" style="width: 24px;"></i> Profile
+                        </a>
+                    </li>
+                <?php endif; ?>
+
                 <?php if (Auth::userRole() === 'admin'):
                     // Determine which admin section we're in
                     $expensePages = ['allocate-funds.php', 'disburse-salary.php', 'expense-reviews.php', 'budget-report.php', 'director-reports.php'];
@@ -237,6 +260,11 @@ if (Auth::check() && Auth::userRole() === 'admin') {
                     <li style="margin-bottom: 8px;">
                         <a href="<?= site_url('public/admin/stage5-payouts.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'stage5-payouts.php') !== false || strpos($_SERVER['PHP_SELF'], 'technical-detail.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
                             <i class="fa fa-file-contract" style="width: 24px;"></i> Stage 5 Payouts
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/admin/subcontract-payments.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'subcontract-payments.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-hand-holding-hand" style="width: 24px;"></i> Sub-Contract Payments
                         </a>
                     </li>
                     <!-- Switch to Expense panel -->

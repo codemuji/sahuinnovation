@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role ENUM('surveyer', 'dm', 'pe', 'staff', 'admin', 'director', 'office_staff') NOT NULL,
+    role ENUM('surveyer', 'dm', 'pe', 'staff', 'admin', 'director', 'office_staff', 'subcontractor', 'subcontract_staff') NOT NULL,
+    subcontractor_id INT NULL,
     phone VARCHAR(20),
     profile_pic VARCHAR(255),
     bank_name VARCHAR(150),
@@ -17,7 +18,8 @@ CREATE TABLE IF NOT EXISTS users (
     upi_id VARCHAR(100),
     address TEXT,
     is_active TINYINT(1) DEFAULT 1,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (subcontractor_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Survey Customers table
@@ -155,3 +157,47 @@ VALUES ('Admin', 'admin@dms.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.o
 
 -- Create wallet for admin
 INSERT INTO wallets (user_id, balance) VALUES (1, 0.00);
+
+-- Sub Contract Projects Table
+CREATE TABLE IF NOT EXISTS subcontract_projects (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    contractor_id INT NOT NULL,
+    created_by_staff_id INT NOT NULL,
+    customer_name VARCHAR(150) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    consumer_number VARCHAR(100),
+    address TEXT NOT NULL,
+    contract_type ENUM('12_step', 'part_pay') NOT NULL DEFAULT '12_step',
+    status VARCHAR(100) DEFAULT 'APPLICATION',
+    payment_1_amount DECIMAL(10, 2) DEFAULT 0.00,
+    payment_1_status ENUM('pending', 'approved', 'paid') DEFAULT 'pending',
+    payment_1_date TIMESTAMP NULL,
+    payment_1_notes TEXT,
+    payment_2_amount DECIMAL(10, 2) DEFAULT 0.00,
+    payment_2_status ENUM('pending', 'approved', 'paid') DEFAULT 'pending',
+    payment_2_date TIMESTAMP NULL,
+    payment_2_notes TEXT,
+    part_pay_amount DECIMAL(10, 2) DEFAULT 0.00,
+    part_pay_status ENUM('pending', 'approved', 'paid') DEFAULT 'pending',
+    part_pay_date TIMESTAMP NULL,
+    part_pay_notes TEXT,
+    customer_feedback TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (contractor_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (created_by_staff_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Sub Contract Documents Table
+CREATE TABLE IF NOT EXISTS subcontract_documents (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    project_id INT NOT NULL,
+    step_name VARCHAR(100) NOT NULL,
+    file_path VARCHAR(500) NOT NULL,
+    original_name VARCHAR(255) NOT NULL,
+    uploaded_by INT NOT NULL,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (project_id) REFERENCES subcontract_projects(id) ON DELETE CASCADE,
+    FOREIGN KEY (uploaded_by) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+

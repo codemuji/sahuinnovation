@@ -44,6 +44,7 @@ include __DIR__ . '/../includes/header.php';
                     <option value="admin">Administrator</option>
                     <option value="director">Director</option>
                     <option value="office_staff">Office Staff</option>
+                    <option value="subcontractor">Subcontractor</option>
                 </select>
             </div>
 
@@ -66,6 +67,7 @@ include __DIR__ . '/../includes/header.php';
             <li><strong>Staff:</strong> Review all submissions, approve or reject records.</li>
             <li><strong>Admin:</strong> System management, user control, and payout processing.</li>
             <li><strong>Director:</strong> Log budget usages, upload payment proofs, view CA reports.</li>
+            <li><strong>Subcontractor:</strong> View assigned 12-step/part-pay jobs, track stage progress, manage payout profile.</li>
         </ul>
     </div>
 </div>

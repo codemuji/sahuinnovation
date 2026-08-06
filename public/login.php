@@ -4,7 +4,7 @@ require_once __DIR__ . '/../app/core/Auth.php';
 // If already logged in, redirect to dashboard
 if (Auth::check()) {
     $role = Auth::userRole();
-    $validRoles = ['surveyer', 'dm', 'pe', 'director', 'office_staff', 'staff', 'admin'];
+    $validRoles = ['surveyer', 'dm', 'pe', 'director', 'office_staff', 'staff', 'admin', 'subcontractor'];
     if (in_array($role, $validRoles)) {
         redirect(site_url('public/' . ($role === 'pe' ? 'dm' : $role) . '/dashboard.php'));
     } else {
@@ -21,7 +21,8 @@ $roleNames = [
     'office_staff' => 'Staff / Review Panel',
     'dm' => 'DM / PE Panel',
     'pe' => 'DM / PE Panel',
-    'surveyer' => 'Field Surveyor Panel'
+    'surveyer' => 'Field Surveyor Panel',
+    'subcontractor' => 'Sub-Contractor Panel'
 ];
 $selectedRole = $_GET['role'] ?? '';
 $roleDisplayName = $roleNames[$selectedRole] ?? '';

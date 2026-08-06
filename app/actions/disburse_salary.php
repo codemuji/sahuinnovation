@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $type = in_array($_POST['type'] ?? '', ['salary', 'advance']) ? $_POST['type'] : 'salary';
     $amount = floatval($_POST['amount'] ?? 0);
     $notes = trim($_POST['notes'] ?? '');
+    $createdAt = !empty($_POST['created_at']) ? date('Y-m-d H:i:s', strtotime($_POST['created_at'])) : date('Y-m-d H:i:s');
 
     if (!$userId || $amount <= 0) {
         setFlash('danger', 'Please select a director and enter a valid amount.');
@@ -48,8 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // 2. Insert Disbursement Record
-        $stmt = $db->prepare("INSERT INTO salary_disbursements (admin_id, user_id, type, amount, notes) VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([$adminId, $userId, $type, $amount, $notes]);
+        $stmt = $db->prepare("INSERT INTO salary_disbursements (admin_id, user_id, type, amount, notes, created_at) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$adminId, $userId, $type, $amount, $notes, $createdAt]);
         $disbursementId = $db->lastInsertId();
 
         $typeTitle = ucfirst($type);

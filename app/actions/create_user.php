@@ -11,6 +11,7 @@ Auth::requireRole('admin');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db = Database::getInstance()->getConnection();
+    @$db->exec("ALTER TABLE users MODIFY COLUMN role ENUM('surveyer', 'dm', 'pe', 'staff', 'admin', 'director', 'office_staff', 'subcontractor') NOT NULL");
 
     $name = trim($_POST['name'] ?? '');
     $email = trim($_POST['email'] ?? '');

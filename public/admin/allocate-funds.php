@@ -40,6 +40,11 @@ include __DIR__ . '/../includes/header.php';
             </div>
 
             <div class="form-group">
+                <label class="form-label" for="created_at">Allocation Date</label>
+                <input type="datetime-local" class="form-control" id="created_at" name="created_at" value="<?= date('Y-m-d\TH:i') ?>">
+            </div>
+
+            <div class="form-group">
                 <label class="form-label" for="notes">Notes / Budget Reference</label>
                 <textarea class="form-control" id="notes" name="notes" rows="4" style="height: auto; padding: 12px;" placeholder="Add details like 'Q3 Solar Equipment Budget' or 'Travel Allocation'..."></textarea>
             </div>

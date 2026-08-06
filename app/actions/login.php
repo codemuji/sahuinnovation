@@ -21,9 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password'])) {
-        // Ensure ENUM supports office_staff
-        @$db->exec("ALTER TABLE users MODIFY COLUMN role ENUM('surveyer', 'dm', 'pe', 'staff', 'admin', 'director', 'office_staff') NOT NULL");
-
         session_regenerate_id(true);
         
         $_SESSION['user_id'] = $user['id'];
@@ -32,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Redirect based on role
         $role = $user['role'];
-        $validRoles = ['surveyer', 'dm', 'pe', 'director', 'office_staff', 'staff', 'admin'];
+        $validRoles = ['surveyer', 'dm', 'pe', 'director', 'office_staff', 'staff', 'admin', 'subcontractor'];
         if (in_array($role, $validRoles)) {
             redirect(site_url('public/' . ($role === 'pe' ? 'dm' : $role) . '/dashboard.php'));
         } else {

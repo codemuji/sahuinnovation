@@ -90,17 +90,25 @@ include __DIR__ . '/../includes/header.php';
                 <!-- Approval Actions -->
                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                     <!-- Approve Button Form -->
-                    <form action="<?= site_url('app/actions/approve_fund_usage.php') ?>" method="POST" style="flex: 1; min-width: 150px;">
+                    <form action="<?= site_url('app/actions/approve_fund_usage.php') ?>" method="POST" style="flex: 1; min-width: 140px;">
                         <input type="hidden" name="id" value="<?= $r['id'] ?>">
-                        <button type="submit" class="btn btn-primary" style="background-color: var(--success); width: 100%; display: flex; gap: 6px;" data-confirm="Are you sure you want to approve this expense? This will deduct the amount from the director's wallet.">
+                        <button type="submit" class="btn btn-primary" style="background-color: var(--success); width: 100%; display: flex; gap: 6px; justify-content: center; align-items: center;" data-confirm="Are you sure you want to approve this expense? This will deduct the amount from the director's wallet.">
                             <i class="fa fa-circle-check"></i> Approve & Deduct
                         </button>
                     </form>
 
                     <!-- Revert Action Trigger -->
-                    <button type="button" class="btn" style="flex: 1; min-width: 150px; background-color: var(--danger); color: white; display: flex; gap: 6px;" onclick="toggleRevertBox(<?= $r['id'] ?>)">
-                        <i class="fa fa-rotate-left"></i> Revert / Ask for Correction
+                    <button type="button" class="btn" style="flex: 1; min-width: 140px; background-color: var(--danger); color: white; display: flex; gap: 6px; justify-content: center; align-items: center;" onclick="toggleRevertBox(<?= $r['id'] ?>)">
+                        <i class="fa fa-rotate-left"></i> Revert
                     </button>
+
+                    <!-- Delete Button Form -->
+                    <form action="<?= site_url('app/actions/delete_fund_usage.php') ?>" method="POST" onsubmit="return confirm('Are you sure you want to permanently delete this expense log of <?= formatCurrency($r['amount']) ?>?');" style="flex: 1; min-width: 140px; margin: 0;">
+                        <input type="hidden" name="id" value="<?= $r['id'] ?>">
+                        <button type="submit" class="btn" style="background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; width: 100%; display: flex; gap: 6px; justify-content: center; align-items: center; cursor: pointer; height: 100%;">
+                            <i class="fa fa-trash"></i> Delete
+                        </button>
+                    </form>
                 </div>
 
                 <!-- Hidden Reversion Box -->

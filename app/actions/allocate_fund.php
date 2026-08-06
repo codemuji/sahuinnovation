@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $directorId = intval($_POST['director_id'] ?? 0);
     $amount = floatval($_POST['amount'] ?? 0);
     $notes = trim($_POST['notes'] ?? '');
+    $createdAt = !empty($_POST['created_at']) ? date('Y-m-d H:i:s', strtotime($_POST['created_at'])) : date('Y-m-d H:i:s');
 
     if (!$directorId || $amount <= 0) {
         setFlash('danger', 'Please select a director and enter a valid amount.');
@@ -34,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // 2. Insert Fund Allocation Record
-        $stmt = $db->prepare("INSERT INTO fund_allocations (admin_id, director_id, amount, notes) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$adminId, $directorId, $amount, $notes]);
+        $stmt = $db->prepare("INSERT INTO fund_allocations (admin_id, director_id, amount, notes, created_at) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$adminId, $directorId, $amount, $notes, $createdAt]);
         $allocationId = $db->lastInsertId();
 
         // 3. Update or Create Wallet

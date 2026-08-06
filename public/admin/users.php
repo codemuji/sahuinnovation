@@ -40,6 +40,7 @@ include __DIR__ . '/../includes/header.php';
     <a href="users.php?role=staff" class="badge" style="background: <?= $roleFilter == 'staff' ? 'var(--success)' : '#e2e8f0' ?>; color: <?= $roleFilter == 'staff' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Staff</a>
     <a href="users.php?role=admin" class="badge" style="background: <?= $roleFilter == 'admin' ? '#475569' : '#e2e8f0' ?>; color: <?= $roleFilter == 'admin' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Admins</a>
     <a href="users.php?role=director" class="badge" style="background: <?= $roleFilter == 'director' ? 'var(--accent)' : '#e2e8f0' ?>; color: <?= $roleFilter == 'director' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Directors</a>
+    <a href="users.php?role=subcontractor" class="badge" style="background: <?= $roleFilter == 'subcontractor' ? '#7c3aed' : '#e2e8f0' ?>; color: <?= $roleFilter == 'subcontractor' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Subcontractors</a>
 </div>
 
 <div class="desktop-card" style="padding: 0;">
@@ -68,9 +69,15 @@ include __DIR__ . '/../includes/header.php';
                             </span>
                         </td>
                         <td>
-                            <div style="display: flex; gap: 8px;">
+                            <div style="display: flex; gap: 8px; align-items: center;">
                                 <a href="user-detail.php?id=<?= $u['id'] ?>" class="btn" style="height: 32px; padding: 0 12px; font-size: 12px; width: auto; background: var(--primary); color: white;">View</a>
                                 <a href="edit-user.php?id=<?= $u['id'] ?>" class="btn" style="height: 32px; padding: 0 12px; font-size: 12px; width: auto; background: var(--border); color: var(--text-main);">Edit</a>
+                                <?php if ($u['id'] != Auth::userId()): ?>
+                                    <form action="<?= site_url('app/actions/delete_user.php') ?>" method="POST" onsubmit="return confirm('Are you sure you want to delete <?= h(addslashes($u['name'])) ?>?');" style="display: inline; margin: 0;">
+                                        <input type="hidden" name="id" value="<?= $u['id'] ?>">
+                                        <button type="submit" class="btn" style="height: 32px; padding: 0 12px; font-size: 12px; width: auto; background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; cursor: pointer;">Delete</button>
+                                    </form>
+                                <?php endif; ?>
                             </div>
                         </td>
                     </tr>

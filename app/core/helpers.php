@@ -129,3 +129,49 @@ function uploadFile($file, $targetDir, $allowedTypes = ['jpg', 'jpeg', 'png', 'p
 
     return ['error' => 'Failed to move uploaded file.'];
 }
+
+/**
+ * Ensure Sub-Contract tables exist in database
+ */
+function ensureSubcontractTables($db) {
+    @$db->exec("CREATE TABLE IF NOT EXISTS subcontract_projects (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        contractor_id INT NOT NULL,
+        created_by_staff_id INT NOT NULL,
+        customer_name VARCHAR(150) NOT NULL,
+        phone VARCHAR(20) NOT NULL,
+        consumer_number VARCHAR(100),
+        address TEXT NOT NULL,
+        contract_type ENUM('12_step', 'part_pay') NOT NULL DEFAULT '12_step',
+        status VARCHAR(100) DEFAULT '1. APPLICATION',
+        payment_1_amount DECIMAL(10, 2) DEFAULT 0.00,
+        payment_1_status ENUM('pending', 'approved', 'paid') DEFAULT 'pending',
+        payment_1_date TIMESTAMP NULL,
+        payment_1_notes TEXT,
+        payment_2_amount DECIMAL(10, 2) DEFAULT 0.00,
+        payment_2_status ENUM('pending', 'approved', 'paid') DEFAULT 'pending',
+        payment_2_date TIMESTAMP NULL,
+        payment_2_notes TEXT,
+        part_pay_amount DECIMAL(10, 2) DEFAULT 0.00,
+        part_pay_status ENUM('pending', 'approved', 'paid') DEFAULT 'pending',
+        part_pay_date TIMESTAMP NULL,
+        part_pay_notes TEXT,
+        customer_feedback TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (contractor_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (created_by_staff_id) REFERENCES users(id) ON DELETE CASCADE
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    @$db->exec("CREATE TABLE IF NOT EXISTS subcontract_documents (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        project_id INT NOT NULL,
+        step_name VARCHAR(100) NOT NULL,
+        file_path VARCHAR(500) NOT NULL,
+        original_name VARCHAR(255) NOT NULL,
+        uploaded_by INT NOT NULL,
+        uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (project_id) REFERENCES subcontract_projects(id) ON DELETE CASCADE,
+        FOREIGN KEY (uploaded_by) REFERENCES users(id) ON DELETE CASCADE
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+}
