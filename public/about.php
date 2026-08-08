@@ -153,57 +153,95 @@ include_once __DIR__ . '/includes/landing_header.php';
                 <div class="w-20 h-0.5 bg-gold-imperial mx-auto mt-8"></div>
             </div>
 
-            <!-- Equal Leadership Showcase: 7 Company Leaders -->
-            <div class="space-y-10 animate-on-scroll">
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gold-imperial/30 pb-6">
+            <!-- Founder & Managing Director Executive Boss Spotlight -->
+            <div class="mb-16 animate-on-scroll">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gold-imperial/40 pb-5 mb-8">
                     <div>
-                        <span class="font-mono-data text-xs text-gold-champagne font-bold uppercase tracking-widest block mb-1">Company Leadership Roster</span>
-                        <h3 class="font-display text-2xl sm:text-3xl text-navy-deep font-bold">Board Members</h3>
+                        <span class="font-mono-data text-xs text-gold-champagne font-bold uppercase tracking-widest block mb-1">Company Leadership & Governance</span>
+                        <h3 class="font-display text-2xl sm:text-3xl text-navy-deep font-bold">Managing Director & Board Chair</h3>
                     </div>
-                    <span class="px-4 py-1.5 rounded-full bg-white border border-gold-imperial/40 text-navy-deep font-mono-data text-xs font-bold shadow-sm flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-emerald-trust animate-pulse"></span>
-                        7 Leadership Pillars • Equal Governance
+                    <span class="px-4 py-1.5 rounded-full bg-gradient-to-r from-gold-imperial via-amber-300 to-gold-champagne text-navy-deep font-mono-data text-xs font-black shadow-md uppercase tracking-wider flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm font-bold">verified</span>
+                        Chief Executive Officer
                     </span>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 items-stretch">
-                    <!-- Member 1: Prodip Sahu (Managing Director) -->
-                    <div class="luxury-card rounded-3xl overflow-hidden border-2 border-gold-imperial shadow-[0_0_25px_rgba(212,175,55,0.4)] ring-2 ring-gold-imperial/40 transition-all duration-500 hover:shadow-[0_0_35px_rgba(212,175,55,0.65)] flex flex-col justify-between group bg-gradient-to-b from-[#132B4A] to-navy-deep relative">
-                        <div class="relative aspect-[4/3] bg-navy-deep overflow-hidden">
-                            <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
-                            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-imperial/40 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/60 transition-all duration-500"></div>
+                <!-- Executive Boss Spotlight Card -->
+                <div class="luxury-card rounded-3xl overflow-hidden border-2 border-gold-imperial shadow-[0_0_35px_rgba(212,175,55,0.35)] ring-2 ring-gold-imperial/40 bg-gradient-to-br from-[#0D223F] via-[#142C4D] to-[#0A1A31] p-6 lg:p-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                        <!-- Left: Executive Photo Container -->
+                        <div class="lg:col-span-5 relative">
+                            <div class="relative aspect-[4/3] rounded-2xl overflow-hidden border-2 border-gold-imperial/80 shadow-2xl group bg-navy-deep">
+                                <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
+                                <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-64 h-64 bg-gold-imperial/40 rounded-full blur-3xl pointer-events-none group-hover:bg-gold-imperial/60 transition-all duration-500"></div>
 
-                            <!-- Prominent Gold Executive Badge -->
-                            <div class="absolute top-3 right-3 z-20 px-3 py-1 rounded-full bg-gradient-to-r from-gold-imperial via-amber-300 to-gold-champagne text-navy-deep font-mono-data text-[11px] font-black tracking-widest uppercase flex items-center gap-1.5 shadow-lg border border-white/50">
-                                <span class="material-symbols-outlined text-xs font-bold">verified</span>
-                                <span>MANAGING DIRECTOR</span>
+                                <!-- Prominent Executive Badge Overlay -->
+                                <div class="absolute top-3 right-3 z-20 px-3.5 py-1 rounded-full bg-gradient-to-r from-gold-imperial via-amber-300 to-gold-champagne text-navy-deep font-mono-data text-[11px] font-black tracking-widest uppercase flex items-center gap-1.5 shadow-xl border border-white/60">
+                                    <span class="material-symbols-outlined text-xs font-extrabold">shield</span>
+                                    <span>FOUNDER & MD</span>
+                                </div>
+
+                                <img alt="Prodip Sahu - Managing Director" 
+                                     class="w-full h-full object-cover object-center relative z-10 transition-transform duration-700 group-hover:scale-105" 
+                                     src="<?= site_url('public/assets/img/team/prodip_sahu.jpeg') ?>"/>
                             </div>
-
-                            <img alt="Prodip Sahu - Managing Director" 
-                                 class="w-full h-full object-cover object-top relative z-10 transition-transform duration-700 group-hover:scale-105" 
-                                 src="<?= site_url('public/assets/img/team/prodip_sahu.jpeg') ?>"/>
                         </div>
 
-                        <div class="p-6 bg-gradient-to-br from-[#152E50] to-navy-deep border-t-2 border-gold-imperial flex flex-col justify-between flex-1">
+                        <!-- Right: Executive Vision & Credentials -->
+                        <div class="lg:col-span-7 flex flex-col justify-between space-y-6">
                             <div>
-                                <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-gold-imperial/20 border border-gold-imperial/50 text-gold-light font-mono-data text-[10px] font-bold uppercase tracking-wider mb-2">
-                                    <span class="material-symbols-outlined text-[13px] text-gold-imperial">star</span>
+                                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-imperial/20 border border-gold-imperial/60 text-gold-champagne font-mono-data text-xs font-bold uppercase tracking-wider mb-3">
+                                    <span class="material-symbols-outlined text-sm text-gold-imperial">star</span>
                                     <span>FOUNDER & MANAGING DIRECTOR</span>
                                 </div>
-                                <h4 class="font-display text-2xl font-extrabold text-white group-hover:text-gold-imperial transition-colors">
+                                <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-2">
                                     Prodip Sahu
-                                </h4>
+                                </h2>
+                                <p class="font-mono-data text-xs text-gold-light/90 font-semibold uppercase tracking-widest mb-4">
+                                    Strategic Visionary • Corporate Governance & Expansion Lead
+                                </p>
+                                <p class="font-body-md text-slate-300 text-sm sm:text-base leading-relaxed font-medium">
+                                    Steering Sahu Innovation's mission to deliver zero-cost residential solar independence and clean power infrastructure across Northeast India through unyielding engineering rigor, government subsidy compliance, and transparent financial stewardship.
+                                </p>
                             </div>
-                            <div class="text-[11px] font-mono-data text-gold-champagne/90 mt-3 pt-2 border-t border-gold-imperial/30 flex items-center justify-between font-semibold">
-                                <span>Regional Vision & Governance</span>
-                                <span class="text-emerald-400 font-bold flex items-center gap-1">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                                    <span>Board Chair</span>
-                                </span>
+
+                            <!-- Executive Stat Pills & Credentials -->
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-gold-imperial/30 font-mono-data">
+                                <div class="bg-navy-deep/70 p-3.5 rounded-xl border border-gold-imperial/30">
+                                    <span class="text-[10px] text-gold-champagne font-bold uppercase block mb-1">Executive Title</span>
+                                    <span class="text-sm font-bold text-white block">Managing Director</span>
+                                </div>
+                                <div class="bg-navy-deep/70 p-3.5 rounded-xl border border-gold-imperial/30">
+                                    <span class="text-[10px] text-gold-champagne font-bold uppercase block mb-1">Governance Role</span>
+                                    <span class="text-sm font-bold text-emerald-400 block flex items-center gap-1.5">
+                                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                        Board Chair
+                                    </span>
+                                </div>
+                                <div class="bg-navy-deep/70 p-3.5 rounded-xl border border-gold-imperial/30">
+                                    <span class="text-[10px] text-gold-champagne font-bold uppercase block mb-1">Operational Scope</span>
+                                    <span class="text-sm font-bold text-white block">Assam & NE India</span>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
+            <!-- Board of Directors Grid (6 Directors) -->
+            <div class="space-y-8 animate-on-scroll">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gold-imperial/30 pb-5">
+                    <div>
+                        <span class="font-mono-data text-xs text-gold-champagne font-bold uppercase tracking-widest block mb-1">Executive Board</span>
+                        <h3 class="font-display text-2xl sm:text-3xl text-navy-deep font-bold">Board of Directors</h3>
+                    </div>
+                    <span class="px-4 py-1.5 rounded-full bg-white border border-gold-imperial/40 text-navy-deep font-mono-data text-xs font-bold shadow-sm flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-trust animate-pulse"></span>
+                        6 Directors • Operational Leadership
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
                     <!-- Member 2: Khelaton Sahu -->
                     <div class="luxury-card rounded-3xl overflow-hidden border border-gold-imperial/35 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-gold-imperial flex flex-col justify-between group bg-navy-deep">
                         <div class="relative aspect-[4/3] bg-navy-deep overflow-hidden">
