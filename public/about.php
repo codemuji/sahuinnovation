@@ -153,269 +153,205 @@ include_once __DIR__ . '/includes/landing_header.php';
                 <div class="w-20 h-0.5 bg-gold-imperial mx-auto mt-8"></div>
             </div>
 
-            <!-- Spotlight Showcase: Managing Director (`Prodip Sahu - 7.png`) -->
-            <div class="mb-20 animate-on-scroll">
-                <div class="luxury-card rounded-3xl overflow-hidden border-2 border-gold-imperial shadow-2xl bg-white grid grid-cols-1 lg:grid-cols-12 items-stretch group relative">
-                    <!-- Subtle Corner Badge -->
-                    <div class="absolute top-6 right-6 z-30 hidden sm:flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-imperial/15 border border-gold-imperial text-navy-deep font-mono-data text-xs font-bold shadow-sm">
-                        <span class="w-2 h-2 rounded-full bg-emerald-trust animate-pulse"></span>
-                        <span>CHIEF EXECUTIVE GOVERNANCE</span>
-                    </div>
-
-                    <!-- Left: Custom Architectural Portrait Canvas for MD (`7.png`) -->
-                    <div class="lg:col-span-5 relative bg-gradient-to-t from-navy-deep via-[#132847] to-[#1e3a5f] overflow-hidden flex flex-col justify-end min-h-[460px] sm:min-h-[540px]">
-                        <!-- Background Architectural Effects -->
-                        <div class="absolute inset-0 bg-grid-pattern opacity-60"></div>
-                        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full bg-gold-imperial/35 blur-[100px] pointer-events-none group-hover:bg-gold-imperial/45 transition-all duration-700"></div>
-                        
-                        <!-- Geometric Golden Ring Accent -->
-                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full border border-gold-imperial/40 pointer-events-none opacity-40 group-hover:scale-105 transition-transform duration-700"></div>
-                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] rounded-full border border-gold-light/20 pointer-events-none opacity-30"></div>
-
-                        <!-- Transparent PNG (`7.png`) sitting cleanly on the stage with 3D shadow -->
-                        <img alt="Prodip Sahu - Managing Director (`MD`), Sahu Innovation Private Limited" 
-                             class="w-full h-full object-contain object-bottom relative z-10 transition-transform duration-700 group-hover:scale-105 group-hover:-translate-y-2 drop-shadow-[0_25px_35px_rgba(11,31,58,0.85)] max-h-[460px] sm:max-h-[520px]" 
-                             src="<?= site_url('public/assets/img/team/7.png') ?>"/>
-
-                        <!-- Floating Nameplate Tablet Overlapping Bottom -->
-                        <div class="relative z-20 bg-navy-deep/95 border-t border-gold-imperial/60 backdrop-blur-md p-6 sm:p-8">
-                            <span class="font-mono-data text-xs text-gold-champagne font-bold tracking-widest uppercase block mb-1.5">
-                                MANAGING DIRECTOR (`MD`)
-                            </span>
-                            <h3 class="font-display text-2xl sm:text-3xl text-white font-bold tracking-tight">
-                                Prodip Sahu
-                            </h3>
-                            <div class="flex items-center gap-2 mt-2 pt-2 border-t border-white/10 text-xs font-mono-data text-gold-light">
-                                <span class="material-symbols-outlined text-sm text-gold-imperial">verified_user</span>
-                                <span>Guiding Vision, Regional Expansion & Strategy</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right: Executive Leadership Narrative & Pillars -->
-                    <div class="lg:col-span-7 p-8 sm:p-12 lg:p-16 flex flex-col justify-between bg-gradient-to-br from-white via-white to-surface-tint">
-                        <div class="space-y-6">
-                            <div class="inline-block px-3 py-1 rounded bg-gold-imperial/10 border border-gold-imperial/30 text-gold-champagne font-mono-data text-xs font-bold uppercase tracking-wider">
-                                Founder & Managing Director
-                            </div>
-                            
-                            <h4 class="font-display text-2xl sm:text-3xl text-navy-deep font-bold leading-tight">
-                                "Transforming every home into an architectural powerhouse of energy independence."
-                            </h4>
-                            
-                            <p class="font-body-md text-text-muted text-base leading-relaxed font-medium">
-                                Under the direction of Managing Director <strong class="text-navy-deep font-bold">Prodip Sahu</strong>, Sahu Innovation has revolutionized how Assam experiences renewable energy. Recognizing that high upfront costs and complicated bureaucracy deterred families from adopting solar, he established the zero-down-payment model backed by our definitive 5-year legal vendor agreement.
-                            </p>
-                            
-                            <p class="font-body-md text-text-muted text-base leading-relaxed font-medium">
-                                Today, Prodip oversees executive governance, strategic bank financing partnerships, and field execution across Northeast India, guaranteeing that every installation meets uncompromising architectural standards.
-                            </p>
-                        </div>
-
-                        <!-- Strategic Focus Pillars Grid -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-8 mt-8 border-t border-border-light font-mono-data text-xs">
-                            <div class="p-4 rounded-xl bg-surface-tint border border-gold-imperial/30">
-                                <span class="text-gold-champagne font-bold block uppercase mb-1">Pillar 01 • Financial Equity</span>
-                                <span class="text-navy-deep font-medium">Zero down payment & easy ₹2,100/mo EMI accessibility for all families.</span>
-                            </div>
-                            <div class="p-4 rounded-xl bg-surface-tint border border-gold-imperial/30">
-                                <span class="text-gold-champagne font-bold block uppercase mb-1">Pillar 02 • Legal Assurance</span>
-                                <span class="text-navy-deep font-medium">Binding 5-year official agreement protecting every customer investment.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Board of Directors Gallery (`1.png` through `6.png`) -->
-            <div class="space-y-12 animate-on-scroll">
+            <!-- Equal Leadership Showcase: 7 Company Leaders -->
+            <div class="space-y-10 animate-on-scroll">
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gold-imperial/30 pb-6">
                     <div>
-                        <span class="font-mono-data text-xs text-gold-champagne font-bold uppercase tracking-widest block mb-1">Board Roster</span>
-                        <h3 class="font-display text-2xl sm:text-3xl text-navy-deep font-bold">Directors of Sahu Innovation</h3>
+                        <span class="font-mono-data text-xs text-gold-champagne font-bold uppercase tracking-widest block mb-1">Company Leadership Roster</span>
+                        <h3 class="font-display text-2xl sm:text-3xl text-navy-deep font-bold">Board Members</h3>
                     </div>
-                    <span class="px-4 py-1.5 rounded-full bg-white border border-gold-imperial/40 text-navy-deep font-mono-data text-xs font-bold shadow-sm">
-                        6 Strategic Board Members
+                    <span class="px-4 py-1.5 rounded-full bg-white border border-gold-imperial/40 text-navy-deep font-mono-data text-xs font-bold shadow-sm flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-trust animate-pulse"></span>
+                        7 Leadership Pillars • Equal Governance
                     </span>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
-                    <!-- Director 1: Dipen Sahu (`1.png`) -->
-                    <div class="luxury-card rounded-3xl overflow-hidden border border-gold-imperial/35 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-gold-imperial flex flex-col justify-between group bg-white">
-                        <div class="relative aspect-[4/5] bg-gradient-to-t from-navy-deep via-[#162A45] to-[#243f63] overflow-hidden flex flex-col justify-end">
-                            <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
-                            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-imperial/25 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/40 transition-all duration-500"></div>
-                            
-                            <!-- Director Number Tag -->
-                            <div class="absolute top-4 right-4 z-20 px-3 py-1 rounded bg-navy-deep/80 border border-gold-imperial/40 text-gold-light font-mono-data text-[10px] font-bold tracking-widest">
-                                DIRECTOR 01
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 items-stretch">
+                    <!-- Member 1: Prodip Sahu -->
+                    <div class="luxury-card rounded-3xl overflow-hidden border border-gold-imperial/35 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-gold-imperial flex flex-col justify-between group bg-navy-deep">
+                        <div class="relative aspect-[4/3] bg-navy-deep overflow-hidden">
+                            <div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
+                            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-imperial/20 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/35 transition-all duration-500"></div>
+
+                            <img alt="Prodip Sahu - Leadership" 
+                                 class="w-full h-full object-cover object-top relative z-10 transition-transform duration-700 group-hover:scale-105" 
+                                 src="<?= site_url('public/assets/img/team/prodip_sahu.jpeg') ?>"/>
+                        </div>
+
+                        <div class="p-6 bg-navy-deep border-t border-gold-imperial/45 flex flex-col justify-between flex-1">
+                            <div>
+                                <span class="font-mono-data text-[11px] text-gold-champagne font-bold uppercase tracking-wider block mb-1">
+                                    MANAGING DIRECTOR
+                                </span>
+                                <h4 class="font-display text-xl font-bold text-white group-hover:text-gold-imperial transition-colors">
+                                    Prodip Sahu
+                                </h4>
                             </div>
+                            <div class="text-[11px] font-mono-data text-slate-300 mt-3 pt-2 border-t border-white/10 flex items-center justify-between">
+                                <span>Regional Vision & Governance</span>
+                                <span class="text-emerald-400 font-bold">Active Board</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Member 2: Dipen Sahu -->
+                    <div class="luxury-card rounded-3xl overflow-hidden border border-gold-imperial/35 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-gold-imperial flex flex-col justify-between group bg-navy-deep">
+                        <div class="relative aspect-[4/3] bg-navy-deep overflow-hidden">
+                            <div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
+                            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-champagne/20 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/35 transition-all duration-500"></div>
 
                             <img alt="Dipen Sahu - Director" 
-                                 class="w-full h-full object-contain object-bottom relative z-10 transition-transform duration-700 group-hover:scale-108 group-hover:-translate-y-1.5 drop-shadow-[0_16px_28px_rgba(11,31,58,0.65)]" 
-                                 src="<?= site_url('public/assets/img/team/1.png') ?>"/>
+                                 class="w-full h-full object-cover object-top relative z-10 transition-transform duration-700 group-hover:scale-105" 
+                                 src="<?= site_url('public/assets/img/team/dipen_sahu.jpeg') ?>"/>
+                        </div>
 
-                            <div class="relative z-20 bg-navy-deep/95 border-t border-gold-imperial/45 backdrop-blur-md p-6">
+                        <div class="p-6 bg-navy-deep border-t border-gold-imperial/45 flex flex-col justify-between flex-1">
+                            <div>
                                 <span class="font-mono-data text-[11px] text-gold-champagne font-bold uppercase tracking-wider block mb-1">
-                                    DIRECTOR • STRATEGIC GOVERNANCE
+                                    DIRECTOR
                                 </span>
                                 <h4 class="font-display text-xl font-bold text-white group-hover:text-gold-imperial transition-colors">
                                     Dipen Sahu
                                 </h4>
-                                <div class="text-[11px] font-mono-data text-slate-300 mt-2 pt-2 border-t border-white/10 flex items-center justify-between">
-                                    <span>Project Operations</span>
-                                    <span class="text-emerald-400 font-bold">Active Board</span>
-                                </div>
+                            </div>
+                            <div class="text-[11px] font-mono-data text-slate-300 mt-3 pt-2 border-t border-white/10 flex items-center justify-between">
+                                <span>Project Management & Execution</span>
+                                <span class="text-emerald-400 font-bold">Active Board</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Director 2: Khelaton Sahoo (`Sonu`) (`2.png`) -->
-                    <div class="luxury-card rounded-3xl overflow-hidden border border-gold-imperial/35 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-gold-imperial flex flex-col justify-between group bg-white">
-                        <div class="relative aspect-[4/5] bg-gradient-to-t from-navy-deep via-[#162A45] to-[#243f63] overflow-hidden flex flex-col justify-end">
-                            <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
-                            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-champagne/25 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/40 transition-all duration-500"></div>
-                            
-                            <!-- Director Number Tag -->
-                            <div class="absolute top-4 right-4 z-20 px-3 py-1 rounded bg-navy-deep/80 border border-gold-imperial/40 text-gold-light font-mono-data text-[10px] font-bold tracking-widest">
-                                DIRECTOR 02
-                            </div>
+                    <!-- Member 3: Khelaton Sahu -->
+                    <div class="luxury-card rounded-3xl overflow-hidden border border-gold-imperial/35 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-gold-imperial flex flex-col justify-between group bg-navy-deep">
+                        <div class="relative aspect-[4/3] bg-navy-deep overflow-hidden">
+                            <div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
+                            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-imperial/20 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/35 transition-all duration-500"></div>
 
-                            <img alt="Khelaton Sahoo (`Sonu`) - Director" 
-                                 class="w-full h-full object-contain object-bottom relative z-10 transition-transform duration-700 group-hover:scale-108 group-hover:-translate-y-1.5 drop-shadow-[0_16px_28px_rgba(11,31,58,0.65)]" 
-                                 src="<?= site_url('public/assets/img/team/2.png') ?>"/>
+                            <img alt="Khelaton Sahu - Director" 
+                                 class="w-full h-full object-cover object-top relative z-10 transition-transform duration-700 group-hover:scale-105" 
+                                 src="<?= site_url('public/assets/img/team/Khelaton_sahu.jpeg') ?>"/>
+                        </div>
 
-                            <div class="relative z-20 bg-navy-deep/95 border-t border-gold-imperial/45 backdrop-blur-md p-6">
+                        <div class="p-6 bg-navy-deep border-t border-gold-imperial/45 flex flex-col justify-between flex-1">
+                            <div>
                                 <span class="font-mono-data text-[11px] text-gold-champagne font-bold uppercase tracking-wider block mb-1">
-                                    DIRECTOR • STRATEGIC GOVERNANCE
+                                    DIRECTOR
                                 </span>
                                 <h4 class="font-display text-xl font-bold text-white group-hover:text-gold-imperial transition-colors">
-                                    Khelaton Sahoo (`Sonu`)
+                                    Khelaton Sahu
                                 </h4>
-                                <div class="text-[11px] font-mono-data text-slate-300 mt-2 pt-2 border-t border-white/10 flex items-center justify-between">
-                                    <span>Client Relations & Field Verification</span>
-                                    <span class="text-emerald-400 font-bold">Active Board</span>
-                                </div>
+                            </div>
+                            <div class="text-[11px] font-mono-data text-slate-300 mt-3 pt-2 border-t border-white/10 flex items-center justify-between">
+                                <span>Field Verification & Relations</span>
+                                <span class="text-emerald-400 font-bold">Active Board</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Director 3: Goutum Sahu (`3.png`) -->
-                    <div class="luxury-card rounded-3xl overflow-hidden border border-gold-imperial/35 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-gold-imperial flex flex-col justify-between group bg-white">
-                        <div class="relative aspect-[4/5] bg-gradient-to-t from-navy-deep via-[#162A45] to-[#243f63] overflow-hidden flex flex-col justify-end">
-                            <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
-                            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-imperial/25 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/40 transition-all duration-500"></div>
-                            
-                            <!-- Director Number Tag -->
-                            <div class="absolute top-4 right-4 z-20 px-3 py-1 rounded bg-navy-deep/80 border border-gold-imperial/40 text-gold-light font-mono-data text-[10px] font-bold tracking-widest">
-                                DIRECTOR 03
-                            </div>
+                    <!-- Member 4: Goutam Sahu -->
+                    <div class="luxury-card rounded-3xl overflow-hidden border border-gold-imperial/35 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-gold-imperial flex flex-col justify-between group bg-navy-deep">
+                        <div class="relative aspect-[4/3] bg-navy-deep overflow-hidden">
+                            <div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
+                            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-champagne/20 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/35 transition-all duration-500"></div>
 
-                            <img alt="Goutum Sahu - Director" 
-                                 class="w-full h-full object-contain object-bottom relative z-10 transition-transform duration-700 group-hover:scale-108 group-hover:-translate-y-1.5 drop-shadow-[0_16px_28px_rgba(11,31,58,0.65)]" 
-                                 src="<?= site_url('public/assets/img/team/3.png') ?>"/>
+                            <img alt="Goutam Sahu - Director" 
+                                 class="w-full h-full object-cover object-top relative z-10 transition-transform duration-700 group-hover:scale-105" 
+                                 src="<?= site_url('public/assets/img/team/Goutam_sahu.jpeg') ?>"/>
+                        </div>
 
-                            <div class="relative z-20 bg-navy-deep/95 border-t border-gold-imperial/45 backdrop-blur-md p-6">
+                        <div class="p-6 bg-navy-deep border-t border-gold-imperial/45 flex flex-col justify-between flex-1">
+                            <div>
                                 <span class="font-mono-data text-[11px] text-gold-champagne font-bold uppercase tracking-wider block mb-1">
-                                    DIRECTOR • STRATEGIC GOVERNANCE
+                                    DIRECTOR
                                 </span>
                                 <h4 class="font-display text-xl font-bold text-white group-hover:text-gold-imperial transition-colors">
-                                    Goutum Sahu
+                                    Goutam Sahu
                                 </h4>
-                                <div class="text-[11px] font-mono-data text-slate-300 mt-2 pt-2 border-t border-white/10 flex items-center justify-between">
-                                    <span>Technical Infrastructure</span>
-                                    <span class="text-emerald-400 font-bold">Active Board</span>
-                                </div>
+                            </div>
+                            <div class="text-[11px] font-mono-data text-slate-300 mt-3 pt-2 border-t border-white/10 flex items-center justify-between">
+                                <span>Solar & Technical Infrastructure</span>
+                                <span class="text-emerald-400 font-bold">Active Board</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Director 4: Krishna Prasad Sahu (`4.png`) -->
-                    <div class="luxury-card rounded-3xl overflow-hidden border border-gold-imperial/35 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-gold-imperial flex flex-col justify-between group bg-white">
-                        <div class="relative aspect-[4/5] bg-gradient-to-t from-navy-deep via-[#162A45] to-[#243f63] overflow-hidden flex flex-col justify-end">
-                            <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
-                            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-imperial/25 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/40 transition-all duration-500"></div>
-                            
-                            <!-- Director Number Tag -->
-                            <div class="absolute top-4 right-4 z-20 px-3 py-1 rounded bg-navy-deep/80 border border-gold-imperial/40 text-gold-light font-mono-data text-[10px] font-bold tracking-widest">
-                                DIRECTOR 04
-                            </div>
+                    <!-- Member 5: Krishna Prasad Sahu -->
+                    <div class="luxury-card rounded-3xl overflow-hidden border border-gold-imperial/35 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-gold-imperial flex flex-col justify-between group bg-navy-deep">
+                        <div class="relative aspect-[4/3] bg-navy-deep overflow-hidden">
+                            <div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
+                            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-imperial/20 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/35 transition-all duration-500"></div>
 
                             <img alt="Krishna Prasad Sahu - Director" 
-                                 class="w-full h-full object-contain object-bottom relative z-10 transition-transform duration-700 group-hover:scale-108 group-hover:-translate-y-1.5 drop-shadow-[0_16px_28px_rgba(11,31,58,0.65)]" 
-                                 src="<?= site_url('public/assets/img/team/4.png') ?>"/>
+                                 class="w-full h-full object-cover object-top relative z-10 transition-transform duration-700 group-hover:scale-105" 
+                                 src="<?= site_url('public/assets/img/team/Krishna_prasad_sahu.jpeg') ?>"/>
+                        </div>
 
-                            <div class="relative z-20 bg-navy-deep/95 border-t border-gold-imperial/45 backdrop-blur-md p-6">
+                        <div class="p-6 bg-navy-deep border-t border-gold-imperial/45 flex flex-col justify-between flex-1">
+                            <div>
                                 <span class="font-mono-data text-[11px] text-gold-champagne font-bold uppercase tracking-wider block mb-1">
-                                    DIRECTOR • STRATEGIC GOVERNANCE
+                                    DIRECTOR
                                 </span>
                                 <h4 class="font-display text-xl font-bold text-white group-hover:text-gold-imperial transition-colors">
                                     Krishna Prasad Sahu
                                 </h4>
-                                <div class="text-[11px] font-mono-data text-slate-300 mt-2 pt-2 border-t border-white/10 flex items-center justify-between">
-                                    <span>Grid & Subsidy Integration</span>
-                                    <span class="text-emerald-400 font-bold">Active Board</span>
-                                </div>
+                            </div>
+                            <div class="text-[11px] font-mono-data text-slate-300 mt-3 pt-2 border-t border-white/10 flex items-center justify-between">
+                                <span>Portal & Grid Connections</span>
+                                <span class="text-emerald-400 font-bold">Active Board</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Director 5: Satra Prakash Sahu (`Ajay`) (`5.png`) -->
-                    <div class="luxury-card rounded-3xl overflow-hidden border border-gold-imperial/35 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-gold-imperial flex flex-col justify-between group bg-white">
-                        <div class="relative aspect-[4/5] bg-gradient-to-t from-navy-deep via-[#162A45] to-[#243f63] overflow-hidden flex flex-col justify-end">
-                            <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
-                            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-champagne/25 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/40 transition-all duration-500"></div>
-                            
-                            <!-- Director Number Tag -->
-                            <div class="absolute top-4 right-4 z-20 px-3 py-1 rounded bg-navy-deep/80 border border-gold-imperial/40 text-gold-light font-mono-data text-[10px] font-bold tracking-widest">
-                                DIRECTOR 05
-                            </div>
+                    <!-- Member 6: Satra Prakash Sahu -->
+                    <div class="luxury-card rounded-3xl overflow-hidden border border-gold-imperial/35 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-gold-imperial flex flex-col justify-between group bg-navy-deep">
+                        <div class="relative aspect-[4/3] bg-navy-deep overflow-hidden">
+                            <div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
+                            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-champagne/20 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/35 transition-all duration-500"></div>
 
-                            <img alt="Satra Prakash Sahu (`Ajay`) - Director" 
-                                 class="w-full h-full object-contain object-bottom relative z-10 transition-transform duration-700 group-hover:scale-108 group-hover:-translate-y-1.5 drop-shadow-[0_16px_28px_rgba(11,31,58,0.65)]" 
-                                 src="<?= site_url('public/assets/img/team/5.png') ?>"/>
+                            <img alt="Satra Prakash Sahu - Director" 
+                                 class="w-full h-full object-cover object-top relative z-10 transition-transform duration-700 group-hover:scale-105" 
+                                 src="<?= site_url('public/assets/img/team/satra_prakash_sahu.jpeg') ?>"/>
+                        </div>
 
-                            <div class="relative z-20 bg-navy-deep/95 border-t border-gold-imperial/45 backdrop-blur-md p-6">
+                        <div class="p-6 bg-navy-deep border-t border-gold-imperial/45 flex flex-col justify-between flex-1">
+                            <div>
                                 <span class="font-mono-data text-[11px] text-gold-champagne font-bold uppercase tracking-wider block mb-1">
-                                    DIRECTOR • STRATEGIC GOVERNANCE
+                                    DIRECTOR
                                 </span>
                                 <h4 class="font-display text-xl font-bold text-white group-hover:text-gold-imperial transition-colors">
-                                    Satra Prakash Sahu (`Ajay`)
+                                    Satra Prakash Sahu
                                 </h4>
-                                <div class="text-[11px] font-mono-data text-slate-300 mt-2 pt-2 border-t border-white/10 flex items-center justify-between">
-                                    <span>Financial Compliance & Contracts</span>
-                                    <span class="text-emerald-400 font-bold">Active Board</span>
-                                </div>
+                            </div>
+                            <div class="text-[11px] font-mono-data text-slate-300 mt-3 pt-2 border-t border-white/10 flex items-center justify-between">
+                                <span>Finance & Contracts</span>
+                                <span class="text-emerald-400 font-bold">Active Board</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Director 6: Tikam Chand Sahu (`6.png`) -->
-                    <div class="luxury-card rounded-3xl overflow-hidden border border-gold-imperial/35 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-gold-imperial flex flex-col justify-between group bg-white">
-                        <div class="relative aspect-[4/5] bg-gradient-to-t from-navy-deep via-[#162A45] to-[#243f63] overflow-hidden flex flex-col justify-end">
-                            <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
-                            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-imperial/25 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/40 transition-all duration-500"></div>
-                            
-                            <!-- Director Number Tag -->
-                            <div class="absolute top-4 right-4 z-20 px-3 py-1 rounded bg-navy-deep/80 border border-gold-imperial/40 text-gold-light font-mono-data text-[10px] font-bold tracking-widest">
-                                DIRECTOR 06
-                            </div>
+                    <!-- Member 7: Tikam Chand Sahu -->
+                    <div class="luxury-card rounded-3xl overflow-hidden border border-gold-imperial/35 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-gold-imperial flex flex-col justify-between group bg-navy-deep">
+                        <div class="relative aspect-[4/3] bg-navy-deep overflow-hidden">
+                            <div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
+                            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-imperial/20 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/35 transition-all duration-500"></div>
 
                             <img alt="Tikam Chand Sahu - Director" 
-                                 class="w-full h-full object-contain object-bottom relative z-10 transition-transform duration-700 group-hover:scale-108 group-hover:-translate-y-1.5 drop-shadow-[0_16px_28px_rgba(11,31,58,0.65)]" 
-                                 src="<?= site_url('public/assets/img/team/6.png') ?>"/>
+                                 class="w-full h-full object-cover object-top relative z-10 transition-transform duration-700 group-hover:scale-105" 
+                                 src="<?= site_url('public/assets/img/team/Tikam_chand_sahu.jpeg') ?>"/>
+                        </div>
 
-                            <div class="relative z-20 bg-navy-deep/95 border-t border-gold-imperial/45 backdrop-blur-md p-6">
+                        <div class="p-6 bg-navy-deep border-t border-gold-imperial/45 flex flex-col justify-between flex-1">
+                            <div>
                                 <span class="font-mono-data text-[11px] text-gold-champagne font-bold uppercase tracking-wider block mb-1">
-                                    DIRECTOR • STRATEGIC GOVERNANCE
+                                    DIRECTOR
                                 </span>
                                 <h4 class="font-display text-xl font-bold text-white group-hover:text-gold-imperial transition-colors">
                                     Tikam Chand Sahu
                                 </h4>
-                                <div class="text-[11px] font-mono-data text-slate-300 mt-2 pt-2 border-t border-white/10 flex items-center justify-between">
-                                    <span>Regional Expansion & Logistics</span>
-                                    <span class="text-emerald-400 font-bold">Active Board</span>
-                                </div>
+                            </div>
+                            <div class="text-[11px] font-mono-data text-slate-300 mt-3 pt-2 border-t border-white/10 flex items-center justify-between">
+                                <span>Supply Chain & Expansion</span>
+                                <span class="text-emerald-400 font-bold">Active Board</span>
                             </div>
                         </div>
                     </div>

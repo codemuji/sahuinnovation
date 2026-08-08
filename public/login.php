@@ -38,7 +38,12 @@ $roleDisplayName = $roleNames[$selectedRole] ?? '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $roleDisplayName ? h($roleDisplayName) . ' Login' : 'Login' ?> | Sahu Innovation Portal</title>
-    <link rel="icon" type="image/png" href="<?= asset_url('img/logo.png') ?>">
+    <!-- Favicon & Touch Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= asset_url('img/logo.png') ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= asset_url('img/logo.png') ?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= asset_url('img/logo.png') ?>">
+    <link rel="shortcut icon" href="<?= asset_url('img/logo.png') ?>">
+    <meta name="description" content="Secure Employee & Management Portal Login for Sahu Innovation Pvt. Ltd.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">

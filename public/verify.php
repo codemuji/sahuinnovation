@@ -31,6 +31,12 @@ $roleLabels = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Verification | Sahu Innovation Pvt. Ltd.</title>
+    <!-- Favicon & Touch Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= site_url('public/assets/img/logo.png') ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= site_url('public/assets/img/logo.png') ?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= site_url('public/assets/img/logo.png') ?>">
+    <link rel="shortcut icon" href="<?= site_url('public/assets/img/logo.png') ?>">
+    <meta name="description" content="Official Employee & Board Member Verification System for Sahu Innovation Pvt. Ltd.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }

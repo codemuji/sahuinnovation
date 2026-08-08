@@ -30,6 +30,31 @@ if ($isLoggedIn && !empty(Auth::userRole())) {
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title><?= isset($pageTitle) ? h($pageTitle) . ' | Sahu Innovation - Architectural Solar Excellence' : 'Sahu Innovation - Premium Architectural Solar Solutions' ?></title>
+    
+    <!-- Favicon & Touch Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= site_url('public/assets/img/logo.png') ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= site_url('public/assets/img/logo.png') ?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= site_url('public/assets/img/logo.png') ?>">
+    <link rel="shortcut icon" href="<?= site_url('public/assets/img/logo.png') ?>">
+
+    <!-- Primary SEO Meta Tags -->
+    <meta name="description" content="<?= isset($pageDescription) ? h($pageDescription) : 'Sahu Innovation Pvt. Ltd. - Premier provider of zero-down-payment residential & commercial solar solutions, PM Surya Ghar subsidy processing, and architectural rooftop solar in Assam & Northeast India.' ?>">
+    <meta name="keywords" content="Sahu Innovation, Solar Energy Assam, PM Surya Ghar Subsidy, Solar Panel Installation, Zero Down Payment Solar, Roof Solar India">
+    <meta name="author" content="Sahu Innovation Private Limited">
+
+    <!-- OpenGraph / Facebook SEO Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?= site_url('public/' . basename($_SERVER['PHP_SELF'])) ?>">
+    <meta property="og:title" content="<?= isset($pageTitle) ? h($pageTitle) . ' | Sahu Innovation' : 'Sahu Innovation - Architectural Solar Excellence' ?>">
+    <meta property="og:description" content="<?= isset($pageDescription) ? h($pageDescription) : 'Transform your roof into an architectural powerhouse of zero-cost clean energy with Sahu Innovation. Guaranteed PM Surya Ghar passbook subsidy up to ₹1,30,800.' ?>">
+    <meta property="og:image" content="<?= site_url('public/assets/img/logo.png') ?>">
+    <meta property="og:site_name" content="Sahu Innovation Pvt. Ltd.">
+
+    <!-- Twitter SEO Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?= isset($pageTitle) ? h($pageTitle) . ' | Sahu Innovation' : 'Sahu Innovation - Architectural Solar Excellence' ?>">
+    <meta name="twitter:description" content="<?= isset($pageDescription) ? h($pageDescription) : 'Transform your roof into an architectural powerhouse of zero-cost clean energy with Sahu Innovation.' ?>">
+    <meta name="twitter:image" content="<?= site_url('public/assets/img/logo.png') ?>">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
