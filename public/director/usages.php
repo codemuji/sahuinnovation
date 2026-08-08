@@ -89,7 +89,7 @@ include __DIR__ . '/../includes/header.php';
                 <?php else:
                     foreach ($usages as $u): ?>
                         <tr>
-                            <td data-label="Date"><?= date('d M Y H:i', strtotime($u['created_at'])) ?></td>
+                            <td data-label="Date"><?= date('d M Y', strtotime($u['created_at'])) ?></td>
                             <td data-label="Purpose"><strong style="color: var(--primary);"><?= h($u['purpose']) ?></strong></td>
                             <td data-label="Description" style="max-width: 250px; font-size: 13px;"><?= nl2br(h($u['description'])) ?: '<span style="color: var(--text-muted);">No description</span>' ?></td>
                             <td data-label="Amount" style="font-weight: 800; font-size: 15px;"><?= formatCurrency($u['amount']) ?></td>
@@ -197,7 +197,7 @@ $allUsages = $stmtAll->fetchAll();
                 <?php else:
                     foreach ($allUsages as $au): ?>
                         <tr>
-                            <td data-label="Date"><?= date('d M Y H:i', strtotime($au['created_at'])) ?></td>
+                            <td data-label="Date"><?= date('d M Y', strtotime($au['created_at'])) ?></td>
                             <td data-label="Director">
                                 <strong style="color: var(--primary);"><?= h($au['director_name']) ?></strong>
                                 <?php if ($au['director_id'] == $userId): ?>

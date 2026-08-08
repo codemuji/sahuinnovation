@@ -121,7 +121,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     
     foreach ($allocLogs as $al) {
         fputcsv($output, [
-            date('Y-m-d H:i', strtotime($al['created_at'])),
+            date('Y-m-d', strtotime($al['created_at'])),
             $al['director_name'],
             $al['admin_name'],
             $al['amount'],
@@ -142,7 +142,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     
     foreach ($expLogs as $el) {
         fputcsv($output, [
-            date('Y-m-d H:i', strtotime($el['resolved_at'])),
+            date('Y-m-d', strtotime($el['resolved_at'])),
             $el['director_name'],
             $el['purpose'],
             $el['description'],

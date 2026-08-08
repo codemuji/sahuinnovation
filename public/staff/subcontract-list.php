@@ -1,21 +1,40 @@
 <?php
 require_once __DIR__ . '/../../app/core/Auth.php';
-Auth::requireRole(['staff', 'admin']);
+Auth::requireRole(['subcontract_staff', 'admin']);
 
 $db = Database::getInstance()->getConnection();
 ensureSubcontractTables($db);
 
-// Fetch all active Subcontractors for project assignment
-$stmt = $db->query("SELECT id, name, employee_id FROM users WHERE role = 'subcontractor' AND is_active = 1 ORDER BY name ASC");
-$subcontractors = $stmt->fetchAll();
+$userRole = Auth::userRole();
+$userId = Auth::userId();
+
+// Fetch all active Subcontractors for project assignment (Admin view)
+$subcontractors = [];
+if ($userRole === 'admin') {
+    $stmt = $db->query("SELECT id, name, employee_id FROM users WHERE role = 'subcontractor' AND is_active = 1 ORDER BY name ASC");
+    $subcontractors = $stmt->fetchAll();
+}
 
 // Fetch Subcontract Projects
-$stmt = $db->query("SELECT p.*, c.name as contractor_name, s.name as staff_name 
-    FROM subcontract_projects p 
-    JOIN users c ON p.contractor_id = c.id 
-    JOIN users s ON p.created_by_staff_id = s.id 
-    ORDER BY p.created_at DESC");
-$projects = $stmt->fetchAll();
+if ($userRole === 'subcontract_staff') {
+    $currentUser = Auth::user();
+    $contractorId = $currentUser['subcontractor_id'] ?? 0;
+    $stmt = $db->prepare("SELECT p.*, c.name as contractor_name, s.name as staff_name 
+        FROM subcontract_projects p 
+        JOIN users c ON p.contractor_id = c.id 
+        JOIN users s ON p.created_by_staff_id = s.id 
+        WHERE p.contractor_id = ?
+        ORDER BY p.created_at DESC");
+    $stmt->execute([$contractorId]);
+    $projects = $stmt->fetchAll();
+} else {
+    $stmt = $db->query("SELECT p.*, c.name as contractor_name, s.name as staff_name 
+        FROM subcontract_projects p 
+        JOIN users c ON p.contractor_id = c.id 
+        JOIN users s ON p.created_by_staff_id = s.id 
+        ORDER BY p.created_at DESC");
+    $projects = $stmt->fetchAll();
+}
 
 $pageTitle = "Sub-Contract Management";
 include __DIR__ . '/../includes/header.php';
@@ -24,12 +43,13 @@ include __DIR__ . '/../includes/header.php';
 <div class="panel-header">
     <div class="panel-title">
         <h1>Sub-Contract Management</h1>
-        <p>Assign new sub-contract installation jobs and manage workflow stage progression.</p>
+        <p><?= $userRole === 'admin' ? 'Assign new sub-contract installation jobs and manage workflow stage progression.' : 'View assigned sub-contract jobs and update stage workflow progression.' ?></p>
     </div>
 </div>
 
-<div class="grid grid-3" style="margin-bottom: 40px; align-items: start;">
-    <!-- Create Sub-Contract Form (1 Column) -->
+<div class="<?= $userRole === 'admin' ? 'grid grid-3' : 'grid grid-1' ?>" style="margin-bottom: 40px; align-items: start;">
+    <?php if ($userRole === 'admin'): ?>
+    <!-- Create Sub-Contract Form (1 Column - Admin Only) -->
     <div class="desktop-card" style="grid-column: span 1;">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">New Sub-Contract Job</h3>
         
@@ -82,9 +102,10 @@ include __DIR__ . '/../includes/header.php';
             </div>
         </form>
     </div>
+    <?php endif; ?>
 
-    <!-- Projects Table (2 Columns) -->
-    <div class="desktop-card" style="grid-column: span 2; padding: 0;">
+    <!-- Projects Table -->
+    <div class="desktop-card" style="grid-column: <?= $userRole === 'admin' ? 'span 2' : 'span 1' ?>; padding: 0;">
         <div style="padding: 20px; border-bottom: 1px solid var(--border);">
             <h3 style="font-size: 16px; font-weight: 700; margin: 0;">Active Sub-Contract Projects</h3>
         </div>

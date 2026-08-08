@@ -124,7 +124,7 @@ if (Auth::check() && Auth::userRole() === 'admin') {
 <div class="dashboard-container">
     <aside class="sidebar">
         <div class="auth-logo" style="margin-bottom: 30px; text-align: left; padding: 4px 0;">
-            <a href="<?= site_url('public/'.Auth::userRole().'/dashboard.php') ?>" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+            <a href="<?= site_url('public/' . (Auth::userRole() === 'subcontract_staff' ? 'staff/subcontract-list.php' : Auth::userRole() . '/dashboard.php')) ?>" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
                 <div style="background: rgba(255,255,255,0.08); padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.35); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.25);">
                     <img src="<?= asset_url('img/logo.png') ?>" alt="Sahu Innovation Logo" style="height: 36px; width: auto; object-fit: contain;">
                 </div>
@@ -138,8 +138,8 @@ if (Auth::check() && Auth::userRole() === 'admin') {
         <nav style="flex-grow: 1;">
             <ul style="list-style: none;">
                 <li style="margin-bottom: 8px;">
-                    <a href="<?= site_url('public/'.Auth::userRole().'/dashboard.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'dashboard.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
-                        <i class="fa fa-home" style="width: 24px;"></i> <?= in_array(Auth::userRole(), ['director', 'office_staff']) ? 'Home' : 'Dashboard' ?>
+                    <a href="<?= site_url('public/' . (Auth::userRole() === 'subcontract_staff' ? 'staff/subcontract-list.php' : Auth::userRole() . '/dashboard.php')) ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'dashboard.php') !== false || (Auth::userRole() === 'subcontract_staff' && strpos($_SERVER['PHP_SELF'], 'subcontract-list.php') !== false) ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                        <i class="fa fa-home" style="width: 24px;"></i> <?= in_array(Auth::userRole(), ['director', 'office_staff']) ? 'Home' : (Auth::userRole() === 'subcontract_staff' ? 'My Sub-Contracts' : 'Dashboard') ?>
                     </a>
                 </li>
                 
@@ -172,6 +172,19 @@ if (Auth::check() && Auth::userRole() === 'admin') {
                             <i class="fa fa-file-contract" style="width: 24px;"></i> PM Surya Ghar Application
                         </a>
                     </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/staff/salary-advance.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'salary-advance.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-money-check-dollar" style="width: 24px;"></i> Salary & Advance
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="<?= site_url('public/staff/report.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'report.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
+                            <i class="fa fa-chart-line" style="width: 24px;"></i> My Report
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <?php if (Auth::userRole() === 'subcontract_staff'): ?>
                     <li style="margin-bottom: 8px;">
                         <a href="<?= site_url('public/staff/subcontract-list.php') ?>" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; background: <?= strpos($_SERVER['PHP_SELF'], 'subcontract-list.php') !== false || strpos($_SERVER['PHP_SELF'], 'subcontract-detail.php') !== false ? 'rgba(255,255,255,0.1)' : 'transparent' ?>">
                             <i class="fa fa-diagram-project" style="width: 24px;"></i> Sub-Contract Jobs

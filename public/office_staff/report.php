@@ -68,7 +68,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     $totalAllocated = 0.00;
     foreach ($allocs as $a) {
         fputcsv($output, [
-            date('Y-m-d H:i', strtotime($a['created_at'])),
+            date('Y-m-d', strtotime($a['created_at'])),
             $a['admin_name'],
             $a['amount'],
             $a['notes']
@@ -89,7 +89,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     $totalExpensed = 0.00;
     foreach ($usages as $u) {
         fputcsv($output, [
-            date('Y-m-d H:i', strtotime($u['resolved_at'])),
+            date('Y-m-d', strtotime($u['resolved_at'])),
             $u['purpose'],
             $u['description'],
             $u['amount']

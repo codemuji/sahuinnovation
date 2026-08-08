@@ -11,12 +11,13 @@ Auth::requireRole('admin');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db = Database::getInstance()->getConnection();
-    @$db->exec("ALTER TABLE users MODIFY COLUMN role ENUM('surveyer', 'dm', 'pe', 'staff', 'admin', 'director', 'office_staff', 'subcontractor') NOT NULL");
+    ensureSubcontractTables($db);
 
     $name = trim($_POST['name'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $phone = trim($_POST['phone'] ?? '');
     $role = $_POST['role'] ?? '';
+    $subcontractorId = !empty($_POST['subcontractor_id']) ? intval($_POST['subcontractor_id']) : null;
     $password = $_POST['password'] ?? '';
 
     if (empty($name) || empty($email) || empty($role) || empty($password)) {
@@ -41,8 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // 2. Insert User
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-        $stmt = $db->prepare("INSERT INTO users (name, email, phone, role, password, is_active) VALUES (?, ?, ?, ?, ?, 1)");
-        $stmt->execute([$name, $email, $phone, $role, $hashedPassword]);
+        $stmt = $db->prepare("INSERT INTO users (name, email, phone, role, subcontractor_id, password, is_active) VALUES (?, ?, ?, ?, ?, ?, 1)");
+        $stmt->execute([$name, $email, $phone, $role, $subcontractorId, $hashedPassword]);
         $userId = $db->lastInsertId();
 
         // 2b. Generate unique Employee ID: SI-XXXX

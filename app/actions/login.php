@@ -29,9 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Redirect based on role
         $role = $user['role'];
-        $validRoles = ['surveyer', 'dm', 'pe', 'director', 'office_staff', 'staff', 'admin', 'subcontractor'];
+        $validRoles = ['surveyer', 'dm', 'pe', 'director', 'office_staff', 'staff', 'admin', 'subcontractor', 'subcontract_staff'];
         if (in_array($role, $validRoles)) {
-            redirect(site_url('public/' . ($role === 'pe' ? 'dm' : $role) . '/dashboard.php'));
+            if ($role === 'subcontract_staff') {
+                redirect(site_url('public/staff/subcontract-list.php'));
+            } else {
+                redirect(site_url('public/' . ($role === 'pe' ? 'dm' : $role) . '/dashboard.php'));
+            }
         } else {
             session_destroy();
             setFlash('danger', 'Your account role is invalid or unassigned. Please contact Admin.');

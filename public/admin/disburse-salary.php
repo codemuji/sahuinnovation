@@ -15,8 +15,8 @@ $db->exec("CREATE TABLE IF NOT EXISTS salary_disbursements (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
-// Fetch all active directors and office staff
-$stmt = $db->query("SELECT id, name, employee_id, role FROM users WHERE role IN ('director', 'office_staff') AND is_active = 1 ORDER BY name ASC");
+// Fetch all active directors, office staff, and staff
+$stmt = $db->query("SELECT id, name, employee_id, role FROM users WHERE role IN ('director', 'office_staff', 'staff') AND is_active = 1 ORDER BY name ASC");
 $directors = $stmt->fetchAll();
 
 $pageTitle = "Disburse Salary & Advance";
@@ -26,7 +26,7 @@ include __DIR__ . '/../includes/header.php';
 <div class="panel-header">
     <div class="panel-title">
         <h1>Disburse Salary / Advance</h1>
-        <p>Transfer salary or advance payments directly to a Director or Office Staff member.</p>
+        <p>Transfer salary or advance payments directly to a Director, Office Staff, or Staff member.</p>
     </div>
 </div>
 
@@ -36,7 +36,7 @@ include __DIR__ . '/../includes/header.php';
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">New Salary / Advance Disbursement</h3>
         <form action="<?= site_url('app/actions/disburse_salary.php') ?>" method="POST">
             <div class="form-group">
-                <label class="form-label" for="user_id">Select Director / Office Staff <span style="color: var(--danger);">*</span></label>
+                <label class="form-label" for="user_id">Select Recipient (Director / Staff) <span style="color: var(--danger);">*</span></label>
                 <select class="form-control" id="user_id" name="user_id" required>
                     <option value="">-- Select Recipient --</option>
                     <?php foreach ($directors as $emp): ?>
@@ -60,7 +60,7 @@ include __DIR__ . '/../includes/header.php';
 
             <div class="form-group">
                 <label class="form-label" for="created_at">Disbursement Date</label>
-                <input type="datetime-local" class="form-control" id="created_at" name="created_at" value="<?= date('Y-m-d\TH:i') ?>">
+                <input type="date" class="form-control" id="created_at" name="created_at" value="<?= date('Y-m-d') ?>">
             </div>
 
             <div class="form-group">

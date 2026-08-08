@@ -58,7 +58,7 @@ include __DIR__ . '/../includes/header.php';
                     </div>
                     <div>
                         <span style="font-size: 12px; color: var(--text-muted); font-weight: 500;">Submitted Date:</span>
-                        <p style="font-size: 14px; font-weight: 600; color: var(--primary); margin-top: 2px;"><?= date('d M Y, H:i', strtotime($r['created_at'])) ?></p>
+                        <p style="font-size: 14px; font-weight: 600; color: var(--primary); margin-top: 2px;"><?= date('d M Y', strtotime($r['created_at'])) ?></p>
                     </div>
                     <div style="grid-column: span 2;">
                         <span style="font-size: 12px; color: var(--text-muted); font-weight: 500;">Detailed Description:</span>

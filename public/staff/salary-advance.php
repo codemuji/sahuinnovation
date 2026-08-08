@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../app/core/Auth.php';
-Auth::requireRole('office_staff');
+Auth::requireRole('staff');
 
 $db = Database::getInstance()->getConnection();
 $userId = Auth::userId();

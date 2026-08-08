@@ -85,7 +85,7 @@ include __DIR__ . '/../includes/header.php';
                 <?php else: ?>
                     <?php foreach ($disbursements as $d): ?>
                         <tr>
-                            <td data-label="Date"><?= date('d M Y, h:i A', strtotime($d['created_at'])) ?></td>
+                            <td data-label="Date"><?= date('d M Y', strtotime($d['created_at'])) ?></td>
                             <td data-label="Type">
                                 <span class="badge badge-<?= $d['type'] === 'salary' ? 'success' : 'info' ?>">
                                     <?= ucfirst(h($d['type'])) ?>

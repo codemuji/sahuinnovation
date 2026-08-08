@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $createdAt = !empty($_POST['created_at']) ? date('Y-m-d H:i:s', strtotime($_POST['created_at'])) : date('Y-m-d H:i:s');
 
     if (!$userId || $amount <= 0) {
-        setFlash('danger', 'Please select a director and enter a valid amount.');
+        setFlash('danger', 'Please select an employee and enter a valid amount.');
         redirect(site_url('public/admin/disburse-salary.php'));
     }
 
@@ -39,13 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $db->beginTransaction();
 
-        // 1. Verify target user exists and is a Director or Office Staff
-        $stmt = $db->prepare("SELECT name FROM users WHERE id = ? AND role IN ('director', 'office_staff') AND is_active = 1");
+        // 1. Verify target user exists and is a Director, Office Staff, or Staff
+        $stmt = $db->prepare("SELECT name FROM users WHERE id = ? AND role IN ('director', 'office_staff', 'staff') AND is_active = 1");
         $stmt->execute([$userId]);
         $targetUser = $stmt->fetch();
 
         if (!$targetUser) {
-            throw new Exception("Selected user not found or is not an active Director or Office Staff.");
+            throw new Exception("Selected user not found or is not an active Director, Office Staff, or Staff.");
         }
 
         // 2. Insert Disbursement Record
@@ -54,6 +54,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $disbursementId = $db->lastInsertId();
 
         $typeTitle = ucfirst($type);
+
+        // 3. Update or Create Wallet
+        $stmt = $db->prepare("INSERT INTO wallets (user_id, balance) VALUES (?, ?) ON DUPLICATE KEY UPDATE balance = balance + ?");
+        $stmt->execute([$userId, $amount, $amount]);
+
+        // 4. Record Wallet Transaction
+        $stmt = $db->prepare("INSERT INTO wallet_transactions (user_id, ref_type, ref_id, type, amount, status, description) 
+            VALUES (?, 'salary_disbursement', ?, 'credit', ?, 'approved', ?)");
+        $stmt->execute([
+            $userId,
+            $disbursementId,
+            $amount,
+            "{$typeTitle} disbursement from Admin: " . ($notes ?: 'No description')
+        ]);
 
         $db->commit();
         setFlash('success', "{$typeTitle} successfully disbursed to {$targetUser['name']}.");

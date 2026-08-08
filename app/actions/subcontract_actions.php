@@ -7,14 +7,14 @@ require_once __DIR__ . '/../core/Auth.php';
 require_once __DIR__ . '/../core/helpers.php';
 require_once __DIR__ . '/../config/database.php';
 
-Auth::requireRole(['staff', 'admin', 'director', 'subcontractor']);
+Auth::requireRole(['staff', 'admin', 'director', 'subcontractor', 'subcontract_staff']);
 
 $db = Database::getInstance()->getConnection();
 $role = Auth::userRole();
 $userId = Auth::userId();
 
 // Ensure DB tables exist dynamically
-$db->exec("ALTER TABLE users MODIFY COLUMN role ENUM('surveyer', 'dm', 'pe', 'staff', 'admin', 'director', 'office_staff', 'subcontractor') NOT NULL");
+@$db->exec("ALTER TABLE users MODIFY COLUMN role ENUM('surveyer', 'dm', 'pe', 'staff', 'admin', 'director', 'office_staff', 'subcontractor', 'subcontract_staff') NOT NULL");
 
 $db->exec("CREATE TABLE IF NOT EXISTS subcontract_projects (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -87,8 +87,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             redirect(site_url('public/staff/subcontract-list.php'));
 
         } elseif ($action === 'update_stage') {
-            if (!in_array($role, ['staff', 'admin'])) {
-                throw new Exception("Only Staff and Admin can update project stages.");
+            if (!in_array($role, ['subcontract_staff', 'admin'])) {
+                throw new Exception("Only Sub-Contract Staff and Admin can update project stages.");
             }
 
             $projectId = intval($_POST['project_id'] ?? 0);
@@ -97,6 +97,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if (!$projectId || empty($nextStatus)) {
                 throw new Exception("Invalid project or status parameters.");
+            }
+
+            if ($role === 'subcontract_staff') {
+                $currentUser = Auth::user();
+                $userContractorId = $currentUser['subcontractor_id'] ?? 0;
+                $stmtCheck = $db->prepare("SELECT contractor_id FROM subcontract_projects WHERE id = ?");
+                $stmtCheck->execute([$projectId]);
+                $pContractorId = $stmtCheck->fetchColumn();
+                if (intval($pContractorId) !== intval($userContractorId)) {
+                    throw new Exception("You do not have permission to update this project.");
+                }
             }
 
             $db->beginTransaction();

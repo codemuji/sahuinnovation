@@ -41,7 +41,7 @@ include __DIR__ . '/../includes/header.php';
 
             <div class="form-group">
                 <label class="form-label" for="created_at">Allocation Date</label>
-                <input type="datetime-local" class="form-control" id="created_at" name="created_at" value="<?= date('Y-m-d\TH:i') ?>">
+                <input type="date" class="form-control" id="created_at" name="created_at" value="<?= date('Y-m-d') ?>">
             </div>
 
             <div class="form-group">

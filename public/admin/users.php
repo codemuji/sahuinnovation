@@ -41,6 +41,7 @@ include __DIR__ . '/../includes/header.php';
     <a href="users.php?role=admin" class="badge" style="background: <?= $roleFilter == 'admin' ? '#475569' : '#e2e8f0' ?>; color: <?= $roleFilter == 'admin' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Admins</a>
     <a href="users.php?role=director" class="badge" style="background: <?= $roleFilter == 'director' ? 'var(--accent)' : '#e2e8f0' ?>; color: <?= $roleFilter == 'director' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Directors</a>
     <a href="users.php?role=subcontractor" class="badge" style="background: <?= $roleFilter == 'subcontractor' ? '#7c3aed' : '#e2e8f0' ?>; color: <?= $roleFilter == 'subcontractor' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Subcontractors</a>
+    <a href="users.php?role=subcontract_staff" class="badge" style="background: <?= $roleFilter == 'subcontract_staff' ? '#2563eb' : '#e2e8f0' ?>; color: <?= $roleFilter == 'subcontract_staff' ? 'white' : 'var(--text-muted)' ?>; text-decoration: none; padding: 10px 20px;">Sub-Contract Staff</a>
 </div>
 
 <div class="desktop-card" style="padding: 0;">

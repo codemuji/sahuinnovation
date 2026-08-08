@@ -134,6 +134,11 @@ function uploadFile($file, $targetDir, $allowedTypes = ['jpg', 'jpeg', 'png', 'p
  * Ensure Sub-Contract tables exist in database
  */
 function ensureSubcontractTables($db) {
+    @$db->exec("ALTER TABLE users MODIFY COLUMN role ENUM('surveyer', 'dm', 'pe', 'staff', 'admin', 'director', 'office_staff', 'subcontractor', 'subcontract_staff') NOT NULL");
+    try {
+        @$db->exec("ALTER TABLE users ADD COLUMN subcontractor_id INT NULL");
+    } catch (Exception $e) {}
+
     @$db->exec("CREATE TABLE IF NOT EXISTS subcontract_projects (
         id INT AUTO_INCREMENT PRIMARY KEY,
         contractor_id INT NOT NULL,

@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../app/core/Auth.php';
-Auth::requireRole(['staff', 'admin']);
+Auth::requireRole(['subcontract_staff', 'admin']);
 
 $db = Database::getInstance()->getConnection();
 $id = intval($_GET['id'] ?? 0);
@@ -10,12 +10,24 @@ if (!$id) {
     redirect(site_url('public/staff/subcontract-list.php'));
 }
 
-$stmt = $db->prepare("SELECT p.*, c.name as contractor_name, c.employee_id as contractor_emp_id, s.name as staff_name 
-    FROM subcontract_projects p 
-    JOIN users c ON p.contractor_id = c.id 
-    JOIN users s ON p.created_by_staff_id = s.id 
-    WHERE p.id = ?");
-$stmt->execute([$id]);
+$userRole = Auth::userRole();
+if ($userRole === 'subcontract_staff') {
+    $currentUser = Auth::user();
+    $contractorId = $currentUser['subcontractor_id'] ?? 0;
+    $stmt = $db->prepare("SELECT p.*, c.name as contractor_name, c.employee_id as contractor_emp_id, s.name as staff_name 
+        FROM subcontract_projects p 
+        JOIN users c ON p.contractor_id = c.id 
+        JOIN users s ON p.created_by_staff_id = s.id 
+        WHERE p.id = ? AND p.contractor_id = ?");
+    $stmt->execute([$id, $contractorId]);
+} else {
+    $stmt = $db->prepare("SELECT p.*, c.name as contractor_name, c.employee_id as contractor_emp_id, s.name as staff_name 
+        FROM subcontract_projects p 
+        JOIN users c ON p.contractor_id = c.id 
+        JOIN users s ON p.created_by_staff_id = s.id 
+        WHERE p.id = ?");
+    $stmt->execute([$id]);
+}
 $project = $stmt->fetch();
 
 if (!$project) {

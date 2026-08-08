@@ -14,6 +14,8 @@ if (!$userToEdit) {
     redirect('users.php');
 }
 
+$subcontractors = $db->query("SELECT id, name, employee_id FROM users WHERE role = 'subcontractor' AND is_active = 1 ORDER BY name ASC")->fetchAll();
+
 $pageTitle = "Edit User: " . h($userToEdit['name']);
 include __DIR__ . '/../includes/header.php';
 ?>
@@ -49,15 +51,26 @@ include __DIR__ . '/../includes/header.php';
 
             <div class="form-group">
                 <label class="form-label">User Role</label>
-                <select name="role" class="form-control" required>
+                <select name="role" id="userRoleSelect" class="form-control" required onchange="toggleSubcontractorGroup(this.value)">
                     <option value="surveyer" <?= $userToEdit['role'] == 'surveyer' ? 'selected' : '' ?>>Surveyer</option>
                     <option value="dm" <?= $userToEdit['role'] == 'dm' ? 'selected' : '' ?>>DM</option>
                     <option value="pe" <?= $userToEdit['role'] == 'pe' ? 'selected' : '' ?>>PE</option>
-                    <option value="staff" <?= $userToEdit['role'] == 'staff' ? 'selected' : '' ?>>Staff</option>
+                    <option value="staff" <?= $userToEdit['role'] == 'staff' ? 'selected' : '' ?>>Staff (Main Company)</option>
+                    <option value="subcontract_staff" <?= $userToEdit['role'] == 'subcontract_staff' ? 'selected' : '' ?>>Sub-Contract Staff</option>
+                    <option value="subcontractor" <?= $userToEdit['role'] == 'subcontractor' ? 'selected' : '' ?>>Subcontractor Lead</option>
                     <option value="admin" <?= $userToEdit['role'] == 'admin' ? 'selected' : '' ?>>Administrator</option>
                     <option value="director" <?= $userToEdit['role'] == 'director' ? 'selected' : '' ?>>Director</option>
                     <option value="office_staff" <?= $userToEdit['role'] == 'office_staff' ? 'selected' : '' ?>>Office Staff</option>
-                    <option value="subcontractor" <?= $userToEdit['role'] == 'subcontractor' ? 'selected' : '' ?>>Subcontractor</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="subcontractor_select_group" style="display: <?= $userToEdit['role'] === 'subcontract_staff' ? 'block' : 'none' ?>;">
+                <label class="form-label">Assign to Subcontractor Company</label>
+                <select name="subcontractor_id" class="form-control">
+                    <option value="">-- Select Subcontractor --</option>
+                    <?php foreach ($subcontractors as $sc): ?>
+                        <option value="<?= $sc['id'] ?>" <?= $userToEdit['subcontractor_id'] == $sc['id'] ? 'selected' : '' ?>><?= h($sc['name']) ?> (<?= h($sc['employee_id']) ?>)</option>
+                    <?php endforeach; ?>
                 </select>
             </div>
 
@@ -73,6 +86,17 @@ include __DIR__ . '/../includes/header.php';
                 <label class="form-label">New Password (Leave blank to keep current)</label>
                 <input type="password" name="password" class="form-control" placeholder="Minimum 6 characters">
             </div>
+
+            <script>
+            function toggleSubcontractorGroup(val) {
+                var group = document.getElementById('subcontractor_select_group');
+                if (val === 'subcontract_staff') {
+                    group.style.display = 'block';
+                } else {
+                    group.style.display = 'none';
+                }
+            }
+            </script>
 
             <div style="margin-top: 32px;">
                 <button type="submit" class="btn btn-primary">Update User Account</button>

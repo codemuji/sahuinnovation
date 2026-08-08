@@ -2,6 +2,9 @@
 require_once __DIR__ . '/../../app/core/Auth.php';
 Auth::requireRole('admin');
 
+$db = Database::getInstance()->getConnection();
+$subcontractors = $db->query("SELECT id, name, employee_id FROM users WHERE role = 'subcontractor' AND is_active = 1 ORDER BY name ASC")->fetchAll();
+
 $pageTitle = "Create New User";
 include __DIR__ . '/../includes/header.php';
 ?>
@@ -35,16 +38,27 @@ include __DIR__ . '/../includes/header.php';
 
             <div class="form-group">
                 <label class="form-label">User Role</label>
-                <select name="role" class="form-control" required>
+                <select name="role" id="userRoleSelect" class="form-control" required onchange="toggleSubcontractorGroup(this.value)">
                     <option value="">Select Role</option>
                     <option value="surveyer">Surveyer (Field Agent)</option>
                     <option value="dm">DM (Technical)</option>
                     <option value="pe">PE (Technical)</option>
-                    <option value="staff">Staff (Reviewer)</option>
+                    <option value="staff">Staff (Main Company)</option>
+                    <option value="subcontract_staff">Sub-Contract Staff</option>
+                    <option value="subcontractor">Subcontractor Lead</option>
                     <option value="admin">Administrator</option>
                     <option value="director">Director</option>
                     <option value="office_staff">Office Staff</option>
-                    <option value="subcontractor">Subcontractor</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="subcontractor_select_group" style="display: none;">
+                <label class="form-label">Assign to Subcontractor Company</label>
+                <select name="subcontractor_id" class="form-control">
+                    <option value="">-- Select Subcontractor --</option>
+                    <?php foreach ($subcontractors as $sc): ?>
+                        <option value="<?= $sc['id'] ?>"><?= h($sc['name']) ?> (<?= h($sc['employee_id']) ?>)</option>
+                    <?php endforeach; ?>
                 </select>
             </div>
 
@@ -58,6 +72,17 @@ include __DIR__ . '/../includes/header.php';
             </div>
         </form>
     </div>
+
+    <script>
+    function toggleSubcontractorGroup(val) {
+        var group = document.getElementById('subcontractor_select_group');
+        if (val === 'subcontract_staff') {
+            group.style.display = 'block';
+        } else {
+            group.style.display = 'none';
+        }
+    }
+    </script>
 
     <div style="padding: 20px;">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px; color: var(--primary);">Role Access Levels</h3>

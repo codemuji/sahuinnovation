@@ -2,6 +2,10 @@
 require_once __DIR__ . '/../../app/core/Auth.php';
 Auth::requireRole(['staff', 'admin']);
 
+if (Auth::userRole() === 'subcontract_staff') {
+    redirect(site_url('public/staff/subcontract-list.php'));
+}
+
 $db = Database::getInstance()->getConnection();
 
 // Get counts for Survey pipeline
@@ -19,6 +23,15 @@ foreach ($techCounts as $stg => $cnt) {
     }
 }
 
+$userId = Auth::userId();
+$stmt = $db->prepare("SELECT SUM(amount) FROM salary_disbursements WHERE user_id = ? AND type = 'salary'");
+$stmt->execute([$userId]);
+$totalStaffSalary = $stmt->fetchColumn() ?: 0.00;
+
+$stmt = $db->prepare("SELECT SUM(amount) FROM salary_disbursements WHERE user_id = ? AND type = 'advance'");
+$stmt->execute([$userId]);
+$totalStaffAdvance = $stmt->fetchColumn() ?: 0.00;
+
 $pageTitle = "Staff Dashboard";
 include __DIR__ . '/../includes/header.php';
 ?>
@@ -26,7 +39,32 @@ include __DIR__ . '/../includes/header.php';
 <div class="panel-header">
     <div class="panel-title">
         <h1>Staff Overview</h1>
-        <p>Monitor pending reviews across both application review and PM Surya Ghar application pipelines.</p>
+        <p>Monitor pending reviews and view your salary and advance disbursements.</p>
+    </div>
+</div>
+
+<div class="grid grid-2" style="margin-bottom: 30px;">
+    <div class="desktop-card" style="border-left: 4px solid var(--success);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Total Salary Received</div>
+                <div style="font-size: 24px; font-weight: 800; color: var(--success);"><?= formatCurrency($totalStaffSalary) ?></div>
+            </div>
+            <a href="salary-advance.php" class="btn btn-primary" style="width: auto; height: 34px; font-size: 12px; padding: 0 12px; line-height: 34px; text-decoration: none;">
+                Salary History
+            </a>
+        </div>
+    </div>
+    <div class="desktop-card" style="border-left: 4px solid var(--info);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Total Advance Received</div>
+                <div style="font-size: 24px; font-weight: 800; color: var(--info);"><?= formatCurrency($totalStaffAdvance) ?></div>
+            </div>
+            <a href="report.php" class="btn" style="width: auto; height: 34px; font-size: 12px; padding: 0 12px; line-height: 32px; text-decoration: none; border: 1px solid var(--border); background: var(--background); color: var(--text-main);">
+                My Report
+            </a>
+        </div>
     </div>
 </div>
 

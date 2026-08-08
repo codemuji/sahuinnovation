@@ -4,9 +4,13 @@ require_once __DIR__ . '/../app/core/Auth.php';
 // If already logged in, redirect to dashboard
 if (Auth::check()) {
     $role = Auth::userRole();
-    $validRoles = ['surveyer', 'dm', 'pe', 'director', 'office_staff', 'staff', 'admin', 'subcontractor'];
+    $validRoles = ['surveyer', 'dm', 'pe', 'director', 'office_staff', 'staff', 'admin', 'subcontractor', 'subcontract_staff'];
     if (in_array($role, $validRoles)) {
-        redirect(site_url('public/' . ($role === 'pe' ? 'dm' : $role) . '/dashboard.php'));
+        if ($role === 'subcontract_staff') {
+            redirect(site_url('public/staff/subcontract-list.php'));
+        } else {
+            redirect(site_url('public/' . ($role === 'pe' ? 'dm' : $role) . '/dashboard.php'));
+        }
     } else {
         unset($_SESSION['user_id'], $_SESSION['role'], $_SESSION['user_name']);
     }
@@ -22,7 +26,8 @@ $roleNames = [
     'dm' => 'DM / PE Panel',
     'pe' => 'DM / PE Panel',
     'surveyer' => 'Field Surveyor Panel',
-    'subcontractor' => 'Sub-Contractor Panel'
+    'subcontractor' => 'Sub-Contractor Panel',
+    'subcontract_staff' => 'Sub-Contract Staff Panel'
 ];
 $selectedRole = $_GET['role'] ?? '';
 $roleDisplayName = $roleNames[$selectedRole] ?? '';

@@ -8,15 +8,15 @@ $directorId = $_GET['director_id'] ?? null;
 $director = null;
 
 if ($directorId) {
-    // Fetch director details
+    // Fetch employee details
     $stmt = $db->prepare("SELECT u.*, w.balance FROM users u 
         LEFT JOIN wallets w ON u.id = w.user_id 
-        WHERE u.id = ? AND u.role = 'director'");
+        WHERE u.id = ? AND u.role IN ('director', 'office_staff', 'staff')");
     $stmt->execute([$directorId]);
     $director = $stmt->fetch();
     
     if (!$director) {
-        setFlash('danger', 'Director not found.');
+        setFlash('danger', 'Employee not found.');
         redirect(site_url('public/admin/director-reports.php'));
     }
 }
@@ -35,17 +35,24 @@ if ($director) {
     $whereUsage = "u.director_id = ? AND u.status = 'approved' AND YEAR(u.resolved_at) = ?";
     $paramsUsage = [$directorId, $selectedYear];
     
+    $whereDisburse = "user_id = ? AND YEAR(created_at) = ?";
+    $paramsDisburse = [$directorId, $selectedYear];
+    
     if ($filterType === 'month') {
         $whereAlloc = "a.director_id = ? AND DATE_FORMAT(a.created_at, '%Y-%m') = ?";
         $paramsAlloc = [$directorId, $selectedMonth];
         $whereUsage = "u.director_id = ? AND u.status = 'approved' AND DATE_FORMAT(u.resolved_at, '%Y-%m') = ?";
         $paramsUsage = [$directorId, $selectedMonth];
+        $whereDisburse = "user_id = ? AND DATE_FORMAT(created_at, '%Y-%m') = ?";
+        $paramsDisburse = [$directorId, $selectedMonth];
         $periodLabel = date('F Y', strtotime($selectedMonth . '-01'));
     } elseif ($filterType === 'range') {
         $whereAlloc = "a.director_id = ? AND DATE(a.created_at) BETWEEN ? AND ?";
         $paramsAlloc = [$directorId, $fromDate, $toDate];
         $whereUsage = "u.director_id = ? AND u.status = 'approved' AND DATE(u.resolved_at) BETWEEN ? AND ?";
         $paramsUsage = [$directorId, $fromDate, $toDate];
+        $whereDisburse = "user_id = ? AND DATE(created_at) BETWEEN ? AND ?";
+        $paramsDisburse = [$directorId, $fromDate, $toDate];
         $periodLabel = date('d M Y', strtotime($fromDate)) . ' to ' . date('d M Y', strtotime($toDate));
     } else { // 'year'
         $periodLabel = "Year " . $selectedYear;
@@ -54,16 +61,38 @@ if ($director) {
     // CSV Export Logic
     if (isset($_GET['export']) && $_GET['export'] === 'csv') {
         header('Content-Type: text/csv; charset=utf-8');
-        header('Content-Disposition: attachment; filename=Budget-Report-' . str_replace(' ', '_', $director['name']) . '-' . str_replace(' ', '_', $periodLabel) . '.csv');
+        header('Content-Disposition: attachment; filename=Financial-Report-' . str_replace(' ', '_', $director['name']) . '-' . str_replace(' ', '_', $periodLabel) . '.csv');
         
         $output = fopen('php://output', 'w');
         
         fputcsv($output, ["SAHU INNOVATION PVT. LTD."]);
-        fputcsv($output, ["DIRECTOR BUDGET REPORT - " . $periodLabel]);
-        fputcsv($output, ["Director Name:", $director['name']]);
+        fputcsv($output, ["EMPLOYEE FINANCIAL REPORT - " . $periodLabel]);
+        fputcsv($output, ["Employee Name:", $director['name']]);
+        fputcsv($output, ["Role:", strtoupper($director['role'])]);
         fputcsv($output, ["Employee ID:", $director['employee_id']]);
         fputcsv($output, ["Current Wallet Balance:", $director['balance'] ?? 0.00]);
         fputcsv($output, ["Generated At:", date('Y-m-d H:i')]);
+        fputcsv($output, []);
+        
+        // Salary & Advance Disbursements Section
+        fputcsv($output, ["--- SALARY & ADVANCE DISBURSEMENTS LOG ---"]);
+        fputcsv($output, ["Date", "Type", "Amount (INR)", "Notes"]);
+        
+        $stmt = $db->prepare("SELECT * FROM salary_disbursements WHERE $whereDisburse ORDER BY created_at ASC");
+        $stmt->execute($paramsDisburse);
+        $disburseLogs = $stmt->fetchAll();
+        
+        $totalDisbursed = 0.00;
+        foreach ($disburseLogs as $dl) {
+            fputcsv($output, [
+                date('Y-m-d', strtotime($dl['created_at'])),
+                ucfirst($dl['type']),
+                $dl['amount'],
+                $dl['notes']
+            ]);
+            $totalDisbursed += $dl['amount'];
+        }
+        fputcsv($output, ["", "Total Disbursed:", $totalDisbursed]);
         fputcsv($output, []);
         
         // Allocations Section
@@ -79,7 +108,7 @@ if ($director) {
         $totalAlloc = 0.00;
         foreach ($allocLogs as $al) {
             fputcsv($output, [
-                date('Y-m-d H:i', strtotime($al['created_at'])),
+                date('Y-m-d', strtotime($al['created_at'])),
                 $al['admin_name'],
                 $al['amount'],
                 $al['notes']
@@ -101,7 +130,7 @@ if ($director) {
         $totalExp = 0.00;
         foreach ($expLogs as $el) {
             fputcsv($output, [
-                date('Y-m-d H:i', strtotime($el['resolved_at'])),
+                date('Y-m-d', strtotime($el['resolved_at'])),
                 $el['purpose'],
                 $el['description'],
                 $el['amount']
@@ -113,6 +142,7 @@ if ($director) {
         
         // Summary
         fputcsv($output, ["--- PERIOD SUMMARY ---"]);
+        fputcsv($output, ["Salary & Advances Disbursed", $totalDisbursed]);
         fputcsv($output, ["Allocated Funds", $totalAlloc]);
         fputcsv($output, ["Approved Expenses", $totalExp]);
         fputcsv($output, ["Remaining Wallet Balance", $director['balance'] ?? 0.00]);
@@ -122,19 +152,25 @@ if ($director) {
     }
     
     // Fetch data for GUI
-    // 1. Allocations
+    // 1. Disbursements
+    $stmt = $db->prepare("SELECT * FROM salary_disbursements WHERE $whereDisburse ORDER BY created_at DESC");
+    $stmt->execute($paramsDisburse);
+    $disbursements = $stmt->fetchAll();
+    
+    // 2. Allocations
     $stmt = $db->prepare("SELECT a.*, ad.name as admin_name FROM fund_allocations a 
         JOIN users ad ON a.admin_id = ad.id 
         WHERE $whereAlloc ORDER BY a.created_at DESC");
     $stmt->execute($paramsAlloc);
     $allocations = $stmt->fetchAll();
     
-    // 2. Expenses
+    // 3. Expenses
     $stmt = $db->prepare("SELECT u.* FROM fund_usages u 
         WHERE $whereUsage ORDER BY u.resolved_at DESC");
     $stmt->execute($paramsUsage);
     $expenses = $stmt->fetchAll();
     
+    $totalDisbursed = array_sum(array_column($disbursements, 'amount'));
     $totalAlloc = array_sum(array_column($allocations, 'amount'));
     $totalExp = array_sum(array_column($expenses, 'amount'));
     
@@ -143,44 +179,47 @@ if ($director) {
         SELECT created_at FROM fund_allocations WHERE director_id = ?
         UNION
         SELECT resolved_at as created_at FROM fund_usages WHERE director_id = ? AND status = 'approved' AND resolved_at IS NOT NULL
+        UNION
+        SELECT created_at FROM salary_disbursements WHERE user_id = ?
     ) combined ORDER BY yr DESC");
-    $stmt->execute([$directorId, $directorId]);
+    $stmt->execute([$directorId, $directorId, $directorId]);
     $years = $stmt->fetchAll(PDO::FETCH_COLUMN);
     
     if (empty($years)) {
         $years = [date('Y')];
     }
 } else {
-    // Fetch all active directors with balances
-    $stmt = $db->query("SELECT u.id, u.name, u.employee_id, u.email, u.phone, w.balance FROM users u 
+    // Fetch all active directors, office staff, and staff with balances
+    $stmt = $db->query("SELECT u.id, u.name, u.employee_id, u.role, u.email, u.phone, w.balance FROM users u 
         LEFT JOIN wallets w ON u.id = w.user_id 
-        WHERE u.role = 'director' AND u.is_active = 1 
+        WHERE u.role IN ('director', 'office_staff', 'staff') AND u.is_active = 1 
         ORDER BY u.name ASC");
     $directors = $stmt->fetchAll();
 }
 
-$pageTitle = $director ? "Report for " . h($director['name']) : "Director-wise Reports";
+$pageTitle = $director ? "Report for " . h($director['name']) : "Employee Financial Reports";
 include __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="panel-header">
     <div class="panel-title">
-        <h1>Director-wise Reports</h1>
-        <p><?= $director ? 'Detailed financial statement and history of allocations and expenses for ' . h($director['name']) : 'Select a Director to view their specific financial statements and transaction logs.' ?></p>
+        <h1>Employee Financial Reports</h1>
+        <p><?= $director ? 'Detailed financial statement and history of allocations, disbursements, and expenses for ' . h($director['name']) : 'Select an Employee (Director, Office Staff, or Staff) to view their specific financial statements and transaction logs.' ?></p>
     </div>
 </div>
 
 <?php if (!$director): ?>
-    <!-- LIST VIEW: All Directors -->
+    <!-- LIST VIEW: All Employees -->
     <div class="desktop-card" style="padding: 0;">
         <div style="padding: 20px; border-bottom: 1px solid var(--border);">
-            <h3 style="font-size: 16px; font-weight: 700; margin: 0;">Active Directors Directory</h3>
+            <h3 style="font-size: 16px; font-weight: 700; margin: 0;">Active Employees Directory</h3>
         </div>
         <div class="table-responsive">
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>Director Name</th>
+                        <th>Employee Name</th>
+                        <th>Role</th>
                         <th>Employee ID</th>
                         <th>Email</th>
                         <th>Phone</th>
@@ -190,11 +229,12 @@ include __DIR__ . '/../includes/header.php';
                 </thead>
                 <tbody>
                     <?php if (empty($directors)): ?>
-                        <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 40px;">No active directors found.</td></tr>
+                        <tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 40px;">No active employees found.</td></tr>
                     <?php else:
                         foreach ($directors as $d): ?>
                             <tr>
                                 <td style="font-weight: 600;"><?= h($d['name']) ?></td>
+                                <td><span class="badge badge-info" style="font-size: 11px;"><?= strtoupper(h($d['role'])) ?></span></td>
                                 <td><?= h($d['employee_id']) ?: '<span style="color: var(--text-muted);">N/A</span>' ?></td>
                                 <td><?= h($d['email']) ?></td>
                                 <td><?= h($d['phone']) ?: '-' ?></td>
@@ -298,18 +338,59 @@ include __DIR__ . '/../includes/header.php';
     </div>
 
     <!-- Financial Summary Widgets -->
-    <div class="grid grid-3" style="margin-bottom: 40px;">
+    <div class="grid grid-4" style="margin-bottom: 40px;">
+        <div class="desktop-card" style="border-left: 4px solid var(--info);">
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px;">Salary & Advance Disbursed</div>
+            <div style="font-size: 22px; font-weight: 800; color: var(--info);"><?= formatCurrency($totalDisbursed) ?></div>
+        </div>
         <div class="desktop-card" style="border-left: 4px solid var(--accent);">
-            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px;">Total Budget Allocated (In Period)</div>
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px;">Total Budget Allocated</div>
             <div style="font-size: 22px; font-weight: 800; color: var(--accent);"><?= formatCurrency($totalAlloc) ?></div>
         </div>
         <div class="desktop-card" style="border-left: 4px solid var(--success);">
-            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px;">Approved Expenses (In Period)</div>
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px;">Approved Expenses</div>
             <div style="font-size: 22px; font-weight: 800; color: var(--success);"><?= formatCurrency($totalExp) ?></div>
         </div>
         <div class="desktop-card" style="border-left: 4px solid var(--primary);">
             <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px;">Net Period Balance</div>
             <div style="font-size: 22px; font-weight: 800; color: var(--primary);"><?= formatCurrency($totalAlloc - $totalExp) ?></div>
+        </div>
+    </div>
+
+    <!-- Salary & Advance Disbursements Statement -->
+    <div class="desktop-card" style="padding: 0; margin-bottom: 30px;">
+        <div style="padding: 20px; border-bottom: 1px solid var(--border);">
+            <h3 style="font-size: 15px; font-weight: 700; margin: 0;">Salary & Advance Disbursements Statement</h3>
+        </div>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Notes / Reference</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($disbursements)): ?>
+                        <tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 30px;">No salary or advance disbursements for this period.</td></tr>
+                    <?php else:
+                        foreach ($disbursements as $d): ?>
+                            <tr>
+                                <td><?= date('d M Y', strtotime($d['created_at'])) ?></td>
+                                <td>
+                                    <span class="badge badge-<?= $d['type'] === 'salary' ? 'success' : 'info' ?>">
+                                        <?= ucfirst(h($d['type'])) ?>
+                                    </span>
+                                </td>
+                                <td style="font-weight: 700; color: var(--accent);"><?= formatCurrency($d['amount']) ?></td>
+                                <td style="font-size: 12px; max-width: 250px;"><?= h($d['notes']) ?: '-' ?></td>
+                            </tr>
+                        <?php endforeach;
+                    endif; ?>
+                </tbody>
+            </table>
         </div>
     </div>
 
