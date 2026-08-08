@@ -167,65 +167,48 @@ include_once __DIR__ . '/includes/landing_header.php';
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 items-stretch">
-                    <!-- Member 1: Prodip Sahu -->
-                    <div class="luxury-card rounded-3xl overflow-hidden border border-gold-imperial/35 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-gold-imperial flex flex-col justify-between group bg-navy-deep">
+                    <!-- Member 1: Prodip Sahu (Managing Director) -->
+                    <div class="luxury-card rounded-3xl overflow-hidden border-2 border-gold-imperial shadow-[0_0_25px_rgba(212,175,55,0.4)] ring-2 ring-gold-imperial/40 transition-all duration-500 hover:shadow-[0_0_35px_rgba(212,175,55,0.65)] flex flex-col justify-between group bg-gradient-to-b from-[#132B4A] to-navy-deep relative">
                         <div class="relative aspect-[4/3] bg-navy-deep overflow-hidden">
-                            <div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
-                            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-imperial/20 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/35 transition-all duration-500"></div>
+                            <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
+                            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-imperial/40 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/60 transition-all duration-500"></div>
 
-                            <img alt="Prodip Sahu - Leadership" 
+                            <!-- Prominent Gold Executive Badge -->
+                            <div class="absolute top-3 right-3 z-20 px-3 py-1 rounded-full bg-gradient-to-r from-gold-imperial via-amber-300 to-gold-champagne text-navy-deep font-mono-data text-[11px] font-black tracking-widest uppercase flex items-center gap-1.5 shadow-lg border border-white/50">
+                                <span class="material-symbols-outlined text-xs font-bold">verified</span>
+                                <span>MANAGING DIRECTOR</span>
+                            </div>
+
+                            <img alt="Prodip Sahu - Managing Director" 
                                  class="w-full h-full object-cover object-top relative z-10 transition-transform duration-700 group-hover:scale-105" 
                                  src="<?= site_url('public/assets/img/team/prodip_sahu.jpeg') ?>"/>
                         </div>
 
-                        <div class="p-6 bg-navy-deep border-t border-gold-imperial/45 flex flex-col justify-between flex-1">
+                        <div class="p-6 bg-gradient-to-br from-[#152E50] to-navy-deep border-t-2 border-gold-imperial flex flex-col justify-between flex-1">
                             <div>
-                                <span class="font-mono-data text-[11px] text-gold-champagne font-bold uppercase tracking-wider block mb-1">
-                                    MANAGING DIRECTOR
-                                </span>
-                                <h4 class="font-display text-xl font-bold text-white group-hover:text-gold-imperial transition-colors">
+                                <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-gold-imperial/20 border border-gold-imperial/50 text-gold-light font-mono-data text-[10px] font-bold uppercase tracking-wider mb-2">
+                                    <span class="material-symbols-outlined text-[13px] text-gold-imperial">star</span>
+                                    <span>FOUNDER & MANAGING DIRECTOR</span>
+                                </div>
+                                <h4 class="font-display text-2xl font-extrabold text-white group-hover:text-gold-imperial transition-colors">
                                     Prodip Sahu
                                 </h4>
                             </div>
-                            <div class="text-[11px] font-mono-data text-slate-300 mt-3 pt-2 border-t border-white/10 flex items-center justify-between">
+                            <div class="text-[11px] font-mono-data text-gold-champagne/90 mt-3 pt-2 border-t border-gold-imperial/30 flex items-center justify-between font-semibold">
                                 <span>Regional Vision & Governance</span>
-                                <span class="text-emerald-400 font-bold">Active Board</span>
+                                <span class="text-emerald-400 font-bold flex items-center gap-1">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    <span>Board Chair</span>
+                                </span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Member 2: Dipen Sahu -->
+                    <!-- Member 2: Khelaton Sahu -->
                     <div class="luxury-card rounded-3xl overflow-hidden border border-gold-imperial/35 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-gold-imperial flex flex-col justify-between group bg-navy-deep">
                         <div class="relative aspect-[4/3] bg-navy-deep overflow-hidden">
                             <div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
                             <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-champagne/20 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/35 transition-all duration-500"></div>
-
-                            <img alt="Dipen Sahu - Director" 
-                                 class="w-full h-full object-cover object-top relative z-10 transition-transform duration-700 group-hover:scale-105" 
-                                 src="<?= site_url('public/assets/img/team/dipen_sahu.jpeg') ?>"/>
-                        </div>
-
-                        <div class="p-6 bg-navy-deep border-t border-gold-imperial/45 flex flex-col justify-between flex-1">
-                            <div>
-                                <span class="font-mono-data text-[11px] text-gold-champagne font-bold uppercase tracking-wider block mb-1">
-                                    DIRECTOR
-                                </span>
-                                <h4 class="font-display text-xl font-bold text-white group-hover:text-gold-imperial transition-colors">
-                                    Dipen Sahu
-                                </h4>
-                            </div>
-                            <div class="text-[11px] font-mono-data text-slate-300 mt-3 pt-2 border-t border-white/10 flex items-center justify-between">
-                                <span>Project Management & Execution</span>
-                                <span class="text-emerald-400 font-bold">Active Board</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Member 3: Khelaton Sahu -->
-                    <div class="luxury-card rounded-3xl overflow-hidden border border-gold-imperial/35 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-gold-imperial flex flex-col justify-between group bg-navy-deep">
-                        <div class="relative aspect-[4/3] bg-navy-deep overflow-hidden">
-                            <div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
-                            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-imperial/20 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/35 transition-all duration-500"></div>
 
                             <img alt="Khelaton Sahu - Director" 
                                  class="w-full h-full object-cover object-top relative z-10 transition-transform duration-700 group-hover:scale-105" 
@@ -243,6 +226,33 @@ include_once __DIR__ . '/includes/landing_header.php';
                             </div>
                             <div class="text-[11px] font-mono-data text-slate-300 mt-3 pt-2 border-t border-white/10 flex items-center justify-between">
                                 <span>Field Verification & Relations</span>
+                                <span class="text-emerald-400 font-bold">Active Board</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Member 3: Dipen Sahu -->
+                    <div class="luxury-card rounded-3xl overflow-hidden border border-gold-imperial/35 shadow-xl transition-all duration-500 hover:shadow-2xl hover:border-gold-imperial flex flex-col justify-between group bg-navy-deep">
+                        <div class="relative aspect-[4/3] bg-navy-deep overflow-hidden">
+                            <div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
+                            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-60 h-60 bg-gold-imperial/20 rounded-full blur-2xl pointer-events-none group-hover:bg-gold-imperial/35 transition-all duration-500"></div>
+
+                            <img alt="Dipen Sahu - Director" 
+                                 class="w-full h-full object-cover object-top relative z-10 transition-transform duration-700 group-hover:scale-105" 
+                                 src="<?= site_url('public/assets/img/team/dipen_sahu.jpeg') ?>"/>
+                        </div>
+
+                        <div class="p-6 bg-navy-deep border-t border-gold-imperial/45 flex flex-col justify-between flex-1">
+                            <div>
+                                <span class="font-mono-data text-[11px] text-gold-champagne font-bold uppercase tracking-wider block mb-1">
+                                    DIRECTOR
+                                </span>
+                                <h4 class="font-display text-xl font-bold text-white group-hover:text-gold-imperial transition-colors">
+                                    Dipen Sahu
+                                </h4>
+                            </div>
+                            <div class="text-[11px] font-mono-data text-slate-300 mt-3 pt-2 border-t border-white/10 flex items-center justify-between">
+                                <span>Project Management & Execution</span>
                                 <span class="text-emerald-400 font-bold">Active Board</span>
                             </div>
                         </div>
